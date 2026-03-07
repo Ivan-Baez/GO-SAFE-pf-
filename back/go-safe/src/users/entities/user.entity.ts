@@ -25,6 +25,13 @@ export class User {
 
   @Column({
     type: 'varchar',
+    length: 20,
+    nullable: false,
+  })
+  userName!: string;
+
+  @Column({
+    type: 'varchar',
     length: 5,
     nullable: false,
   })
@@ -88,7 +95,7 @@ export class User {
   @Exclude()
   @Column({
     type: 'varchar',
-    length: 50,
+    length: 100,
     nullable: false,
   })
   password!: string;

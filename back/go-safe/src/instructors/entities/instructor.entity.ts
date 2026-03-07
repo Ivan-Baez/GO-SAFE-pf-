@@ -1,13 +1,20 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { User } from 'src/users/entities/user.entity';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity('instructors')
 export class Instructor {
   @PrimaryGeneratedColumn('uuid')
   id!: string;
 
-  //   @OneToOne(() => User, (user) => user.instructorProfile)
-  //   @JoinColumn()
-  //   user!: User;
+  @OneToOne(() => User)
+  @JoinColumn()
+  user!: User;
 
   @Column({
     type: 'text',

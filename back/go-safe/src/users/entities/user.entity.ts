@@ -1,5 +1,6 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { Exclude } from 'class-transformer';
+import { Instructor } from 'src/instructors/entities/instructor.entity';
 
 @Entity({
   name: 'users',
@@ -123,7 +124,6 @@ export class User {
   @Column({ type: 'boolean', default: true })
   status!: boolean;
 
-  // @DeleteDateColumn()
-  // @OneToMany(() => Order, (order) => order.user)
-  // orders_id!: Order[];
+  @OneToOne(() => Instructor, (instructor) => instructor.user)
+  instructorProfile!: Instructor;
 }

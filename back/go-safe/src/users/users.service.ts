@@ -31,7 +31,6 @@ export class UsersService {
 
     if (userFound) throw new ConflictException('Username already registered');
 
-    console.log(user.password, user.confirmPassword);
     if (user.password !== user.confirmPassword)
       throw new BadRequestException('Passwords do not match');
 

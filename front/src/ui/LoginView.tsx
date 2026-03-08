@@ -4,6 +4,7 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import { validateFormLogin } from "@/lib/validate";
 import Link from "next/link";
 import Image from "next/image";
+import { toastError, toastSuccess } from "@/lib/toast";
 
 export default function LoginView() {
     const router = useRouter();
@@ -23,11 +24,15 @@ export default function LoginView() {
               validate={validateFormLogin}
 
               onSubmit={(values) => {
-                 console.log(values);
+                console.log(values);
 
-                 // después acá iría el login al backend
-                router.push("/");
-                }}
+                if (values.email === "test@test.com" && values.password === "123456") {
+                  toastSuccess("Login correcto");
+                  router.push("/");
+                } else {
+                  toastError("Credenciales incorrectas");
+                }
+              }}
             >
             
             <Form className="flex flex-col gap-4 w-80">
@@ -73,6 +78,11 @@ export default function LoginView() {
             </Form>
             </Formik>
         </div>
+        <div className="flex items-center my-4">
+          <div className="flex-grow border-t border-gray-300"></div>
+          <span className="mx-3 text-sm text-gray-500">o</span>
+          <div className="flex-grow border-t border-gray-300"></div>
+        </div>
         <div className="mt-12">
           <button className="flex items-center justify-center gap-3 w-full border border-gray-300 rounded-lg py-2 px-4 bg-white hover:bg-gray-50 transition">
           <Image
@@ -86,7 +96,7 @@ export default function LoginView() {
             Ingresar con Google
           </span>
           </button>
-</div>
+        </div>
       </div>
     )
 }

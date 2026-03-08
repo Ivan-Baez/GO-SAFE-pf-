@@ -1,10 +1,10 @@
-import RegisterView from '@/ui/RegisterView'
+import LoginView from "@/ui/LoginView"
 
-
-function Registerpage() {
-return (
-    <RegisterView/>
-)
+export default function LoginPage() {
+  return ( 
+    <main> 
+      <LoginView/> 
+    </main>
+  )
 }
 
-export default Registerpage

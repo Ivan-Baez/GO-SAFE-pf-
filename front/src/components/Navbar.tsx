@@ -35,14 +35,22 @@ export default function Navbar() {
       <div className="flex gap-4">
         <button
           onClick={() => router.push("/login")}
+<<<<<<< HEAD
           className="px-4 py-2 border border-black rounded hover:bg-gray-100 w-[150px]"
+=======
+          className="px-4 py-2 border border-black rounded hover:bg-[#b8b1a6] w-[150px]"
+>>>>>>> Angela
         >
           Ingresar
         </button>
 
         <button
           onClick={() => router.push("/register")}
+<<<<<<< HEAD
           className="px-4 py-2 border border-black rounded hover:bg-gray-100 w-[150px]"
+=======
+          className="px-4 py-2 border border-black rounded hover:bg-[#b8b1a6] w-[150px]"
+>>>>>>> Angela
         >
           Registrarme
         </button>

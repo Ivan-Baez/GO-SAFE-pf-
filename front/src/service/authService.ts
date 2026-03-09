@@ -1,4 +1,4 @@
-import { ILoginProps } from "@/types/types";
+import { ILoginProps, IRegisterProps } from "@/types/types";
 import { toastSuccess, toastError } from "@/lib/toast";
 
 const APIURL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
@@ -26,3 +26,19 @@ export async function loginService(userData: ILoginProps) {
     throw new Error(error)
   }
 }
+
+export async function register (userData: IRegisterProps) {
+    try{
+        const response = await fetch(`${APIURL}/users/register`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(userData),
+    }); 
+    alert("usuario registrado con exito");
+} catch(error: any){
+        alert("fallo al registrar el usuario");
+        throw new Error (error);
+    }
+};

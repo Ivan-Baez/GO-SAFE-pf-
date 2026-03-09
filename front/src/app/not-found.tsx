@@ -1,8 +1,11 @@
+import Link from "next/link";
+
 export default function NotFound() {
-  return (
-    <div>
-      <h2>Página no encontrada</h2>
-      <p>Lo sentimos, no pudimos encontrar lo que buscabas.</p>
-    </div>
-  );
+    return (
+        <div>
+            <h2>404 - Page Not Found</h2>
+            <p>The page you are looking for does not exist.</p>
+            <Link href="/">Go back to Home</Link>
+        </div>
+    );
 }

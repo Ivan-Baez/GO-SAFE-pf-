@@ -27,7 +27,7 @@ export default function Navbar() {
         <input
           type="text"
           placeholder="Busca por aventura"
-          className="w-[500px] px-4 py-2 rounded-md bg-gray-100 outline-none"
+          className="w-125 px-4 py-2 rounded-md bg-gray-100 outline-none"
         />
       </div>
 
@@ -35,14 +35,14 @@ export default function Navbar() {
       <div className="flex gap-4">
         <button
           onClick={() => router.push("/login")}
-          className="px-4 py-2 border border-black rounded hover:bg-[#b8b1a6] w-[150px]"
+          className="px-4 py-2 border border-black rounded hover:bg-[#b8b1a6] w-37.5"
         >
           Ingresar
         </button>
 
         <button
           onClick={() => router.push("/register")}
-          className="px-4 py-2 border border-black rounded hover:bg-[#b8b1a6] w-[150px]"
+          className="px-4 py-2 border border-black rounded hover:bg-[#b8b1a6] w-37.5"
         >
           Registrarme
         </button>

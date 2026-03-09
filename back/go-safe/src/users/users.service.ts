@@ -4,6 +4,7 @@ import {
   Injectable,
   InternalServerErrorException,
   NotFoundException,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -11,14 +12,17 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
 import bcrypt from 'bcrypt';
+import { LoginDto } from 'src/instructors/dto/create-user-instructor.dto';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectRepository(User) private usersRepository: Repository<User>,
+    private jwtService: JwtService,
   ) {}
 
-  async create(user: CreateUserDto) {
+  async createUser(user: CreateUserDto) {
     let userFound = await this.usersRepository.findOneBy({
       email: user.email,
     });
@@ -44,6 +48,37 @@ export class UsersService {
 
       await this.usersRepository.save(newUser);
       return newUser;
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
+  }
+
+  async loginUser(credentials: LoginDto) {
+    const userFound = await this.usersRepository.findOneBy({
+      email: credentials.email,
+    });
+
+    if (!userFound) throw new NotFoundException('User email not found');
+    try {
+      const match = await bcrypt.compare(
+        credentials.password,
+        userFound.password,
+      );
+
+      if (!match)
+        throw new UnauthorizedException('Email or password incorrect!');
+
+      const payload = {
+        id: userFound.id,
+        email: userFound.email,
+        isAdmin: userFound.isAdmin,
+      };
+
+      const token = this.jwtService.sign(payload);
+      return {
+        login: true,
+        access_token: token,
+      };
     } catch (error) {
       throw new InternalServerErrorException(error);
     }

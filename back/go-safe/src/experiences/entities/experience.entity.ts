@@ -1,5 +1,15 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  ManyToMany,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { Exclude } from 'class-transformer';
+import { Instructor } from 'src/instructors/entities/instructor.entity';
+import { Reviews } from 'src/reviews/entities/review.entity';
+import { Order } from 'src/orders/entities/order.entity';
 
 @Entity({
   name: 'experiences',
@@ -89,4 +99,13 @@ export class Experience {
     nullable: false,
   })
   duration!: string;
+
+  @ManyToOne(() => Instructor, (instructor) => instructor.experiences)
+  instructor!: Instructor;
+
+  @OneToMany(() => Reviews, (review) => review.experience)
+  reviews!: Reviews[];
+
+  @ManyToMany(() => Order, (order) => order.experience)
+  orders!: Order[];
 }

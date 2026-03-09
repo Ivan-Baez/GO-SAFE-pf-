@@ -1,3 +1,4 @@
+import { PickType } from '@nestjs/swagger';
 import { CreateUserDto } from '../../users/dto/create-user.dto';
 import { CreateInstructorDto } from './create-instructor.dto';
 import { Type } from 'class-transformer';
@@ -12,3 +13,4 @@ export class CreateUserInstructorDto {
   @Type(() => CreateInstructorDto)
   instructor!: CreateInstructorDto;
 }
+export class LoginDto extends PickType(CreateUserDto, ['email', 'password']) {}

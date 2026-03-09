@@ -1,8 +1,10 @@
+import { Experience } from 'src/experiences/entities/experience.entity';
 import { User } from 'src/users/entities/user.entity';
 import {
   Column,
   Entity,
   JoinColumn,
+  OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
@@ -27,4 +29,7 @@ export class Instructor {
     nullable: true,
   })
   certifications!: string;
+
+  @OneToMany(() => Experience, (experience) => experience.instructor)
+  experiences!: Experience[];
 }

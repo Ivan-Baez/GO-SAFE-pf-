@@ -12,7 +12,10 @@ export class Image {
   @Column()
   tag: string;
 
-  @Column()
+  @Column({
+    type: 'text',
+    default: 'No image',
+  })
   url: string;
 }
 //   @ManyToOne(() => Experience, (experience) => experience.images, {

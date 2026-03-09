@@ -1,5 +1,6 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { Exclude } from 'class-transformer';
+import { Instructor } from 'src/instructors/entities/instructor.entity';
 
 @Entity({
   name: 'users',
@@ -22,6 +23,13 @@ export class User {
     nullable: false,
   })
   lastName!: string;
+
+  @Column({
+    type: 'varchar',
+    length: 20,
+    nullable: false,
+  })
+  userName!: string;
 
   @Column({
     type: 'varchar',
@@ -88,7 +96,7 @@ export class User {
   @Exclude()
   @Column({
     type: 'varchar',
-    length: 50,
+    length: 100,
     nullable: false,
   })
   password!: string;
@@ -116,7 +124,6 @@ export class User {
   @Column({ type: 'boolean', default: true })
   status!: boolean;
 
-  // @DeleteDateColumn()
-  // @OneToMany(() => Order, (order) => order.user)
-  // orders_id!: Order[];
+  @OneToOne(() => Instructor, (instructor) => instructor.user)
+  instructorProfile!: Instructor;
 }

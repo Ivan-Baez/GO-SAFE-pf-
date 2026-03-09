@@ -9,6 +9,8 @@ import { AuthModule } from './auth/auth.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import typeorm from './config/typeorm';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ReviewsModule } from './reviews/reviews.module';
+import { ImagesModule } from './images/images.module';
 
 @Module({
   imports: [
@@ -26,6 +28,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
     ExperiencesModule,
     OrdersModule,
     AuthModule,
+    ReviewsModule,
+    ImagesModule,
   ],
   controllers: [AppController],
   providers: [AppService],

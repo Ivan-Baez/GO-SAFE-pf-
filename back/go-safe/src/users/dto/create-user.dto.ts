@@ -33,6 +33,16 @@ export class CreateUserDto {
   lastName!: string;
 
   /**
+   * User last name
+   * @example uPerez
+   */
+  @IsNotEmpty()
+  @IsString()
+  @MinLength(2)
+  @MaxLength(20)
+  userName!: string;
+
+  /**
    * Document type
    * @example CC
    */

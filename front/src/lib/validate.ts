@@ -1,4 +1,18 @@
-import { IRegisterErrors,IRegisterProps } from "@/types/types";
+import { ILoginErrors, ILoginProps, IRegisterErrors,IRegisterProps } from "@/types/types";
+
+export const validateFormLogin = (values: ILoginProps) => {
+  const errors: ILoginErrors = {};
+
+  if (!values.email) {
+    errors.email = "Email requerido";
+  }
+
+  if (!values.password) {
+    errors.password = "Contraseña requerida";
+  }
+
+  return errors;
+};
 
 export const ValidateFormRegister = (values:IRegisterProps) =>{
     const errors: IRegisterErrors = {};
@@ -30,11 +44,6 @@ export const ValidateFormRegister = (values:IRegisterProps) =>{
         } else if (!values.genre){
             errors.genre = "Requiered genre"
         }
-
-    
-
-
-
-        return errors
+    return errors;
 }
 

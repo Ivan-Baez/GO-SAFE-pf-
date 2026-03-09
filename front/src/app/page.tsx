@@ -1,11 +1,10 @@
-import dynamic from "next/dynamic"
-import Registerpage from "./register/page"
+import Home from "@/components/Home"
 import RegisterView from "@/ui/RegisterView"
 
-export default function Home(){
+export default function HomePage() {
     return(
         <div>
-            <RegisterView></RegisterView>
+            <Home/>
         </div>
     )
 }

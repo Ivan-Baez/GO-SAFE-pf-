@@ -36,7 +36,7 @@ function RegisterView() {
         try {
           await register(values);
           alert ("Registro exitoso! Redirigiendo al login ")
-          router.push("/login")
+          router.push("/")
         }catch (error) {
           alert("Error al registrarse, Intente nuevamente")
         }
@@ -106,12 +106,12 @@ function RegisterView() {
               Boolean(errors.address || errors.age || errors.city || errors.country || errors.document || errors.documentType || errors.genre || errors.mail ||errors.name || errors.password || errors.phone)
             }
             >
-                {isSubmitting ? 'Registrando...' : 'Crear cuenta'}
+                {isSubmitting ? 'Registrando...' : 'Registrarse'}
               Registrarse</button>
               <div>
-                <p>ya tienescuenta? {" "}</p>
+                <p>ya tienes cuenta? {" "}</p>
                 <Link
-                href={"/login"}
+                href={"/"}
                 >
                   Incia sesión aquí
                 </Link>

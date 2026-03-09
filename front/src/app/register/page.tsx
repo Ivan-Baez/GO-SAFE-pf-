@@ -1,10 +1,8 @@
 import RegisterView from '@/ui/RegisterView'
 
 
-function Registerpage() {
+export default function Registerpage() {
 return (
     <RegisterView/>
 )
 }
-
-export default Registerpage

@@ -1,4 +1,4 @@
-import { IRegisterErrors,IRegisterProps } from "@/types/type";
+import { IRegisterErrors,IRegisterProps } from "@/types/types";
 
 export const ValidateFormRegister = (values:IRegisterProps) =>{
     const errors: IRegisterErrors = {};

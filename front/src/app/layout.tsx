@@ -29,7 +29,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased flex h-screen justify-between items-center flex-col`}
       >
-          <RegisterView></RegisterView>
+      
       
       </body>
     </html>

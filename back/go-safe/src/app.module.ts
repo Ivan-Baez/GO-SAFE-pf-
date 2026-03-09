@@ -11,6 +11,7 @@ import typeorm from './config/typeorm';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ReviewsModule } from './reviews/reviews.module';
 import { ImagesModule } from './images/images.module';
+import { FileUploadModule } from './file-upload/file-upload.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { ImagesModule } from './images/images.module';
     AuthModule,
     ReviewsModule,
     ImagesModule,
+    FileUploadModule,
   ],
   controllers: [AppController],
   providers: [AppService],

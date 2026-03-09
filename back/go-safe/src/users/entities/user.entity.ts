@@ -1,6 +1,15 @@
-import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  ManyToMany,
+  OneToMany,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { Exclude } from 'class-transformer';
 import { Instructor } from 'src/instructors/entities/instructor.entity';
+import { Order } from 'src/orders/entities/order.entity';
+// import { Blog } from 'src/blogs/entities/blog.entity';
 
 @Entity({
   name: 'users',
@@ -126,4 +135,10 @@ export class User {
 
   @OneToOne(() => Instructor, (instructor) => instructor.user)
   instructorProfile!: Instructor;
+
+  @OneToMany(() => Order, (order) => order.user)
+  orders!: Order[];
+
+  // @OneToMany(() => Blog, (blog) => blog.user)
+  // blogs: Blog[];
 }

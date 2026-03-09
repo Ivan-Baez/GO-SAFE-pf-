@@ -1,1 +1,4 @@
-export class Experience {}
+export class Experience {
+@OneToMany(() => QAA, (qaa) => qaa.experience)
+qaas: QAA[];
+}

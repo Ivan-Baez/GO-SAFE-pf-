@@ -18,7 +18,8 @@
     "formik": "^2.4.9",
     "next": "^16.1.6",
     "react": "^19.2.4",
-    "react-dom": "^19.2.4"
+    "react-dom": "^19.2.4",
+    "react-toastify": "^11.0.5"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

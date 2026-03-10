@@ -44,9 +44,6 @@ export const ValidateFormRegister = (values:IRegisterProps) =>{
         } else if (!values.genre){
             errors.genre = "Requiered genre"
         }
-
-        return errors
+    return errors;
 }
-
-
 

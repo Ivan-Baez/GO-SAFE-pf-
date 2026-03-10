@@ -1,7 +1,6 @@
 import {
   Column,
   Entity,
-  ManyToMany,
   OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
@@ -9,125 +8,63 @@ import {
 import { Exclude } from 'class-transformer';
 import { Instructor } from 'src/instructors/entities/instructor.entity';
 import { Order } from 'src/orders/entities/order.entity';
-// import { Blog } from 'src/blogs/entities/blog.entity';
+import { Blog } from 'src/blogs/entities/blog.entity';
+import { Qaa } from 'src/qaa/entities/qaa.entity';
+import { Experience } from 'src/experiences/entities/experience.entity';
 
-@Entity({
-  name: 'users',
-})
+@Entity({ name: 'users' })
 export class User {
   @Exclude()
   @PrimaryGeneratedColumn('uuid')
   id!: string;
 
-  @Column({
-    type: 'varchar',
-    length: 50,
-    nullable: false,
-  })
+  @Column({ type: 'varchar', length: 50, nullable: false })
   fistName!: string;
 
-  @Column({
-    type: 'varchar',
-    length: 50,
-    nullable: false,
-  })
+  @Column({ type: 'varchar', length: 50, nullable: false })
   lastName!: string;
 
-  @Column({
-    type: 'varchar',
-    length: 20,
-    nullable: false,
-  })
+  @Column({ type: 'varchar', length: 20, nullable: false })
   userName!: string;
 
-  @Column({
-    type: 'varchar',
-    length: 5,
-    nullable: false,
-  })
+  @Column({ type: 'varchar', length: 5, nullable: false })
   documentType!: string;
 
-  @Column({
-    type: 'bigint',
-    nullable: false,
-    unique: true,
-  })
+  @Column({ type: 'bigint', nullable: false, unique: true })
   document!: number;
 
-  @Column({
-    type: 'varchar',
-    length: 12,
-    nullable: false,
-  })
+  @Column({ type: 'varchar', length: 12, nullable: false })
   genre!: string;
 
-  @Column({
-    type: 'int',
-    nullable: false,
-  })
+  @Column({ type: 'int', nullable: false })
   age!: number;
 
-  @Column({
-    type: 'text',
-    nullable: false,
-  })
+  @Column({ type: 'text', nullable: false })
   address!: string;
 
-  @Column({
-    type: 'bigint',
-    nullable: false,
-    unique: true,
-  })
+  @Column({ type: 'bigint', nullable: false, unique: true })
   phone!: number;
 
-  @Column({
-    type: 'varchar',
-    length: 20,
-    nullable: false,
-  })
+  @Column({ type: 'varchar', length: 20, nullable: false })
   country!: string;
 
-  @Column({
-    type: 'varchar',
-    length: 20,
-    nullable: false,
-  })
+  @Column({ type: 'varchar', length: 20, nullable: false })
   city!: string;
 
-  @Column({
-    type: 'varchar',
-    length: 50,
-    nullable: false,
-    unique: true,
-  })
+  @Column({ type: 'varchar', length: 50, nullable: false, unique: true })
   email!: string;
 
   @Exclude()
-  @Column({
-    type: 'varchar',
-    length: 100,
-    nullable: false,
-  })
+  @Column({ type: 'varchar', length: 100, nullable: false })
   password!: string;
 
-  @Column({
-    type: 'varchar',
-    length: 20,
-    nullable: false,
-  })
+  @Column({ type: 'varchar', length: 20, nullable: false })
   rol!: string;
 
-  @Column({
-    type: 'varchar',
-    length: 50,
-    nullable: false,
-  })
+  @Column({ type: 'varchar', length: 50, nullable: false })
   profilePic!: string;
 
-  @Column({
-    type: 'boolean',
-    default: false,
-  })
+  @Column({ type: 'boolean', default: false })
   isAdmin!: boolean;
 
   @Column({ type: 'boolean', default: true })
@@ -139,6 +76,12 @@ export class User {
   @OneToMany(() => Order, (order) => order.user)
   orders!: Order[];
 
-  // @OneToMany(() => Blog, (blog) => blog.user)
-  // blogs: Blog[];
+  @OneToMany(() => Blog, (blog) => blog.user)
+  blogs!: Blog[];
+
+  @OneToMany(() => Qaa, (qaa) => qaa.user)
+  qaa!: Qaa[];
+
+  @OneToMany(() => Experience, (experience) => experience.user)
+  experiences!: Experience[];
 }

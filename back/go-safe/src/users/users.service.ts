@@ -14,6 +14,7 @@ import { Repository } from 'typeorm';
 import bcrypt from 'bcrypt';
 import { LoginDto } from 'src/instructors/dto/create-user-instructor.dto';
 import { JwtService } from '@nestjs/jwt';
+import { Role } from 'src/auth/guards/roles.enum';
 
 @Injectable()
 export class UsersService {
@@ -34,6 +35,7 @@ export class UsersService {
       const newUser: User = this.usersRepository.create({
         ...user,
         password: hashedPassword,
+        role: Role.User,
       });
 
       await this.usersRepository.save(newUser);

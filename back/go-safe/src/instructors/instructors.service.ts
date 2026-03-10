@@ -10,6 +10,9 @@ import { Instructor } from './entities/instructor.entity';
 import { Repository } from 'typeorm';
 import { User } from 'src/users/entities/user.entity';
 import { CreateUserInstructorDto } from './dto/create-user-instructor.dto';
+import { CreateUserDto } from 'src/users/dto/create-user.dto';
+import { Role } from 'src/auth/guards/roles.enum';
+import bcrypt from 'bcrypt';
 
 @Injectable()
 export class InstructorsService {
@@ -21,22 +24,14 @@ export class InstructorsService {
     private usersRepository: Repository<User>,
   ) {}
 
-  async create(data: CreateUserInstructorDto) {
-    let userFound = await this.usersRepository.findOneBy({
-      email: data.user.email,
-    });
+  async createInstructor(data: CreateUserInstructorDto) {
+    await this.validateSingUpData(data.user);
 
-    if (userFound) throw new ConflictException('Email already registered');
-
-    userFound = await this.usersRepository.findOneBy({
-      userName: data.user.userName,
-    });
-
-    if (userFound) throw new ConflictException('Username already registered');
-
+    const hashedPassword = await bcrypt.hash(data.user.password, 12);
     const user = this.usersRepository.create({
       ...data.user,
-      role: 'instructor',
+      password: hashedPassword,
+      role: Role.Instructor,
     });
 
     await this.usersRepository.save(user);
@@ -46,7 +41,11 @@ export class InstructorsService {
       user,
     });
 
-    return await this.instructorRepository.save(instructor);
+    await this.instructorRepository.save(instructor);
+
+    return {
+      message: 'Instructor created successfully',
+    };
   }
 
   async findAll() {
@@ -75,24 +74,47 @@ export class InstructorsService {
     }
   }
 
-  update(id: number, updateInstructorDto: UpdateInstructorDto) {
+  update(id: string, updateInstructorDto: UpdateInstructorDto) {
     return `This action updates a #${id} instructor`;
   }
 
   async remove(id: string) {
-    const instructor = await this.instructorRepository.findOne({
-      where: { id },
-      relations: { user: true },
-    });
+    const userFound = await this.usersRepository.findOneBy({ id });
+    if (!userFound) throw new NotFoundException('User not found');
 
-    if (!instructor) {
-      throw new NotFoundException('Instructor not found');
+    try {
+      await this.usersRepository.update(id, { status: false });
+    } catch (error) {
+      throw new InternalServerErrorException(error);
     }
 
-    await this.instructorRepository.remove(instructor);
+    return { deleted: true };
+  }
 
-    await this.usersRepository.remove(instructor.user);
+  async validateSingUpData(dto: CreateUserDto) {
+    const existingUser = await this.usersRepository.findOne({
+      where: [
+        { email: dto.email },
+        { userName: dto.userName },
+        { document: dto.document },
+        { phone: dto.phone },
+      ],
+    });
 
-    return { message: 'Instructor removed successfully' };
+    if (!existingUser) return;
+
+    if (existingUser.email === dto.email) {
+      throw new ConflictException('Email already registered');
+    }
+
+    if (existingUser.userName === dto.userName)
+      throw new ConflictException('Username already taken');
+
+    if (Number(existingUser.document) === Number(dto.document)) {
+      throw new ConflictException('Document already registered');
+    }
+
+    if (Number(existingUser.phone) === Number(dto.phone))
+      throw new ConflictException('Phone already registered');
   }
 }

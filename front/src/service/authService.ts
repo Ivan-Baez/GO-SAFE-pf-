@@ -1,7 +1,7 @@
 import { ILoginProps, IRegisterProps } from "@/types/types";
 import { toastSuccess, toastError } from "@/lib/toast";
 
-const APIURL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
+const APIURL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
 
 //funcion de login
 export async function loginService(userData: ILoginProps) {

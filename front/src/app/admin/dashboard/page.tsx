@@ -6,5 +6,6 @@ export default function DashboardPage() {
     <AdminLayout>
       <AdminDashboard />
     </AdminLayout>
+    
   );
 }

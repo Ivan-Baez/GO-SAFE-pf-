@@ -46,9 +46,10 @@ export default function AdminDashboard() {
         <div className="bg-white rounded-2xl shadow p-6">
           <h2 className="text-xl font-semibold mb-4">Actiones rápidas</h2>
           <div className="flex flex-col gap-3">
-            <button className="bg-black text-white rounded-xl py-2">Administrar Experiencia</button>
-            <button className="bg-gray-800 text-white rounded-xl py-2">Administrar Usuarios</button>
-            <button className="bg-gray-700 text-white rounded-xl py-2">Administrar Instructores</button>
+            <button className="bg-gray-600 text-white rounded-xl py-2">Administrar Experiencia</button>
+            <button className="bg-gray-600 text-white rounded-xl py-2">Administrar Usuarios</button>
+            <button className="bg-gray-600 text-white rounded-xl py-2">Administrar Instructores</button>
+            <button className="bg-gray-600 text-white rounded-xl py-2">Administrar Publica</button>
           </div>
         </div>
       </div>

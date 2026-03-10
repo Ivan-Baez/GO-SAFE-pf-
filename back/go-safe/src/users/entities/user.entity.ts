@@ -76,6 +76,7 @@ export class User {
   @OneToMany(() => Order, (order) => order.user)
   orders!: Order[];
 
+<<<<<<< HEAD
   @OneToMany(() => Blog, (blog) => blog.user)
   blogs!: Blog[];
 
@@ -85,3 +86,9 @@ export class User {
   @OneToMany(() => Experience, (experience) => experience.user)
   experiences!: Experience[];
 }
+=======
+  // @OneToMany(() => Blog, (blog) => blog.user)
+  // blogs: Blog[];
+}
+>>>>>>> 1854dc192495a803152b7b658ecd58c086396301
+>>>>>>> Dev

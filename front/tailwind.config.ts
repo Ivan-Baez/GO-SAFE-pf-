@@ -23,6 +23,10 @@ const config: Config ={
                 7:"56px",
                 8:"64px",
             },
+            fontFamily: {
+                poppins: ['Poppins', 'sans-serif'],
+                manjari: ['Manjari', 'sans-serif'],
+            },
         },
     },
     plugins:[],

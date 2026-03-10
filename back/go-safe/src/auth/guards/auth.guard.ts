@@ -2,7 +2,6 @@ import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { Request } from 'express';
 import { Observable } from 'rxjs';
 import { JwtService } from '@nestjs/jwt';
-//import { Role } from '../roles.enum';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -24,12 +23,6 @@ export class AuthGuard implements CanActivate {
 
       user.iat = new Date(user.iat * 1000).toLocaleString();
       user.exp = new Date(user.exp * 1000).toLocaleString();
-
-      //   if (user.isAdmin) {
-      //     user.role = Role.Admin;
-      //   } else {
-      //     user.role = Role.User;
-      //   }
 
       request.user = user;
     } catch (error) {

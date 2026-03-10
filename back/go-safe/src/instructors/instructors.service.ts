@@ -36,7 +36,7 @@ export class InstructorsService {
 
     const user = this.usersRepository.create({
       ...data.user,
-      rol: 'instructor',
+      role: 'instructor',
     });
 
     await this.usersRepository.save(user);

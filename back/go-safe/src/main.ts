@@ -1,10 +1,20 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  const port = process.env.PORT ?? 3000; // ✅ definimos la variable
-  await app.listen(port);
-  console.log(`Escuchando en el puerto ${port}`);
+
+  const swaggerConfig = new DocumentBuilder()
+    .setTitle('Go-Safe API Documentation')
+    .setDescription('documentation of Go-safe project')
+    .setVersion('0.1')
+    .addBearerAuth()
+    .build();
+
+  const document = SwaggerModule.createDocument(app, swaggerConfig);
+  SwaggerModule.setup('docs', app, document);
+
+  await app.listen(process.env.PORT ?? 3000);
 }
 bootstrap();

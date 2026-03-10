@@ -1,5 +1,9 @@
+import HeroHome from "@/components/HeroHome";
+
 export default function HomePage() {
-    return(
-        <div></div>
-    )
+  return (
+    <section className="w-full">
+      <HeroHome/>
+    </section>
+  );
 }

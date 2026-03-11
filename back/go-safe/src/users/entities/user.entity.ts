@@ -142,3 +142,4 @@ export class User {
   // @OneToMany(() => Blog, (blog) => blog.user)
   // blogs: Blog[];
 }
+>>>>>>> 1854dc192495a803152b7b658ecd58c086396301

@@ -1,7 +1,7 @@
 import { ILoginProps, IRegisterProps } from "@/types/types";
 import { toastSuccess, toastError } from "@/lib/toast";
 
-const APIURL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
+const APIURL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
 
 //funcion de login
 export async function loginService(userData: ILoginProps) {
@@ -36,9 +36,17 @@ export async function register (userData: IRegisterProps) {
             },
             body: JSON.stringify(userData),
     }); 
-    alert("usuario registrado con exito");
+    
+    if(response.ok) {
+      const parsedResponse = await response.json();
+      toastSuccess("Usuario registrado con éxito");
+      return parsedResponse;
+    } else {
+      const errorData = await response.json();
+      throw new Error(errorData.message || "Error en la registración");
+    }
 } catch(error: any){
-        alert("fallo al registrar el usuario");
+        toastError("Fallo al registrar el usuario");
         throw new Error (error);
     }
-};
+}

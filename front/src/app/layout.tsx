@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { AuthProvider } from "@/context/AuthContext";
 import Navbar from "@/components/Navbar";
 import RegisterView from "@/ui/RegisterView";
 import { ToastContainer } from "react-toastify";

@@ -23,6 +23,15 @@ const config: Config ={
                 7:"56px",
                 8:"64px",
             },
+            colors: {
+              'brand-yellow': '#f0ba3c', // El amarillo dorado
+              'brand-dark': '#1e3c31',   // El verde oscuro del fondo ondulado
+              'brand-grey': '#e2e8f0',   // El gris de las tarjetas de los pasos
+            },
+            fontFamily: {
+                poppins: ['Poppins', 'sans-serif'],
+                manjari: ['Manjari', 'sans-serif'],
+            },
         },
     },
     plugins:[],

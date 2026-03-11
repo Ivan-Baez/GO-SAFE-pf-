@@ -8,8 +8,6 @@ export default function Navbar() {
 
   return (
     <nav className="flex items-center justify-between bg-[#e6dfd5] px-10 py-3 w-full">
-
-      {/* Logo */}
       <div
         className="cursor-pointer"
         onClick={() => router.push("/")}
@@ -41,11 +39,12 @@ export default function Navbar() {
         </button>
 
         <button
-          onClick={() => router.push("/register")}
+          onClick={() => router.push("/RegisterForBoth")}
           className="px-4 py-2 border border-black rounded hover:bg-[#b8b1a6] w-37.5"
         >
           Registrarme
         </button>
+
       </div>
     </nav>
   );

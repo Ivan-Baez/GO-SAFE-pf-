@@ -36,3 +36,41 @@ export interface IRegisterErrors{
     password?:string
 }
 
+export interface IService {
+    id:number
+    name:string
+    place:string
+    image: string
+    sport: string
+}
+
+export interface IOrder {
+    id:string
+    date: string
+    name:string
+    price:number
+    place:string
+    image: string
+}
+
+export interface IUserSession {
+    token: string;
+    user: {
+    id: number;
+    name: string;
+    email: string;
+    address: string;
+    phone: string;
+    orders:[];
+};
+} 
+
+export interface IProduct {
+id: number;
+    name: string;
+    price: number;
+    description: string;
+    image: string;
+    categoryId: number;
+    stock: number;
+}

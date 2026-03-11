@@ -67,5 +67,5 @@ export class Experience {
   orders!: Order[];
 
   @OneToMany(() => Qaa, (qaa) => qaa.experience)
-  qaa!: Qaa[];
+  qaas!: Qaa[];
 }

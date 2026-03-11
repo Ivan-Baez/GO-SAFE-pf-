@@ -11,6 +11,8 @@ import { Order } from 'src/orders/entities/order.entity';
 import { Blog } from 'src/blogs/entities/blog.entity';
 import { Qaa } from 'src/qaa/entities/qaa.entity';
 import { Experience } from 'src/experiences/entities/experience.entity';
+import { Reviews } from 'src/reviews/entities/review.entity';
+import { Image } from 'src/images/entities/image.entity';
 
 @Entity({ name: 'users' })
 export class User {
@@ -76,19 +78,18 @@ export class User {
   @OneToMany(() => Order, (order) => order.user)
   orders!: Order[];
 
-<<<<<<< HEAD
   @OneToMany(() => Blog, (blog) => blog.user)
   blogs!: Blog[];
 
   @OneToMany(() => Qaa, (qaa) => qaa.user)
-  qaa!: Qaa[];
+  qaas!: Qaa[];
 
   @OneToMany(() => Experience, (experience) => experience.user)
   experiences!: Experience[];
+
+  @OneToMany(() => Reviews, (review) => review.user)
+  reviews!: Reviews[];
+
+  @OneToMany(() => Image, (image) => image.user)
+  images!: Image[];
 }
-=======
-  // @OneToMany(() => Blog, (blog) => blog.user)
-  // blogs: Blog[];
-}
->>>>>>> 1854dc192495a803152b7b658ecd58c086396301
->>>>>>> Dev

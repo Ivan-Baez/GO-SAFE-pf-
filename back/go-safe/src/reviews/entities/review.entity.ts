@@ -1,10 +1,9 @@
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
-// import { User } from '../../users/entities/user.entity';
+import { User } from '../../users/entities/user.entity';
 import { Experience } from '../../experiences/entities/experience.entity';
+import { ApiHideProperty } from '@nestjs/swagger';
 
-@Entity({
-  name: 'reviews',
-})
+@Entity({ name: 'reviews' })
 export class Reviews {
   @PrimaryGeneratedColumn('uuid')
   id!: string;
@@ -16,9 +15,7 @@ export class Reviews {
   })
   rate!: number;
 
-  @Column({
-    type: 'text',
-  })
+  @Column({ type: 'text' })
   commentary!: string;
 
   @Column({
@@ -26,8 +23,11 @@ export class Reviews {
     default: () => 'CURRENT_TIMESTAMP',
   })
   createAt!: Date;
+
   @ManyToOne(() => Experience, (experience) => experience.reviews)
   experience!: Experience;
+
+  @ApiHideProperty()
+  @ManyToOne(() => User, (user) => user.reviews)
+  user!: User;
 }
-// @ManyToOne(() => User, (user) => user.reviews)
-//   user: User;

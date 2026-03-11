@@ -1,33 +1,26 @@
-<<<<<<< HEAD
-// src/blogs/entities/blog.entity.ts
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
-import { User } from '../../users/entities/user.entity';
-
-@Entity('blogs') // 👈 nombre explícito de la tabla
-=======
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
+import { ApiProperty, ApiHideProperty } from '@nestjs/swagger';
 import { User } from '../../users/entities/user.entity';
 
 @Entity('blogs')
->>>>>>> Dev
 export class Blog {
+  @ApiProperty({ example: 'uuid-v4', description: 'ID único del blog' })
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-<<<<<<< HEAD
-  @Column()
-=======
-  @Column('text')
->>>>>>> Dev
+  @ApiProperty({ example: 'Texto del blog', description: 'Contenido principal' })
+  @Column({ type: 'text', nullable: false, default: '' })
   text: string;
 
+  @ApiProperty({
+    example: 'https://miimagen.com/img.png',
+    description: 'Imagen asociada',
+    required: false,
+  })
   @Column({ nullable: true })
   imageUrl: string;
 
-<<<<<<< HEAD
-  @ManyToOne(() => User, user => user.blogs, { eager: true })
-=======
-  @ManyToOne(() => User, (user) => user.blogs)
->>>>>>> Dev
+  @ApiHideProperty()
+  @ManyToOne(() => User, (user) => user.blogs, { eager: true })
   user: User;
 }

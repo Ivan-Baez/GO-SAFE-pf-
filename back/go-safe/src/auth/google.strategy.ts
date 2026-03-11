@@ -5,7 +5,6 @@ import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
-
   constructor(private configService: ConfigService) {
 
     super({
@@ -15,7 +14,6 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
       scope: ['email', 'profile'],
       passReqToCallback: true,
     });
-
   }
 
   async validate(

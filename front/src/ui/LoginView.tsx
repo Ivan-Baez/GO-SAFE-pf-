@@ -5,6 +5,7 @@ import { validateFormLogin } from "@/lib/validate";
 import Link from "next/link";
 import Image from "next/image";
 import { toastError, toastSuccess } from "@/lib/toast";
+import axios from "axios";
 
 export default function LoginView() {
     const router = useRouter();
@@ -23,14 +24,29 @@ export default function LoginView() {
               // crear validate
               validate={validateFormLogin}
 
-              onSubmit={(values) => {
+            onSubmit={async (values) => {
                 console.log(values);
 
-                if (values.email === "test@test.com" && values.password === "123456") {
-                  toastSuccess("Login correcto");
-                  router.push("/");
-                } else {
-                  toastError("Credenciales incorrectas");
+                // if (values.email === "test@test.com" && values.password === "123456") {
+                //   toastSuccess("Login correcto");
+                //   router.push("/");
+                // } else {
+                //   toastError("Credenciales incorrectas");
+                // }
+                try {
+                    const body = {
+                      email: values.email,
+                      password: values.password,
+                    };
+
+                  const response = await axios.post(
+                  "http://localhost:3000/auth/signin",
+                  body
+                );
+                router.push("/");
+                console.log(response)
+                } catch (error) {
+                  alert(error);
                 }
               }}
             >

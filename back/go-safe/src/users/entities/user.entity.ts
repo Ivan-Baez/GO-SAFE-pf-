@@ -43,8 +43,8 @@ export class User {
   @Column({ type: 'varchar', length: 12, nullable: false })
   genre!: string;
 
-  @Column({ type: 'int', nullable: false })
-  age!: number;
+  @Column({ type: 'varchar', nullable: false })
+  birthdate!: number;
 
   @Column({ type: 'text', nullable: false })
   address!: string;

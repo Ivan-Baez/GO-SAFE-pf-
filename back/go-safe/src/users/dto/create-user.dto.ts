@@ -1,4 +1,4 @@
-import { ApiHideProperty } from '@nestjs/swagger';
+import { ApiHideProperty, ApiProperty } from '@nestjs/swagger';
 import {
   IsEmail,
   IsNotEmpty,
@@ -12,128 +12,151 @@ import {
 } from 'class-validator';
 
 export class CreateUserDto {
-  /**
-   * User first name
-   * @example Juan
-   */
+  @ApiProperty({
+    description: 'User first name',
+    example: 'Juan',
+    minLength: 2,
+    maxLength: 50,
+  })
   @IsNotEmpty()
   @IsString()
   @MinLength(2)
   @MaxLength(50)
   fistName!: string;
 
-  /**
-   * User last name
-   * @example Perez
-   */
+  @ApiProperty({
+    description: 'User last name',
+    example: 'Perez',
+    minLength: 2,
+    maxLength: 50,
+  })
   @IsNotEmpty()
   @IsString()
   @MinLength(2)
   @MaxLength(50)
   lastName!: string;
 
-  /**
-   * User last name
-   * @example uPerez
-   */
+  @ApiProperty({
+    description: 'Username',
+    example: 'uPerez',
+    minLength: 2,
+    maxLength: 20,
+  })
   @IsNotEmpty()
   @IsString()
   @MinLength(2)
   @MaxLength(20)
   userName!: string;
 
-  /**
-   * Document type
-   * @example CC
-   */
+  @ApiProperty({
+    description: 'Document type',
+    example: 'CC',
+    maxLength: 5,
+  })
   @IsNotEmpty()
   @IsString()
   @MaxLength(5)
   documentType!: string;
 
-  /**
-   * Document number
-   * @example 123456789
-   */
+  @ApiProperty({
+    description: 'Document number',
+    example: 123456789,
+    minimum: 1,
+    maximum: 999999999999,
+  })
   @IsNotEmpty()
   @IsNumber()
   @Min(1)
   @Max(999999999999)
   document!: number;
 
-  /**
-   * User gender
-   * @example Male
-   */
+  @ApiProperty({
+    description: 'User gender',
+    example: 'Male',
+    maxLength: 12,
+  })
   @IsNotEmpty()
   @IsString()
   @MaxLength(12)
   genre!: string;
 
-  /**
-   * User age
-   * @example 25
-   */
+  @ApiProperty({
+    description: 'User age',
+    example: 25,
+    minimum: 1,
+    maximum: 120,
+  })
   @IsNotEmpty()
   @IsNumber()
   @Min(1)
   @Max(120)
   age!: number;
 
-  /**
-   * Address
-   * @example Calle 123 #45-67
-   */
+  @ApiProperty({
+    description: 'Address',
+    example: 'Calle 123 #45-67',
+    minLength: 5,
+  })
   @IsNotEmpty()
   @IsString()
   @MinLength(5)
   address!: string;
 
-  /**
-   * Phone number
-   * @example 3001234567
-   */
+  @ApiProperty({
+    description: 'Phone number',
+    example: 3001234567,
+    minimum: 1000,
+    maximum: 999999999999,
+  })
   @IsNotEmpty()
   @IsNumber()
   @Min(1000)
   @Max(999999999999)
   phone!: number;
 
-  /**
-   * Country
-   * @example Colombia
-   */
+  @ApiProperty({
+    description: 'Country',
+    example: 'Colombia',
+    minLength: 3,
+    maxLength: 20,
+  })
   @IsNotEmpty()
   @IsString()
   @MinLength(3)
   @MaxLength(20)
   country!: string;
 
-  /**
-   * City
-   * @example Bogota
-   */
+  @ApiProperty({
+    description: 'City',
+    example: 'Bogota',
+    minLength: 3,
+    maxLength: 20,
+  })
   @IsNotEmpty()
   @IsString()
   @MinLength(3)
   @MaxLength(20)
   city!: string;
 
-  /**
-   * Email
-   * @example user@email.com
-   */
+  @ApiProperty({
+    description: 'Email with structure that includes @ and .(domain)',
+    example: 'admin@admin.com',
+    maxLength: 50,
+    format: 'email',
+  })
   @IsNotEmpty()
   @IsEmail()
   @IsString()
   @MaxLength(50)
   email!: string;
 
-  /**
-   * Password
-   * Must contain uppercase, lowercase, number and special character
-   * @example 15January!!
-   */
+  @ApiProperty({
+    description:
+      'Password. Must contain uppercase, lowercase, number and special character',
+    example: '15January!!',
+    minLength: 8,
+    maxLength: 50,
+  })
   @IsNotEmpty()
   @IsString()
   @MinLength(8)
@@ -144,32 +167,31 @@ export class CreateUserDto {
   })
   password!: string;
 
-  /**
-   * Confirm password
-   */
+  @ApiProperty({
+    description: 'Confirm password',
+    example: '15January!!',
+  })
   @IsNotEmpty()
   @IsString()
   confirmPassword!: string;
 
-  /**
-   * User role
-   * @example user
-   */
+  @ApiProperty({
+    description: 'User role',
+    example: 'user',
+    maxLength: 20,
+  })
   @IsNotEmpty()
   @IsString()
   @MaxLength(20)
-  rol!: string;
+  role!: string;
 
-  /**
-   * Profile picture
-   * @example https://example.com/avatar.jpg
-   */
+  @ApiProperty({
+    description: 'Profile picture URL',
+    example: 'https://example.com/avatar.jpg',
+  })
   @IsNotEmpty()
   @IsString()
   profilePic!: string;
-
-  @ApiHideProperty()
-  isAdmin?: boolean;
 
   @ApiHideProperty()
   status?: boolean;

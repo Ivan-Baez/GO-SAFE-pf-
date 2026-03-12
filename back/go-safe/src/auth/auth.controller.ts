@@ -1,12 +1,22 @@
-import { Controller, Post, Body, Req, UseGuards, Get } from '@nestjs/common';
-import { LoginDto } from 'src/instructors/dto/create-user-instructor.dto';
+import { Controller, Post, Body } from '@nestjs/common';
+import { ApiBody } from '@nestjs/swagger';
+import {
+  CreateUserInstructorDto,
+  LoginDto,
+} from 'src/instructors/dto/create-user-instructor.dto';
 import { CreateUserDto } from 'src/users/dto/create-user.dto';
 import { UsersService } from 'src/users/users.service';
 //import { AuthGuard } from '@nestjs/passport';
+import { InstructorsService } from '../instructors/instructors.service';
+import { Instructor } from '../instructors/entities/instructor.entity';
+import { Role } from './guards/roles.enum';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private userService: UsersService) {}
+  constructor(
+    private readonly userService: UsersService,
+    private readonly instructorsService: InstructorsService,
+  ) {}
 
   // @Get('google')
   // @UseGuards(AuthGuard('google'))
@@ -22,12 +32,89 @@ export class AuthController {
   // }
 
   //@UseInterceptors(ClassSerializerInterceptor)
-  @Post('signup')
+  @Post('signup-user')
+  @ApiBody({
+    type: CreateUserDto,
+    description: 'Create a new user',
+    examples: {
+      example1: {
+        summary: 'User example',
+        value: {
+          fistName: 'Juan',
+          lastName: 'Perez',
+          userName: 'uPerez',
+          documentType: 'CC',
+          document: 123456789,
+          genre: 'Male',
+          age: 25,
+          address: 'Calle 123 #45-67',
+          phone: 3001234567,
+          country: 'Colombia',
+          city: 'Bogota',
+          email: 'admin@admin.com',
+          password: '15January!!',
+          confirmPassword: '15January!!',
+          role: Role.User,
+          profilePic: 'https://example.com/avatar.jpg',
+        },
+      },
+    },
+  })
   createUser(@Body() body: CreateUserDto) {
     return this.userService.createUser(body);
   }
 
+  @Post('signup-instructor')
+  @ApiBody({
+    type: CreateUserDto,
+    description: 'Create a new user',
+    examples: {
+      example1: {
+        summary: 'User example',
+        value: {
+          user: {
+            fistName: 'Carlos',
+            lastName: 'Ramirez',
+            documentType: 'CC',
+            userName: 'gazas',
+            document: 987654321,
+            genre: 'Male',
+            age: 32,
+            address: 'Calle 45 #23-10',
+            phone: 3011234567,
+            country: 'Colombia',
+            city: 'Bogota',
+            email: 'carlos@example.com',
+            password: 'StrongPass123!',
+            profilePic: 'https://example.com/profile.jpg',
+          },
+          instructor: {
+            about:
+              'Professional climbing instructor with 10 years of experience',
+            certifications: 'IFSC certified climbing instructor',
+          },
+        },
+      },
+    },
+  })
+  createInstructor(@Body() body: CreateUserInstructorDto) {
+    return this.instructorsService.createInstructor(body);
+  }
+
   @Post('signin')
+  @ApiBody({
+    type: CreateUserDto,
+    description: 'Login a user',
+    examples: {
+      example2: {
+        summary: 'User example',
+        value: {
+          email: 'admin@admin.com',
+          password: '15January!!',
+        },
+      },
+    },
+  })
   loginUser(@Body() credentials: LoginDto) {
     return this.userService.loginUser(credentials);
   }

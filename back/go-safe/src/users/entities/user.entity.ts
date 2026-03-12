@@ -26,7 +26,12 @@ export class User {
   @Column({ type: 'varchar', length: 50, nullable: false })
   lastName!: string;
 
-  @Column({ type: 'varchar', length: 20, nullable: false })
+  @Column({
+    type: 'varchar',
+    length: 20,
+    nullable: false,
+    unique: true,
+  })
   userName!: string;
 
   @Column({ type: 'varchar', length: 5, nullable: false })
@@ -60,14 +65,15 @@ export class User {
   @Column({ type: 'varchar', length: 100, nullable: false })
   password!: string;
 
-  @Column({ type: 'varchar', length: 20, nullable: false })
-  rol!: string;
+  @Column({
+    type: 'varchar',
+    length: 20,
+    nullable: false,
+  })
+  role!: string;
 
   @Column({ type: 'varchar', length: 50, nullable: false })
   profilePic!: string;
-
-  @Column({ type: 'boolean', default: false })
-  isAdmin!: boolean;
 
   @Column({ type: 'boolean', default: true })
   status!: boolean;

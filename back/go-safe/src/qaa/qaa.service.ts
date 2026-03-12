@@ -1,26 +1,37 @@
+// src/qaa/qaa.service.ts
 import { Injectable } from '@nestjs/common';
-import { CreateQaaDto } from './dto/CreateQaaDto';
-import { UpdateQaaDto } from './dto/UpdateQaaDto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Qaa } from './entities/qaa.entity';
+import { CreateQaaDto } from './dto/create-qaa.dto';
+import { UpdateQaaDto } from './dto/update-qaa.dto';
 
 @Injectable()
 export class QaaService {
-  create(createQaaDto: CreateQaaDto) {
-    return 'This action adds a new qaa';
+  constructor(
+    @InjectRepository(Qaa)
+    private readonly qaaRepository: Repository<Qaa>,
+  ) {}
+
+  async create(createQaaDto: CreateQaaDto): Promise<Qaa> {
+    const qaa = this.qaaRepository.create(createQaaDto);
+    return this.qaaRepository.save(qaa);
   }
 
-  findAll() {
-    return `This action returns all qaa`;
+  async findAll(): Promise<Qaa[]> {
+    return this.qaaRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} qaa`;
+  async findOne(id: string): Promise<Qaa | null> {
+    return this.qaaRepository.findOne({ where: { id } });
   }
 
-  update(id: number, updateQaaDto: UpdateQaaDto) {
-    return `This action updates a #${id} qaa`;
+  async update(id: string, updateQaaDto: UpdateQaaDto): Promise<Qaa | null> {
+    await this.qaaRepository.update(id, updateQaaDto);
+    return this.findOne(id);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} qaa`;
+  async remove(id: string): Promise<void> {
+    await this.qaaRepository.delete(id);
   }
 }

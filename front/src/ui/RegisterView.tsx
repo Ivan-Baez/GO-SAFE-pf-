@@ -2,6 +2,7 @@
 import { useRouter } from "next/navigation";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { ValidateFormRegister } from "@/lib/validate";
+import axios from "axios";
 
 
 // ── Inline styles as constants for readability ──────────────────────────────
@@ -175,11 +176,36 @@ function RegisterView() {
             validate={ValidateFormRegister}
             onSubmit={async (values) => {
               try {
-                // await register(values);
-                alert("Registro exitoso! Redirigiendo al login");
+
+                const body = {
+                  fistName: values.primernombre,
+                  lastName: values.segundonombre,
+                  userName: values.username,
+                  documentType: values.documentType,
+                  document: Number(values.document),
+                  genre: values.genre,
+                  birthdate: values.birthdate,
+                  address: values.address,
+                  phone: Number(values.phone),
+                  country: values.country,
+                  city: values.city,
+                  email: values.mail,
+                  password: values.password,
+                  confirmPassword: values.confirmPassword,
+                  role: "user",
+                  profilePic: ""
+                };
+                
+                const response = await axios.post(
+                  "http://localhost:3000/auth/signup-user",
+                  body
+                );
+
                 router.push("/");
-              } catch {
-                alert("Error al registrarse, intente nuevamente");
+
+              } catch (error) {
+                console.error("Error:", error);
+                alert("Error al registrar usuario");
               }
             }}
           >

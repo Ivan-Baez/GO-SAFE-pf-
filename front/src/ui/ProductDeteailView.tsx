@@ -1,3 +1,4 @@
+"use client"
 import { useAuth } from '@/context/AuthContext';
 import { IProduct } from '@/types/types'
 import { useRouter } from 'next/navigation'

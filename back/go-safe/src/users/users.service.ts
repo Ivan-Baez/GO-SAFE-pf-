@@ -14,6 +14,7 @@ import { Repository } from 'typeorm';
 import bcrypt from 'bcrypt';
 import { LoginDto } from 'src/instructors/dto/create-user-instructor.dto';
 import { JwtService } from '@nestjs/jwt';
+import { Role } from 'src/auth/guards/roles.enum';
 
 @Injectable()
 export class UsersService {
@@ -23,17 +24,7 @@ export class UsersService {
   ) {}
 
   async createUser(user: CreateUserDto) {
-    let userFound = await this.usersRepository.findOneBy({
-      email: user.email,
-    });
-
-    if (userFound) throw new ConflictException('Email already registered');
-
-    userFound = await this.usersRepository.findOneBy({
-      userName: user.userName,
-    });
-
-    if (userFound) throw new ConflictException('Username already registered');
+    await this.validateSingUpData(user);
 
     if (user.password !== user.confirmPassword)
       throw new BadRequestException('Passwords do not match');
@@ -44,10 +35,13 @@ export class UsersService {
       const newUser: User = this.usersRepository.create({
         ...user,
         password: hashedPassword,
+        role: Role.User,
       });
 
       await this.usersRepository.save(newUser);
-      return newUser;
+      return {
+        message: 'User created successfully',
+      };
     } catch (error) {
       throw new InternalServerErrorException(error);
     }
@@ -58,7 +52,9 @@ export class UsersService {
       email: credentials.email,
     });
 
-    if (!userFound) throw new NotFoundException('User email not found');
+    if (!userFound)
+      throw new UnauthorizedException('Email or password incorrect!');
+
     try {
       const match = await bcrypt.compare(
         credentials.password,
@@ -71,13 +67,14 @@ export class UsersService {
       const payload = {
         id: userFound.id,
         email: userFound.email,
-        isAdmin: userFound.isAdmin,
+        role: userFound.role,
       };
 
       const token = this.jwtService.sign(payload);
       return {
         login: true,
         access_token: token,
+        role: userFound.role,
       };
     } catch (error) {
       throw new InternalServerErrorException(error);
@@ -134,9 +131,40 @@ export class UsersService {
   async remove(id: string) {
     const userFound = await this.usersRepository.findOneBy({ id });
     if (!userFound) throw new NotFoundException('User not found');
-    console.log('delete');
-    await this.usersRepository.delete(id);
+
+    try {
+      await this.usersRepository.update(id, { status: false });
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
 
     return { deleted: true };
+  }
+
+  async validateSingUpData(dto: CreateUserDto) {
+    const existingUser = await this.usersRepository.findOne({
+      where: [
+        { email: dto.email },
+        { userName: dto.userName },
+        { document: dto.document },
+        { phone: dto.phone },
+      ],
+    });
+
+    if (!existingUser) return;
+
+    if (existingUser.email === dto.email) {
+      throw new ConflictException('Email already registered');
+    }
+
+    if (existingUser.userName === dto.userName)
+      throw new ConflictException('Username already taken');
+
+    if (Number(existingUser.document) === Number(dto.document)) {
+      throw new ConflictException('Document already registered');
+    }
+
+    if (Number(existingUser.phone) === Number(dto.phone))
+      throw new ConflictException('Phone already registered');
   }
 }

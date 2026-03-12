@@ -1,7 +1,6 @@
 import {
   Column,
   Entity,
-  ManyToMany,
   OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
@@ -37,6 +36,7 @@ export class User {
     type: 'varchar',
     length: 20,
     nullable: false,
+    unique: true,
   })
   userName!: string;
 
@@ -115,7 +115,7 @@ export class User {
     length: 20,
     nullable: false,
   })
-  rol!: string;
+  role!: string;
 
   @Column({
     type: 'varchar',
@@ -123,12 +123,6 @@ export class User {
     nullable: false,
   })
   profilePic!: string;
-
-  @Column({
-    type: 'boolean',
-    default: false,
-  })
-  isAdmin!: boolean;
 
   @Column({ type: 'boolean', default: true })
   status!: boolean;
@@ -142,3 +136,4 @@ export class User {
   // @OneToMany(() => Blog, (blog) => blog.user)
   // blogs: Blog[];
 }
+>>>>>>> 1854dc192495a803152b7b658ecd58c086396301

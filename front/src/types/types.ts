@@ -9,17 +9,20 @@ export interface ILoginErrors {
 }
 
 export interface  IRegisterProps {
-    name:string
+    primernombre:string
+    segundonombre:string
+    username:string
     documentType:string
     document:string
     genre:string
-    age: number
+    birthdate: string
     address:string
     phone:string
     country:string
     city:string
     mail:string
     password:string
+    confirmPassword: string
 }
 
 export interface IRegisterErrors{ 
@@ -27,13 +30,14 @@ export interface IRegisterErrors{
     documentType?:string
     document?:string
     genre?:string
-    age?: string
+    birthdate?: string
     address?:string
     phone?:string
     country?:string
     city?:string
     mail?:string
     password?:string
+    confirmPassword?: string
 }
 
 export interface IService {

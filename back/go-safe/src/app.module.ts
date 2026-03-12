@@ -13,6 +13,8 @@ import { ReviewsModule } from './reviews/reviews.module';
 import { ImagesModule } from './images/images.module';
 import { FileUploadModule } from './file-upload/file-upload.module';
 import { JwtModule } from '@nestjs/jwt';
+import { QaaModule } from './qaa/qaa.module';
+import { BlogsModule } from './blogs/blogs.module';
 
 @Module({
   imports: [
@@ -38,6 +40,8 @@ import { JwtModule } from '@nestjs/jwt';
     ReviewsModule,
     ImagesModule,
     FileUploadModule,
+    QaaModule,
+    BlogsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -5,6 +5,7 @@ import Navbar from "@/components/Navbar";
 import RegisterView from "@/ui/RegisterView";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Footer from "@/components/Footer";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -34,6 +35,7 @@ export default function RootLayout({
       <Navbar/>
       <ToastContainer />
       {children}
+      
       </body>
     </html>
   );

@@ -1,10 +1,7 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
-// import { Experience } from '../../experiences/entities/experience.entity';
-// import { Blog } from '../../blogs/entities/blog.entity';
+import { Column, Entity, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
+import { User } from '../../users/entities/user.entity';
 
-@Entity({
-  name: 'images',
-})
+@Entity({ name: 'images' })
 export class Image {
   @PrimaryGeneratedColumn('uuid')
   id: string;
@@ -17,14 +14,7 @@ export class Image {
     default: 'No image',
   })
   url: string;
-}
-//   @ManyToOne(() => Experience, (experience) => experience.images, {
-//     onDelete: 'CASCADE',
-//   })
-//   experience: Experience;
 
-//   @ManyToOne(() => Blog, (blog) => blog.images, {
-//     nullable: true,
-//     onDelete: 'CASCADE',
-//   })
-//   blog: Blog;
+  @ManyToOne(() => User, (user) => user.images, { onDelete: 'CASCADE' })
+  user!: User;
+}

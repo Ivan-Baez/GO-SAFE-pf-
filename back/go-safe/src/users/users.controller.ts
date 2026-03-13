@@ -32,13 +32,6 @@ export class UsersController {
     return this.usersService.findAll();
   }
 
-  @Get('test')
-  testConnection() {
-    return {
-      message: 'Backend connection successful',
-      status: 'ok',
-    };
-  }
   @ApiBearerAuth()
   @Roles(Role.User)
   @Roles(Role.Admin)

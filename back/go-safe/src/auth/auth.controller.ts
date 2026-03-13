@@ -84,8 +84,8 @@ export class AuthController {
             phone: 3011234567,
             country: 'Colombia',
             city: 'Bogota',
-            email: 'carlos@example.com',
-            password: 'StrongPass123!',
+            email: 'admin@admin.com',
+            password: '15January!!',
             profilePic: 'https://example.com/profile.jpg',
           },
           instructor: {

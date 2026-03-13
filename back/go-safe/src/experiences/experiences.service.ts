@@ -8,20 +8,40 @@ import { UpdateExperienceDto } from './dto/update-experience.dto';
 import { Experience } from './entities/experience.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Instructor } from 'src/instructors/entities/instructor.entity';
+import { BuyExperienceDto } from './dto/buy-experience.dto';
+import { User } from 'src/users/entities/user.entity';
 
 @Injectable()
 export class ExperiencesService {
   constructor(
     @InjectRepository(Experience)
     private experiencesRepository: Repository<Experience>,
+    @InjectRepository(Instructor)
+    private instructorRepository: Repository<Instructor>,
+    @InjectRepository(User)
+    private usersRepository: Repository<User>,
   ) {}
 
   async create(createExperienceDto: CreateExperienceDto) {
+    const instructorFound = await this.instructorRepository.findOne({
+      where: { id: createExperienceDto.instructorId },
+    });
+
+    if (!instructorFound) {
+      throw new NotFoundException('Instructor not found');
+    }
     try {
-      const newExperience: Experience =
-        this.experiencesRepository.create(createExperienceDto);
+      console.log(createExperienceDto);
+      const newExperience: Experience = this.experiencesRepository.create({
+        ...createExperienceDto,
+        instructor: instructorFound,
+      });
+
       await this.experiencesRepository.save(newExperience);
-      return newExperience;
+      return {
+        message: 'Experience created successfully',
+      };
     } catch (error) {
       throw new InternalServerErrorException(error);
     }
@@ -68,5 +88,44 @@ export class ExperiencesService {
     await this.experiencesRepository.delete(id);
 
     return { deleted: true };
+  }
+
+  async buyExperience(dto: BuyExperienceDto) {
+    const user = await this.usersRepository.findOneBy({ id: dto.userId });
+    if (!user) throw new NotFoundException('User not found');
+
+    const experience = await this.experiencesRepository.findOneBy({
+      id: dto.experienceId,
+    });
+    if (!experience) throw new NotFoundException('Experience not found');
+
+    await this.usersRepository
+      .createQueryBuilder()
+      .relation(User, 'experiences')
+      .of(dto.userId)
+      .add(dto.experienceId);
+
+    return { message: 'Experience purchased successfully' };
+  }
+
+  async getExperiencesByInstructor(instructorId: string) {
+    const experiences = await this.experiencesRepository.find({
+      where: {
+        instructor: {
+          id: instructorId,
+        },
+      },
+      relations: ['instructor'],
+    });
+
+    return experiences;
+  }
+
+  async getExperiencesByUser(userId: string) {
+    return await this.experiencesRepository
+      .createQueryBuilder('experience')
+      .innerJoin('experience.users', 'user')
+      .where('user.id = :userId', { userId })
+      .getMany();
   }
 }

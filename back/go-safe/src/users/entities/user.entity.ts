@@ -1,6 +1,8 @@
 import {
   Column,
   Entity,
+  JoinTable,
+  ManyToMany,
   OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
@@ -44,7 +46,7 @@ export class User {
   genre!: string;
 
   @Column({ type: 'varchar', nullable: false })
-  birthdate!: number;
+  birthdate!: Date;
 
   @Column({ type: 'text', nullable: false })
   address!: string;
@@ -90,7 +92,8 @@ export class User {
   @OneToMany(() => Qaa, (qaa) => qaa.user)
   qaas!: Qaa[];
 
-  @OneToMany(() => Experience, (experience) => experience.user)
+  @ManyToMany(() => Experience, (experience) => experience.users)
+  @JoinTable()
   experiences!: Experience[];
 
   @OneToMany(() => Reviews, (review) => review.user)

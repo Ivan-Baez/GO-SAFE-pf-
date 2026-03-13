@@ -121,4 +121,13 @@ export class CreateExperienceDto {
   @IsString()
   @MaxLength(50)
   duration!: string;
+
+  /**
+   * Duration of the experience
+   * @example 4 hours
+   */
+  @IsNotEmpty()
+  @IsString()
+  @MaxLength(50)
+  instructorId!: string;
 }

@@ -1,6 +1,7 @@
 import {
   Column,
   Entity,
+  ManyToMany,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
@@ -57,8 +58,8 @@ export class Experience {
   @ManyToOne(() => Instructor, (instructor) => instructor.experiences)
   instructor!: Instructor;
 
-  @ManyToOne(() => User, (user) => user.experiences, { eager: true })
-  user!: User;
+  @ManyToMany(() => User, (user) => user.experiences)
+  users!: User[];
 
   @OneToMany(() => Reviews, (review) => review.experience)
   reviews!: Reviews[];

@@ -6,6 +6,7 @@ import RegisterView from "@/ui/RegisterView";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Footer from "@/components/Footer";
+import { AuthProvider } from "@/context/AuthContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -32,10 +33,12 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased flex h-screen items-center flex-col`}
       >
-      <Navbar/>
-      <ToastContainer />
-      {children}
-      
+        <Navbar />
+        <ToastContainer />
+        <AuthProvider>
+          {children}
+        </AuthProvider>
+
       </body>
     </html>
   );

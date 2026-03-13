@@ -10,7 +10,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
-import { Repository } from 'typeorm';
+import { DeepPartial, Repository } from 'typeorm';
 import bcrypt from 'bcrypt';
 import { LoginDto } from 'src/instructors/dto/create-user-instructor.dto';
 import { JwtService } from '@nestjs/jwt';
@@ -21,7 +21,7 @@ export class UsersService {
   constructor(
     @InjectRepository(User) private usersRepository: Repository<User>,
     private jwtService: JwtService,
-  ) {}
+  ) { }
 
   async createUser(user: CreateUserDto) {
     await this.validateSingUpData(user);
@@ -166,5 +166,46 @@ export class UsersService {
 
     if (Number(existingUser.phone) === Number(dto.phone))
       throw new ConflictException('Phone already registered');
+  }
+
+  async googleLogin(googleUser: any) {
+    const { email, firstName, lastName, picture } = googleUser;
+
+    let user = await this.usersRepository.findOne({
+      where: { email }
+    });
+
+    if (!user) {
+
+      const newUser: DeepPartial<User> = {
+        email: email,
+        fistName: firstName || "Google",
+        lastName: lastName || "User",
+        userName: email.split("@")[0],
+        documentType: "N/A",
+        document: 0,
+        genre: "N/A",
+        birthdate: Date.now(),
+        address: "N/A",
+        phone: 0,
+        country: "N/A",
+        city: "N/A",
+        password: "GOOGLE_AUTH",
+        role: "User",
+        profilePic: picture,
+        status: true
+      };
+
+      user = this.usersRepository.create(newUser);
+      await this.usersRepository.save(user);
+    }
+
+    const payload = {
+      id: user.id,
+      email: user.email,
+      role: user.role
+    };
+
+    return this.jwtService.sign(payload);
   }
 }

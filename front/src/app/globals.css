@@ -1,4 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Manjari:wght@100;400;700&display=swap');
 
-@import "tailwindcss";  
+@import "tailwindcss";
+
+@layer components {
+  .inputStyles {
+    @apply w-full bg-[#f8f8f8] border border-gray-300 rounded-full py-3 px-6 text-gray-600 italic transition-all mb-1;
+    @apply focus:outline-none focus:ring-2 focus:ring-[#f0ba3c] focus:border-transparent;
+  }
+}

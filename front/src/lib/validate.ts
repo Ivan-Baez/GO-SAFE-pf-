@@ -47,3 +47,9 @@ export const ValidateFormRegister = (values:IRegisterProps) =>{
     return errors;
 }
 
+export const validateRegisterStep1 = (values: any) => {
+  const errors: any = {};
+  // Lo dejamos vacío por ahora para que el botón siempre esté habilitado
+  // y nos deje probar la navegación entre pasos.
+  return errors;
+};

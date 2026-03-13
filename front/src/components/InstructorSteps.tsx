@@ -1,6 +1,11 @@
+"use client";
+
 import Image from 'next/image'; 
+import { useRouter } from "next/navigation";
 
 export default function InstructorSteps() {
+  const router = useRouter();
+
   return (
     <section className="relative w-full min-h-screen grid grid-cols-1 lg:grid-cols-2 bg-white overflow-hidden">
       
@@ -53,7 +58,7 @@ export default function InstructorSteps() {
         </div>
 
         {/* Botón */}
-        <button className="bg-[#F2C94C] hover:bg-[#e5bc3a] text-gray-800 font-bold py-4 px-8 rounded-xl w-fit transition-all shadow-lg text-sm">
+        <button  onClick={() => router.push("/register/instructor")} className="bg-[#F2C94C] hover:bg-[#e5bc3a] text-gray-800 font-bold py-4 px-8 rounded-xl w-fit transition-all shadow-lg text-sm">
           Registrarme como instructor
         </button>
       </div>

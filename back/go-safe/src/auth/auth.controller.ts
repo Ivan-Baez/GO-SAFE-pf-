@@ -1,4 +1,12 @@
-import { Controller, Post, Body } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  Get,
+  Req,
+  UseGuards,
+  Res,
+} from '@nestjs/common';
 import { ApiBody } from '@nestjs/swagger';
 import {
   CreateUserInstructorDto,
@@ -6,7 +14,7 @@ import {
 } from 'src/instructors/dto/create-user-instructor.dto';
 import { CreateUserDto } from 'src/users/dto/create-user.dto';
 import { UsersService } from 'src/users/users.service';
-//import { AuthGuard } from '@nestjs/passport';
+import { AuthGuard } from '@nestjs/passport';
 import { InstructorsService } from '../instructors/instructors.service';
 import { Instructor } from '../instructors/entities/instructor.entity';
 import { Role } from './guards/roles.enum';
@@ -16,20 +24,21 @@ export class AuthController {
   constructor(
     private readonly userService: UsersService,
     private readonly instructorsService: InstructorsService,
-  ) {}
+  ) { }
 
-  // @Get('google')
-  // @UseGuards(AuthGuard('google'))
-  // async googleAuth() {}
+  @Get('google')
+  @UseGuards(AuthGuard('google'))
+  async googleAuth() {}
 
-  // @Get('google/callback')
-  // @UseGuards(AuthGuard('google'))
-  // googleAuthRedirect(@Req() req) {
-  //   return {
-  //     message: 'Usuario autenticado con Google',
-  //     user: req.user,
-  //   };
-  // }
+  @Get('google/callback')
+  @UseGuards(AuthGuard('google'))
+  async googleAuthRedirect(@Req() req, @Res() res) {
+    const googleUser = req.user;
+
+    const token = await this.userService.googleLogin(googleUser);
+
+    return res.redirect(`http://localhost:3001/google-success?token=${token}`);
+  }
 
   //@UseInterceptors(ClassSerializerInterceptor)
   @Post('signup-user')
@@ -46,7 +55,7 @@ export class AuthController {
           documentType: 'CC',
           document: 123456789,
           genre: 'Male',
-          age: 25,
+          birthdate: '13/05/1994',
           address: 'Calle 123 #45-67',
           phone: 3001234567,
           country: 'Colombia',
@@ -79,13 +88,13 @@ export class AuthController {
             userName: 'gazas',
             document: 987654321,
             genre: 'Male',
-            age: 32,
+            birthdate: '13/05/1994',
             address: 'Calle 45 #23-10',
             phone: 3011234567,
             country: 'Colombia',
             city: 'Bogota',
-            email: 'carlos@example.com',
-            password: 'StrongPass123!',
+            email: 'admin@admin.com',
+            password: '15January!!',
             profilePic: 'https://example.com/profile.jpg',
           },
           instructor: {

@@ -1,9 +1,12 @@
 "use client";
 import { Formik, Form, Field, ErrorMessage } from "formik";
+import { validateEducationStep } from "@/lib/validate";
+import { IInstructorRegisterProps } from "@/types/types";
 
 interface StepProps {
   next: () => void;
   prev: () => void;
+  values: IInstructorRegisterProps;     
 }
 
 export default function EducationStep({ next, prev }: StepProps) {
@@ -17,6 +20,7 @@ export default function EducationStep({ next, prev }: StepProps) {
 
       <Formik
         initialValues={{
+          noEducation: false,
           titulo: "",
           institucion: "",
           nivel: "",
@@ -24,6 +28,7 @@ export default function EducationStep({ next, prev }: StepProps) {
           añoFin: "",
           actualidad: false,
         }}
+        validate={validateEducationStep}
         onSubmit={(values) => {
           console.log("Datos Educación:", values);
           next();
@@ -32,6 +37,22 @@ export default function EducationStep({ next, prev }: StepProps) {
         {({ values }) => (
           <Form className="w-full space-y-4 z-10">
             
+            {/* Checkbox - Siempre visible */}
+            <div className="flex items-center space-x-3 py-4">
+            <Field 
+              type="checkbox" 
+              name="noEducation" 
+              id="noEducation" 
+              className="w-6 h-6 rounded border-gray-300 text-[#f0ba3c] focus:ring-[#f0ba3c] cursor-pointer"
+            />
+            <label htmlFor="noEducation" className="text-gray-700 italic text-sm">
+              No cuento con estudios para sumar en este momento.
+            </label>
+            </div>
+
+            {/* Sección condicional: Se oculta o se pone opaca si marca el checkbox */}
+            {!values.noEducation && (
+              <div className="space-y-4 transition-all duration-300">
             {/* Título o Carrera */}
             <div>
               <label className="block font-bold text-[#1e3c31] mb-2">Título / Carrera</label>
@@ -40,6 +61,7 @@ export default function EducationStep({ next, prev }: StepProps) {
                 placeholder="Ej: Lic. en Deporte" 
                 className="inputStyles w-full"
               />
+              <ErrorMessage name="titulo" component="p" className="text-xs text-red-500 mt-1" />
             </div>
 
             {/* Institución */}
@@ -50,6 +72,7 @@ export default function EducationStep({ next, prev }: StepProps) {
                 placeholder="Nombre de la universidad o escuela" 
                 className="inputStyles w-full"
               />
+              <ErrorMessage name="institucion" component="p" className="text-xs text-red-500 mt-1" />
             </div>
 
             {/* Nivel de estudios */}
@@ -62,6 +85,7 @@ export default function EducationStep({ next, prev }: StepProps) {
                 <option value="curso">Curso / Certificación</option>
                 <option value="secundario">Secundario</option>
               </Field>
+              <ErrorMessage name="nivel" component="p" className="text-xs text-red-500 mt-1" />
             </div>
 
             {/* Años */}
@@ -69,6 +93,7 @@ export default function EducationStep({ next, prev }: StepProps) {
               <div className="w-1/2">
                 <label className="block font-bold text-[#1e3c31] mb-2 text-sm">Año Inicio</label>
                 <Field name="añoInicio" type="number" placeholder="2020" className="inputStyles w-full" />
+                <ErrorMessage name="añoInicio" component="p" className="text-xs text-red-500 mt-1" />
               </div>
               <div className="w-1/2">
                 <label className="block font-bold text-[#1e3c31] mb-2 text-sm">Año Fin</label>
@@ -78,6 +103,7 @@ export default function EducationStep({ next, prev }: StepProps) {
                   placeholder="2024" 
                   className={`inputStyles w-full ${values.actualidad ? 'opacity-30 pointer-events-none' : ''}`}
                 />
+                <ErrorMessage name="añoFin" component="p" className="text-xs text-red-500 mt-1" />
               </div>
             </div>
 
@@ -91,6 +117,8 @@ export default function EducationStep({ next, prev }: StepProps) {
               />
               <label htmlFor="actualidad" className="text-gray-600 text-sm">Actualmente estudiando</label>
             </div>
+            </div>
+            )}
 
             {/* Contenedor de botones */}
             <div className="flex items-center justify-between gap-4 pt-6">

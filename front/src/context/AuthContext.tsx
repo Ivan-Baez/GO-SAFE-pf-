@@ -26,20 +26,24 @@ export const AuthProvider:React.FC<AuthProviderProps>= ({children}) => {
     const [userData, setUserData] = useState<IUserSession| null>(null);
 
 useEffect(() => {
+
+    console.log("AuthContext userData:", userData);
+
     if(userData) {
-        const sessionData = JSON.stringify({token: userData.token, user: userData.user});
-        // Guardar en localStorage (opcional)
+
+        const sessionData = JSON.stringify({
+            token: userData.token,
+            user: userData.user
+        });
+
         localStorage.setItem('userSession', sessionData);
-        
-        // Guardar en cookie con opciones de seguridad
+
         Cookies.set("usersSession", sessionData, {
-            expires: 7, // 7 días
+            expires: 7,
             path: "/",
-            // En producción descomentar:
-            // secure: true,  // Solo HTTPS
-            // sameSite: "Strict"
         });
     }
+
 }, [userData])
 
 useEffect(() => {

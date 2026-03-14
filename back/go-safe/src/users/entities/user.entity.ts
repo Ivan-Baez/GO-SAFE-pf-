@@ -74,7 +74,7 @@ export class User {
   })
   role!: string;
 
-  @Column({ type: 'varchar', length: 50, nullable: false })
+  @Column({ type: 'text', nullable: false })
   profilePic!: string;
 
   @Column({ type: 'boolean', default: true })

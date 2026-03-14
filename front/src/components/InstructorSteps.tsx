@@ -1,4 +1,5 @@
 import Image from 'next/image'; 
+import Link from 'next/link';
 
 export default function InstructorSteps() {
   return (
@@ -53,9 +54,9 @@ export default function InstructorSteps() {
         </div>
 
         {/* Botón */}
-        <button className="bg-[#F2C94C] hover:bg-[#e5bc3a] text-gray-800 font-bold py-4 px-8 rounded-xl w-fit transition-all shadow-lg text-sm">
+        <Link href="/register" className="bg-[#F2C94C] hover:bg-[#e5bc3a] text-gray-800 font-bold py-4 px-8 rounded-xl w-fit transition-all shadow-lg text-sm">
           Registrarme como instructor
-        </button>
+        </Link>
       </div>
 
       {/* --- COLUMNA DERECHA: IMAGEN --- */}

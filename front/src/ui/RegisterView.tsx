@@ -201,7 +201,7 @@ function RegisterView() {
                   body
                 );
 
-                router.push("/");
+                router.push("/login");
 
               } catch (error) {
                 console.error("Error:", error);

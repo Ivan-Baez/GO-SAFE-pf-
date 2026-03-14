@@ -25,7 +25,7 @@ function RegisterForBothtView() {
         </Link>
 
         {/* Opción Instructor */}
-        <Link href="/register">
+        <Link href="/process">
     <div className="bg-white p-8 rounded-lg shadow-lg hover:shadow-xl transition cursor-pointer border-2 border-transparent hover:border-[#1b5e20]">
             <div className="text-center">
             <h2 className="text-2xl font-bold mb-4 text-[#1b5e20]">Soy Instructor</h2>

@@ -21,7 +21,7 @@ export async function loginService(userData: ILoginProps) {
     // Si el status no es 200, intentamos leer el error que manda el back
       const errorData = await response.json();
       throw new Error(errorData.message || "Fallo el servidor al loguearse");
-   }} catch (error: any) {
+  }} catch (error: any) {
     toastError("Fallo al iniciar sesión");
     throw new Error(error)
   }

@@ -158,7 +158,7 @@ export interface IUserSession {
     email: string;
     address: string;
     phone: string;
-    orders:[];
+    orders: any[];
 };
 } 
 

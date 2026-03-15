@@ -44,8 +44,12 @@ export default function LoginView() {
               const session = {
                 token: data.access_token,
                 user: {
+                  id: data.id || 0,
+                  name: data.name || "",
                   email: values.email,
-                  role: data.role
+                  address: data.address || "",
+                  phone: data.phone || "",
+                  orders: data.orders || []
                 }
               };
               

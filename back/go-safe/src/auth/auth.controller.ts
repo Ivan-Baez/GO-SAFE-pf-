@@ -24,7 +24,7 @@ export class AuthController {
   constructor(
     private readonly userService: UsersService,
     private readonly instructorsService: InstructorsService,
-  ) { }
+  ) {}
 
   @Get('google')
   @UseGuards(AuthGuard('google'))
@@ -33,11 +33,20 @@ export class AuthController {
   @Get('google/callback')
   @UseGuards(AuthGuard('google'))
   async googleAuthRedirect(@Req() req, @Res() res) {
+
     const googleUser = req.user;
 
-    const token = await this.userService.googleLogin(googleUser);
+    const result = await this.userService.googleLogin(googleUser);
 
-    return res.redirect(`http://localhost:3001/google-success?token=${token}`);
+    if (result.exists) {
+      return res.redirect(
+        `http://localhost:3001/google-success?token=${result.token}`
+      );
+    }
+
+    return res.redirect(
+      `http://localhost:3001/register?token=${result.token}`
+    );
   }
 
   //@UseInterceptors(ClassSerializerInterceptor)

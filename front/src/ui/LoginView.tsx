@@ -11,26 +11,41 @@ export default function LoginView() {
 
     return (
       <div className="mt-12">
-        <div className="mt-12">
-            <h1 className="mt-6 mb-10 text-2xl font-semibold text-center text-gray-800">Iniciar Sesión</h1>
+        <h1 className="mt-6 mb-10 text-2xl font-semibold text-center text-gray-800">Iniciar Sesión</h1>
 
-            <Formik
-              initialValues={{
-                email: "",
-                password: "",
-              }}
+        <Formik
+          initialValues={{
+            email: "",
+            password: "",
+          }}
 
-              // crear validate
-              validate={validateFormLogin}
+          // crear validate
+          validate={validateFormLogin}
 
-              onSubmit={(values) => {
-                console.log(values);
+          onSubmit={async (values) => {
+            try {
 
-                if (values.email === "test@test.com" && values.password === "123456") {
-                  toastSuccess("Login correcto");
-                  router.push("/");
-                } else {
-                  toastError("Credenciales incorrectas");
+              const body = {
+                email: values.email,
+                password: values.password,
+              };
+
+              const response = await axios.post(
+                `${process.env.NEXT_PUBLIC_API_URL}/auth/signin`,
+                body
+              );
+
+              const data = response.data;
+
+              const session = {
+                token: data.access_token,
+                user: {
+                  id: data.id || 0,
+                  name: data.name || "",
+                  email: values.email,
+                  address: data.address || "",
+                  phone: data.phone || "",
+                  orders: data.orders || []
                 }
               }}
             >

@@ -1,6 +1,7 @@
 import HeroHome from "@/components/HeroHome";
 import CategoriesHome from "@/components/CategoriesHome";
 import Card from "@/components/TarjetaInstructores";
+import ReservationSteps from "@/components/ReservationSteps";
 
 export default function HomePage() {
   return (
@@ -8,6 +9,7 @@ export default function HomePage() {
       <HeroHome/>
       <CategoriesHome/>
       <Card/>
+      <ReservationSteps/>
     </section>
   );
 }

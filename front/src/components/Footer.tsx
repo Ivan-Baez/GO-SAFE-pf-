@@ -1,7 +1,7 @@
 export default function Footer() {
   return (
     
-    <footer className="bg-[#e9e7e4] px-20 py-12">
+    <footer className="bg-[#e9e7e4] px-20 py-12 w-full">
       
       <div className="grid grid-cols-5 gap-10 items-start">
 

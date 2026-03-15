@@ -1,12 +1,9 @@
 "use client";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import { validateDescriptionStep } from "@/lib/validate";
-import { IInstructorRegisterProps } from "@/types/types";
 
 interface StepProps {
   next: () => void;
   prev: () => void;
-  values: IInstructorRegisterProps;     
 }
 
 export default function StepDescription({ next, prev }: StepProps) {
@@ -22,7 +19,6 @@ export default function StepDescription({ next, prev }: StepProps) {
 
       <Formik
         initialValues={{ bio: "" }}
-        validate={validateDescriptionStep}
         onSubmit={(values) => {
           console.log("Descripción guardada:", values.bio);
           next();
@@ -48,7 +44,11 @@ export default function StepDescription({ next, prev }: StepProps) {
                 {values.bio.length} caracteres
               </div>
 
-              <ErrorMessage name="bio" component="p" className="text-xs text-red-500 mt-1" />
+              <ErrorMessage 
+                name="bio" 
+                component="p" 
+                className="text-xs text-red-500 mt-1" 
+              />
             </div>
 
             <div>

@@ -1,11 +1,7 @@
-"use client ";
-
+"use client";
 import { IService } from '@/types/types'
 import React from 'react'
 import { useAuth } from '@/context/AuthContext'
-
-
-
 
 const Card:  React.FC<IService> = ({name,place,image,id,sport}) =>{
     const {userData} = useAuth ();

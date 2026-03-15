@@ -2,7 +2,6 @@
 
 import Image from 'next/image'; 
 import { useRouter } from "next/navigation";
-import Link from 'next/link';
 
 export default function InstructorSteps() {
   const router = useRouter();
@@ -59,9 +58,9 @@ export default function InstructorSteps() {
         </div>
 
         {/* Botón */}
-        <Link href="/register" className="bg-[#F2C94C] hover:bg-[#e5bc3a] text-gray-800 font-bold py-4 px-8 rounded-xl w-fit transition-all shadow-lg text-sm">
+        <button  onClick={() => router.push("/register/instructor")} className="bg-[#F2C94C] hover:bg-[#e5bc3a] text-gray-800 font-bold py-4 px-8 rounded-xl w-fit transition-all shadow-lg text-sm">
           Registrarme como instructor
-        </Link>
+        </button>
       </div>
 
       {/* --- COLUMNA DERECHA: IMAGEN --- */}

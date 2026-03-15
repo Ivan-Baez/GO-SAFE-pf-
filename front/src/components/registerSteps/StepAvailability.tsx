@@ -1,13 +1,9 @@
 "use client";
-import { Formik, Form, Field, ErrorMessage } from "formik";
-import { validateAvailabilityStep } from "@/lib/validate";
-import { IInstructorRegisterProps } from "@/types/types";
+import { Formik, Form, Field } from "formik";
 
 interface StepProps {
   next: () => void;
   prev: () => void;
-  values: IInstructorRegisterProps;
-  setFieldValue: (field: string, value: any) => void;
 }
 
 const daysOfWeek = [
@@ -37,7 +33,6 @@ export default function StepAvailability({ next, prev }: StepProps) {
           startTime: "09:00",
           endTime: "18:00",
         }}
-        validate={validateAvailabilityStep}
         onSubmit={(values) => {
           if (values.selectedDays.length === 0) {
             alert("Selecciona al menos un día");
@@ -77,7 +72,6 @@ export default function StepAvailability({ next, prev }: StepProps) {
                 })}
               </div>
               <p className="text-[11px] text-gray-400 italic">Toca para seleccionar/deseleccionar los días.</p>
-              <ErrorMessage name="selectedDays" component="p" className="text-xs text-red-500 mt-1" />
             </div>
 
             {/* Selector de Horarios */}
@@ -100,8 +94,6 @@ export default function StepAvailability({ next, prev }: StepProps) {
                   <div className="absolute inset-y-0 right-3 flex items-center pointer-events-none text-gray-400">▼</div>
                 </div>
               </div>
-              <ErrorMessage name="startTime" component="p" className="text-xs text-red-500 mt-1" />
-              <ErrorMessage name="endTime" component="p" className="text-xs text-red-500 mt-1" />
             </div>
 
             {/* Contenedor de botones */}

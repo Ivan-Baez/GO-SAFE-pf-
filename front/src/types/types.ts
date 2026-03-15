@@ -133,6 +133,8 @@ export interface IInstructorRegisterProps {
   //Step Precios
   pricePerHour?: number | string;
   currency?: string;
+}
+
 export interface IService {
     id:number
     name:string

@@ -1,6 +1,5 @@
 "use client";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import { ValidateRegisterStep2 } from "@/lib/validate";
 
 interface StepProps {
   next: () => void;
@@ -17,10 +16,9 @@ export default function StepPhoto({ next, prev }: StepProps) {
       </div>
 
       <Formik
-        initialValues={{ profilePic: "" }}
-        validate={ValidateRegisterStep2}
+        initialValues={{ photoUrl: "" }}
         onSubmit={(values) => {
-          console.log("URL de la foto:", values.profilePic);
+          console.log("URL de la foto:", values.photoUrl);
           next();
         }}
       >
@@ -30,7 +28,7 @@ export default function StepPhoto({ next, prev }: StepProps) {
             {/* Preview de la foto y datos rápidos */}
             <div className="flex items-center gap-4 p-4 border-t border-b border-gray-100">
               <div className="w-20 h-20 bg-gray-100 rounded-2xl overflow-hidden flex items-center justify-center">
-                {values.profilePic ? (
+                {values.photoUrl ? (
                   <img src={values.photoUrl} alt="Preview" className="w-full h-full object-cover"/>
                 ) : (
                   <div className="w-12 h-12 bg-gray-200 rounded-lg"></div>
@@ -47,8 +45,7 @@ export default function StepPhoto({ next, prev }: StepProps) {
             {/* Input para la URL */}
             <div>
               <Field 
-                name="profilePic" 
-                id="profilePic"
+                name="photoUrl" 
                 type="text" 
                 placeholder="Pega la URL de tu foto aquí..." 
                 className="inputStyles w-full text-sm"
@@ -56,7 +53,6 @@ export default function StepPhoto({ next, prev }: StepProps) {
               <p className="text-[10px] text-gray-400 mt-1 italic">
                 * Por ahora, usa una URL de imagen (ej: de Google o Facebook)
               </p>
-              <ErrorMessage name="profilePic" component="p" className="text-xs text-red-500 mt-1" />
             </div>
 
             <button 

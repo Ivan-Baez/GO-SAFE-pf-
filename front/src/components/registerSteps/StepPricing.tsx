@@ -1,15 +1,13 @@
 "use client";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { useRouter } from "next/navigation";
-import { validatePriceStep } from "@/lib/validate";
-import { IInstructorRegisterProps } from "@/types/types";
 
 interface StepProps {
+  next: () => void; // En este paso, 'next' podría ser el envío final al backend
   prev: () => void;
-  values: IInstructorRegisterProps;
 }
 
-export default function StepPricing({ prev }: StepProps) {
+export default function StepPricing({ next, prev }: StepProps) {
     const router = useRouter();
   return (
     <div className="flex flex-col items-center w-full max-w-md mx-auto p-6 min-h-screen bg-white">
@@ -26,7 +24,6 @@ export default function StepPricing({ prev }: StepProps) {
           pricePerHour: "",
           currency: "USD",
         }}
-        validate={validatePriceStep}
         onSubmit={(values) => {
           console.log("Registro completo. Datos finales:", values);
           // Acá guardaríamos el último pedazo de datos
@@ -74,7 +71,6 @@ export default function StepPricing({ prev }: StepProps) {
               <p className="text-[11px] text-gray-400 italic">
                 * El precio promedio para tu categoría es de $25 - $40 USD.
               </p>
-              <ErrorMessage name="pricePerHour" component="p" className="text-xs text-red-500 mt-1" />
             </div>
 
             {/* Cuadro informativo de comisiones (Opcional, muy UX) */}

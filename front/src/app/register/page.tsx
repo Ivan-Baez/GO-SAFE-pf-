@@ -1,7 +1,7 @@
-import RegisterView from '@/ui/RegisterView'
+"use client";
 
-export default function Registerpage() {
-  return (
-    <RegisterView/>
-  )
+import RegisterForBoth from "../RegisterForBoth/page";
+
+export default function RegisterPage() {
+  return <RegisterForBoth />;
 }

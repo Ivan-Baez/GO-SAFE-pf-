@@ -1,7 +1,12 @@
+"use client";
+
 import Image from 'next/image'; 
+import { useRouter } from "next/navigation";
 import Link from 'next/link';
 
 export default function InstructorSteps() {
+  const router = useRouter();
+
   return (
     <section className="relative w-full min-h-screen grid grid-cols-1 lg:grid-cols-2 bg-white overflow-hidden">
       

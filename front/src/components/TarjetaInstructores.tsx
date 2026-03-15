@@ -1,11 +1,7 @@
-"use client ";
-
+"use client";
 import { IService } from '@/types/types'
 import React from 'react'
 import { useAuth } from '@/context/AuthContext'
-
-
-
 
 const Card:  React.FC<IService> = ({name,place,image,id,sport}) =>{
     const {userData} = useAuth ();
@@ -13,8 +9,7 @@ const Card:  React.FC<IService> = ({name,place,image,id,sport}) =>{
 //quitarle el Link
 
     return(
-        
-            <div className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 h-full flex flex-col">
+        <div className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 flex flex-col">
 
                 <div className="relative h-48 bg-gray-100 overflow-hidden">
                     <img 

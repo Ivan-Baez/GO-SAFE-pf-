@@ -111,7 +111,9 @@ function RegisterView() {
 
           {/* Google button */}
           <div style={{ display: "flex", marginBottom: "20px" }}>
-            <button
+            <button onClick={() =>
+             window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/auth/google` 
+            }
               type="button"
               className="gs-btn-google"
               style={{

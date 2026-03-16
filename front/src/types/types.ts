@@ -43,7 +43,7 @@ export interface IRegisterErrors{
 }
 
 export interface IInstructorRegisterErrors{
-    fistName?: string;     
+    firstName?: string;     
     lastName?: string;    
     userName?: string;    
     documentType?: string;
@@ -89,7 +89,7 @@ export interface IInstructorRegisterErrors{
 }
 
 export interface IInstructorRegisterProps {
-  fistName?: string;
+  firstName?: string;
   lastName?: string;
   userName?: string;
   email?: string;

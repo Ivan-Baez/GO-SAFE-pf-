@@ -2,7 +2,6 @@
 
 import Image from 'next/image'; 
 import { useRouter } from "next/navigation";
-import Link from 'next/link';
 
 export default function InstructorSteps() {
   const router = useRouter();
@@ -28,7 +27,7 @@ export default function InstructorSteps() {
         {/* Pasos (1, 2, 3) */}
         <div className="grid grid-cols-3 gap-4 mb-12 relative">
           {/* Línea gris que conecta los pasos por detrás */}
-          <div className="absolute top-12 left-0 w-full h-[2px] bg-gray-200 z-0"></div>
+          <div className="absolute top-12 left-0 w-full h-0.5[2px] bg-gray-200 z-0"></div>
 
           {/* Paso 1 (Amarillo Fijo) */}
           <div className="relative z-10 flex flex-col items-center">
@@ -36,7 +35,7 @@ export default function InstructorSteps() {
               <span className="text-4xl font-light text-gray-800">1</span>
             </div>
             <p className="text-center font-bold text-gray-800 text-sm">Registrate</p>
-            <p className="text-center text-xs text-gray-500 max-w-[120px]">para crear tu perfil de instructor</p>
+            <p className="text-center text-xs text-gray-500 max-w-30[120px]">para crear tu perfil de instructor</p>
           </div>
 
           {/* Paso 2 */}
@@ -45,7 +44,7 @@ export default function InstructorSteps() {
               <span className="text-4xl font-light text-gray-800">2</span>
             </div>
             <p className="text-center font-bold text-gray-800 text-sm">Revisaremos</p>
-            <p className="text-center text-xs text-gray-500 max-w-[120px]">tus certificaciones en un plazo de 5 días</p>
+            <p className="text-center text-xs text-gray-500 max-w-30[120px]">tus certificaciones en un plazo de 5 días</p>
           </div>
 
           {/* Paso 3 */}
@@ -54,18 +53,18 @@ export default function InstructorSteps() {
               <span className="text-4xl font-light text-gray-800">3</span>
             </div>
             <p className="text-center font-bold text-gray-800 text-sm">Comienza a trabajar</p>
-            <p className="text-center text-xs text-gray-500 max-w-[120px]">con nosotros y conecta con personas de todo el mundo</p>
+            <p className="text-center text-xs text-gray-500 max-w-30[120px]">con nosotros y conecta con personas de todo el mundo</p>
           </div>
         </div>
 
         {/* Botón */}
-        <Link href="/register" className="bg-[#F2C94C] hover:bg-[#e5bc3a] text-gray-800 font-bold py-4 px-8 rounded-xl w-fit transition-all shadow-lg text-sm">
+        <button  onClick={() => router.push("/register/instructor")} className="bg-[#F2C94C] hover:bg-[#e5bc3a] text-gray-800 font-bold py-4 px-8 rounded-xl w-fit transition-all shadow-lg text-sm">
           Registrarme como instructor
-        </Link>
+        </button>
       </div>
 
       {/* --- COLUMNA DERECHA: IMAGEN --- */}
-      <div className="relative min-h-[100px] lg:min-h-full max-h-[200px]">
+      <div className="relative min-h-25[100px] lg:min-h-full max-h-25[200px]">
         <Image 
           src="/Persona2.png"
           alt="Instructor en el puente"

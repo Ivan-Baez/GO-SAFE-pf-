@@ -94,7 +94,7 @@ export default function Navbar() {
               <div style={{ width: "1px", height: "18px", backgroundColor: "#bbb" }} />
 
               <button onClick={handleLogout} className="nav-logout">
-                 🚪 cerrar sesion
+                🚪 cerrar sesion
               </button>
             </div>
           </>

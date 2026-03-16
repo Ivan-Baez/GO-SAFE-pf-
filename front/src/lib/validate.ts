@@ -112,10 +112,10 @@ export const validateRegisterStep1 = (values: IInstructorRegisterProps): IInstru
   const errors: IInstructorRegisterErrors = {};
   const currentYear = new Date().getFullYear();
 
-  if (!values.fistName) {
-    errors.fistName = "El nombre es obligatorio";
-  } else if (values.fistName.length < 2) {
-    errors.fistName = "Mínimo 2 caracteres";
+  if (!values.firstName) {
+    errors.firstName = "El nombre es obligatorio";
+  } else if (values.firstName.length < 2) {
+    errors.firstName = "Mínimo 2 caracteres";
   }
 
   if (!values.lastName) {
@@ -146,7 +146,7 @@ export const validateRegisterStep1 = (values: IInstructorRegisterProps): IInstru
   }
 
   if (!values.address) {
-    errors.address = "La dirección es obligatoria";
+   errors.address = "La dirección es obligatoria";
   } else if (values.address.length < 5) {
     errors.address = "La dirección debe ser más específica (mín. 5 caracteres)";
   }
@@ -311,12 +311,13 @@ export const validateAvailabilityStep = (values: IInstructorRegisterProps): IIns
   // Validar rango horario
   // Si las horas vienen como "08:00", podemos comparar directamente los strings
   // o extraer el número: parseInt(values.startTime.split(':')[0])
+  if (!values.startTime || !values.endTime) {
+    errors.startTime = "Debes seleccionar un rango horario";
+    return errors;
+  }
+
   const start = parseInt(values.startTime.split(':')[0]);
   const end = parseInt(values.endTime.split(':')[0]);
-
-  if (!start) {
-    errors.startTime = "Debes seleccionar un rango horario";
-  }
 
   if (end <= start) {
     errors.endTime = "La hora de fin debe ser posterior a la de inicio.";

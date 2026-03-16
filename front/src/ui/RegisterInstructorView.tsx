@@ -1,12 +1,14 @@
 "use client";
-import { useSearchParams, useRouter, usePathname } from "next/navigation";
-import { Formik, Form } from "formik";
+import { useAuth } from "@/context/AuthContext";
+import { registerInstructor } from "@/service/authService";
 import { IInstructorRegisterProps } from "@/types/types";
+import { Formik, Form } from "formik";
+import { useSearchParams, useRouter, usePathname } from "next/navigation";
 
 // Importar validaciones
 import { validateRegisterStep1, ValidateRegisterStep2, ValidateCertificationStep, validateEducationStep, validateDescriptionStep, validateAvailabilityStep, validatePriceStep} from "@/lib/validate";
 
-// Componentes de cada paso
+// Componentes
 import PersonalData from "@/components/registerSteps/PersonalData";
 import Stepper from "@/components/registerSteps/Stepper";
 import StepPhoto from "@/components/registerSteps/StepPhoto";
@@ -17,164 +19,138 @@ import StepAvailability from "@/components/registerSteps/StepAvailability";
 import StepPricing from "@/components/registerSteps/StepPricing";
 
 export default function RegisterInstructorView() {
+  const { setUserData } = useAuth();
   const searchParams = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
 
-  const step = Number(searchParams.get("step")) || 1;
+  const step = parseInt(searchParams.get("step") ?? "1", 10);
 
-  // Función para cambiar el paso en la URL
   const updateStep = (nextStep: number) => {
     const params = new URLSearchParams(searchParams.toString());
     params.set("step", nextStep.toString());
     router.push(`${pathname}?${params.toString()}`);
   };
 
-  const nextStep = () => updateStep(step + 1);
+  const nextStep = () => { if (step < 7) updateStep(step + 1); };
   const prevStep = () => updateStep(step - 1);
 
   const initialValues: IInstructorRegisterProps = {
-    fistName: "",
-    lastName: "",
-    phone: "",
-    country: "",
-    profilePic: "",
-    // Educación
-    noEducation: false,
-    titulo: "",
-    institucion: "",
-    nivel: "",
-    añoInicio: "",
-    añoFin: "",
-    actualidad: false,
-    // Certificaciones
-    noCertificado: false,
-    category: "",
-    nombreCertificado: "",
-    certificadoUrl: "",
-    // Bio y Disponibilidad
-    bio: "",
-    selectedDays: [],
-    startTime: "08:00",
-    endTime: "17:00",
-    // Precios
-    pricePerHour: "",
-    currency: "USD",
+    firstName: "", lastName: "", email: "", password: "", confirmPassword: "",
+    birthDay: "", birthMonth: "", birthYear: "", address: "", city: "",
+    country: "", phone: "", isMajor: false, document: "", genre: "",
+    userName: "", profilePic: "", noEducation: false, titulo: "",
+    institucion: "", nivel: "", añoInicio: "", añoFin: "", actualidad: false,
+    noCertificado: false, category: "", nombreCertificado: "", certificadoUrl: "",
+    bio: "", selectedDays: [], startTime: "08:00", endTime: "17:00",
+    pricePerHour: "", currency: "USD",
   };
 
   const handleFinalSubmit = async (values: IInstructorRegisterProps) => {
-    // 1. partes del "About"
-    // operadores lógicos para manejar campos que podrían estar vacíos
-    const seccionBio = values.bio || "Sin biografía proporcionada.";
-  
+    // 1. Unificamos strings para el objeto instructor
+    const seccionBio = values.bio || "Sin biografía.";
     const seccionDispo = (values.selectedDays && values.selectedDays.length > 0)
       ? `Disponibilidad: ${values.selectedDays.join(", ")} de ${values.startTime} a ${values.endTime}.`
       : "Disponibilidad no especificada.";
-
-    const seccionPrecio = values.pricePerHour 
+    const seccionPrecio = values.pricePerHour
       ? `Tarifa: ${values.pricePerHour} ${values.currency} por hora.`
       : "Tarifa no especificada.";
+    const seccionEducacion = values.noEducation
+      ? "Sin formación académica adicional."
+      : `Educación: ${values.titulo} en ${values.institucion} (${values.nivel}).`;
 
-      // Unificamos la Educación para que no se pierda (ya que el back no tiene campo)
-      const seccionEducacion = values.noEducation 
-      ? "Sin formación académica adicional." 
-      : `Educación: ${values.titulo} en ${values.institucion} (${values.nivel}). ${values.añoInicio} - ${values.actualidad ? 'Actualidad' : values.añoFin}`;
+    const fullAbout = `${seccionBio}\n${seccionDispo}\n${seccionPrecio}\n${seccionEducacion}`.trim();
+    const fullCertifications = values.noCertificado
+      ? "Sin certificaciones."
+      : `${values.nombreCertificado} (${values.category})`.trim();
 
-    // 2. Unificamos TODO en el string 'about'
-    const fullAbout = `
-    ${seccionBio}
-    ${seccionDispo}
-    ${seccionPrecio}
-    ${seccionEducacion}
-    `.trim();
-
-    // 3. Unificamos la Certificación (lo que el back espera en 'certifications')
-    const fullCertifications = values.noCertificado 
-      ? "Sin certificaciones." 
-      : `${values.nombreCertificado} (${values.category}) - URL: ${values.certificadoUrl}`.trim();
-
-    // 4. objeto final (DTO)
+    // 2. OBJETO FINAL (DTO) - Ajustado al Swagger
     const baseData = {
-    // Identidad y Cuenta
-    firstName: values.fistName,
-    lastName: values.lastName,
-    userName: values.userName,
-    email: values.email,
-    password: values.password, 
-    age: Number(values.age), 
-    genre: values.genre,
-    // Documentación
-    documentType: values.documentType,
-    document: values.document,
-    // Ubicación y Contacto
-    phone: values.phone,
-    country: values.country,
-    city: values.city,
-    address: values.address,
-    //Foto
-    profilePic: values.profilePic,
-    // ROL (Fijo para este formulario)
-    role: "instructor",
-    // About unificado
-    about: fullAbout,
-    //Certificacion unificada
-    certifications: fullCertifications
+      user: {
+        fistName: values.firstName || "Nombre", 
+        lastName: values.lastName || "Apellido",
+        userName: values.userName || (values.firstName ? values.firstName + "91" : "user_temp"),
+        email: (values.email || "").toLowerCase().trim(),
+        password: values.password,
+        birthdate: `${values.birthDay}/${values.birthMonth}/${values.birthYear}`,
+        genre: values.genre || "Male",
+        documentType: "CC",
+        document: Number(values.document) || 1234567,
+        phone: Number(values.phone) || 1234567,
+        country: values.country || "Colombia",
+        city: values.city || "Bogota",
+        address: values.address || "Calle 123",
+        profilePic: values.profilePic || "https://example.com/profile.jpg",
+      },
+      instructor: {
+        about: fullAbout,
+        certifications: fullCertifications
+      }
     };
 
+    console.log("Enviando a /auth/signup-instructor:", baseData);
+
     try {
-      console.log("Enviando DTO al Backend:", baseData);
-      // Aquí iría tu: await axios.post('/auth/register', payload);
-      alert("¡Registro exitoso!");
-    } catch (error) {
-      console.error("Error al registrar:", error);
+      const res = await registerInstructor(baseData as any);
+      // Si el backend devuelve un token o un objeto exitoso
+      alert("¡Registro exitoso! Por favor, inicia sesión.");
+      router.push("/login");
+    } catch (error: any) {
+      console.error("Error capturado:", error);
+      alert("Error en el registro: " + (error.message || "Verifica los datos"));
     }
   };
 
-  // Switch para renderizar las validaciones según el paso
-  const getValidationSchema = () => {
+  const getValidationSchema = (values: any) => {
     switch (step) {
-      case 1: return validateRegisterStep1;
-      case 2: return ValidateRegisterStep2;
-      case 3: return validateEducationStep;
-      case 4: return ValidateCertificationStep;
-      case 5: return validateDescriptionStep;
-      case 6: return validateAvailabilityStep;
-      case 7: return validatePriceStep;
-      default: return () => ({});
+      case 1: return validateRegisterStep1(values);
+      case 2: return ValidateRegisterStep2(values);
+      case 3: return ValidateCertificationStep(values);
+      case 4: return validateEducationStep(values);
+      case 5: return validateDescriptionStep(values);
+      case 6: return validateAvailabilityStep(values);
+      case 7: return validatePriceStep(values);
+      default: return {};
     }
   };
 
-  return(
-    <section>
-        <Formik
-        initialValues={initialValues}
-        validate={getValidationSchema()}
-        onSubmit={(values) => {
-          if (step < 7) {
-            nextStep();
-          } else {
-            handleFinalSubmit(values);
-          }
-        }}
-        >
-        {({ values, setFieldValue }) => (
+  return (
+    <Formik
+      initialValues={initialValues}
+      //validate={getValidationSchema}
+      onSubmit={(values) => {
+        if (step === 7) {
+          handleFinalSubmit(values);
+        } else {
+          nextStep();
+        }
+      }}
+    >
+      {({ errors, isSubmitting }) => (
         <Form>
-          {/* Indicador de progreso */}
           <Stepper currentStep={step} />
+          
+          {Object.keys(errors).length > 0 && (
+            <div className="max-w-md mx-auto mb-4 p-3 bg-red-100 text-red-700 rounded-lg text-sm">
+              <strong>Faltan campos obligatorios:</strong> {Object.keys(errors).join(", ")}
+            </div>
+          )}
 
-          {/* Vistas dinámicas */}
           <div>
-            {step === 1 && <PersonalData next={nextStep} />}
-            {step === 2 && <StepPhoto next={nextStep} prev={prevStep} />}
-            {step === 3 && <CertificationStep next={nextStep} prev={prevStep} values={values}/>}
-            {step === 4 && <EducationStep next={nextStep} prev={prevStep} values={values}/>}
-            {step === 5 && <StepDescription next={nextStep} prev={prevStep} values={values}/>}
-            {step === 6 && <StepAvailability next={nextStep} prev={prevStep} values={values} setFieldValue={setFieldValue}/>}
-            {step === 7 && <StepPricing prev={prevStep} values={values}/>}
+            {step === 1 && <PersonalData />}
+            {step === 2 && <StepPhoto prev={prevStep} />}
+            {step === 3 && <CertificationStep prev={prevStep} />}
+            {step === 4 && <EducationStep prev={prevStep} />}
+            {step === 5 && <StepDescription prev={prevStep} />}
+            {step === 6 && <StepAvailability prev={prevStep} />}
+            {step === 7 && (
+              <StepPricing 
+                prev={prevStep} 
+              />
+            )}
           </div>
         </Form>
-        )}
-        </Formik>
-    </section>
-  )
+      )}
+    </Formik>
+  );
 }

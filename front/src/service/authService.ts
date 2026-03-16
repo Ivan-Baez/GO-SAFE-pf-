@@ -52,24 +52,37 @@ export async function register (userData: IRegisterProps) {
     }
 }
 
-export async function registerInstructor(userData: IInstructorRegisterProps) {
-    try {
-        const response = await fetch(`${APIURL}/register/instructors`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(userData), // Aquí mandas TUS datos tal cual
-        });
+export async function registerInstructor(userData: any) {
+  try {
+    const response = await fetch(`${APIURL}/auth/signup-instructor`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(userData),
+    });
 
-        const res = await response.json();
+    const contentType = response.headers.get("content-type");
+    let res;
 
-        if (response.ok) {
-            return res; // Debería traer { token, user }
-        } else {
-            throw new Error(res.message || "Error al registrar instructor");
-        }
-    } catch (error: any) {
-        throw new Error(error.message);
+    if (contentType && contentType.includes("application/json")) {
+      res = await response.json();
+    } else {
+      res = await response.text();
     }
+
+    console.log("STATUS:", response.status);
+    console.log("RESPUESTA COMPLETA DEL BACK:", res);
+
+    if (!response.ok) {
+      throw new Error(
+        typeof res === "string" ? res : JSON.stringify(res)
+      );
+    }
+
+    return res;
+  } catch (error: any) {
+    console.error("Error capturado en el servicio:", error.message);
+    throw error;
+  }
 }

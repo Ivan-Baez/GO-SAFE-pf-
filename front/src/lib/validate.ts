@@ -95,10 +95,10 @@ export const validateRegisterStep1 = (values: IInstructorRegisterProps): IInstru
   const errors: IInstructorRegisterErrors = {};
   const currentYear = new Date().getFullYear();
 
-  if (!values.fistName) {
-    errors.fistName = "El nombre es obligatorio";
-  } else if (values.fistName.length < 2) {
-    errors.fistName = "Mínimo 2 caracteres";
+  if (!values.firstName) {
+    errors.firstName = "El nombre es obligatorio";
+  } else if (values.firstName.length < 2) {
+    errors.firstName = "Mínimo 2 caracteres";
   }
 
   if (!values.lastName) {
@@ -129,7 +129,7 @@ export const validateRegisterStep1 = (values: IInstructorRegisterProps): IInstru
   }
 
   if (!values.address) {
-    errors.address = "La dirección es obligatoria";
+   errors.address = "La dirección es obligatoria";
   } else if (values.address.length < 5) {
     errors.address = "La dirección debe ser más específica (mín. 5 caracteres)";
   }

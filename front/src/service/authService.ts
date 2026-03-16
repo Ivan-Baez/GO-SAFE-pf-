@@ -1,5 +1,6 @@
 import { ILoginProps, IRegisterProps } from "@/types/types";
 import { toastSuccess, toastError } from "@/lib/toast";
+import { IInstructorRegisterProps } from "@/types/types";
 
 const APIURL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
 
@@ -48,5 +49,27 @@ export async function register (userData: IRegisterProps) {
 } catch(error: any){
         toastError("Fallo al registrar el usuario");
         throw new Error (error);
+    }
+}
+
+export async function registerInstructor(userData: IInstructorRegisterProps) {
+    try {
+        const response = await fetch(`${APIURL}/register/instructors`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(userData), // Aquí mandas TUS datos tal cual
+        });
+
+        const res = await response.json();
+
+        if (response.ok) {
+            return res; // Debería traer { token, user }
+        } else {
+            throw new Error(res.message || "Error al registrar instructor");
+        }
+    } catch (error: any) {
+        throw new Error(error.message);
     }
 }

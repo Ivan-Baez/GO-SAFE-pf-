@@ -4,11 +4,13 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import { validateFormLogin } from "@/lib/validate";
 import Link from "next/link";
 import Image from "next/image";
-import axios from "axios"; // 1. Agregamos el import de axios que faltaba
+import axios from "axios";
 import { toastError, toastSuccess } from "@/lib/toast";
+import { useAuth } from "@/context/AuthContext";
 
 export default function LoginView() {
   const router = useRouter();
+  const { setUserData } = useAuth();
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-white px-4">
@@ -37,9 +39,19 @@ export default function LoginView() {
 
               const data = response.data;
 
-              // Aquí deberías guardar la sesión (localStorage o Context)
-              // Ejemplo: localStorage.setItem("userSession", JSON.stringify(data));
+              const session = {
+                token: data.access_token,
+                user: {
+                  id: data.id || 0,
+                  name: data.name || values.email.split("@")[0],
+                  email: values.email,
+                  address: data.address || "",
+                  phone: data.phone || "",
+                  orders: data.orders || [],
+                },
+              };
 
+              setUserData(session);
               toastSuccess("¡Bienvenido de nuevo!");
               router.push("/");
             } catch (error: any) {
@@ -80,7 +92,7 @@ export default function LoginView() {
               />
             </div>
 
-            <Link href="/forgot-password" size="sm" className="text-sm text-gray-500 hover:text-amber-600 self-end transition-colors">
+            <Link href="/forgot-password" className="text-sm text-gray-500 hover:text-amber-600 self-end transition-colors">
               ¿Has olvidado la contraseña?
             </Link>
 

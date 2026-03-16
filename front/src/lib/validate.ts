@@ -17,77 +17,94 @@ return errors;
 export const ValidateFormRegister = (values:IRegisterProps) =>{
     const errors: IRegisterErrors = {};
 
-//mail
-    if(!values.mail){
-            errors.mail = "Required email";
-        } else if(!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.mail)){
-            errors.mail = "Invalid email address";
+    if (!values.primernombre?.trim()) {
+      errors.primernombre = "El primer nombre es obligatorio";
+    } else if (values.primernombre.trim().length < 2) {
+      errors.primernombre = "El primer nombre debe tener al menos 2 caracteres";
+    } else if (values.primernombre.trim().length > 20) {
+      errors.primernombre = "El primer nombre no puede superar 20 caracteres";
+    } else if (!/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/.test(values.primernombre.trim())) {
+      errors.primernombre = "El primer nombre solo puede contener letras";
+    }
 
-//password            
-        } else if(!values.password){
-            errors.password = "Required password";
-        } else if(values.password.length < 8
-        ){
-            errors.password = "Password must be at least 6 characters";
-        }else if(!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(values.password)){
-            errors.password = "Mín. 8 caracteres, mayúscula, minúscula, número y carácter especial";
+    if (!values.segundonombre?.trim()) {
+      errors.segundonombre = "El segundo nombre es obligatorio";
+    } else if (values.segundonombre.trim().length < 2) {
+      errors.segundonombre = "El segundo nombre debe tener al menos 2 caracteres";
+    } else if (values.segundonombre.trim().length > 20) {
+      errors.segundonombre = "El segundo nombre no puede superar 20 caracteres";
+    } else if (!/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/.test(values.segundonombre.trim())) {
+      errors.segundonombre = "El segundo nombre solo puede contener letras";
+    }
 
-        if(values.password !==values.confirmPassword){
-            errors.confirmPassword = "Las contraseñas no coinciden"
-        }
+    if (!values.username?.trim()) {
+      errors.username = "El username es obligatorio";
+    } else if (values.username.trim().length < 2) {
+      errors.username = "El username debe tener al menos 2 caracteres";
+    } else if (values.username.trim().length > 20) {
+      errors.username = "El username no puede superar 20 caracteres";
+    } else if (/\s/.test(values.username)) {
+      errors.username = "El username no puede contener espacios";
+    }
 
-//primernombre
-        }else if(!values.primernombre|| values.primernombre.trim() ===""){
-            errors.name = "Required name";
-        }else if(values.primernombre.trim().length > 20){
-            errors.name = "El nombre no puede superar los 20 caracteres"
-        }else if(values.primernombre.trim().length < 2){
-            errors.name = "El nombre debe contar con mas de 2 caractores"
-        }else if (!/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/.test(values.primernombre)){   
-            errors.name = "El nombre solo puede contener letras" 
+    if (!values.mail) {
+      errors.mail = "Email requerido";
+    } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.mail)) {
+      errors.mail = "Email invalido";
+    }
 
-//segundonombre
-        }else if(!values.segundonombre|| values.segundonombre.trim() ===""){
-            errors.name = "Required name";
-        }else if(values.segundonombre.trim().length > 20){
-            errors.name = "El nombre no puede superar los 20 caracteres"
-        }else if(values.segundonombre.trim().length < 2){
-            errors.name = "El nombre debe contar con mas de 2 caractores"
-        }else if (!/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/.test(values.segundonombre)){   
-            errors.name = "El nombre solo puede contener letras"     
+    if (!values.password) {
+      errors.password = "Contraseña requerida";
+    } else if (values.password.length < 8) {
+      errors.password = "La contraseña debe tener al menos 8 caracteres";
+    } else if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(values.password)) {
+      errors.password = "Debe incluir mayuscula, minuscula, numero y caracter especial";
+    }
 
-//address
-        } else if(!values.address.trim()){
-            errors.address = "Required address";
-        } else if (!/^[a-zA-Z0-9\s#\-\.]{5,100}$/.test(values.address)) {
-            errors.address="Direccion invalida. Min 5 ,Max 50 caracteres";
+    if (!values.confirmPassword) {
+      errors.confirmPassword = "Confirma tu contraseña";
+    } else if (values.password !== values.confirmPassword) {
+      errors.confirmPassword = "Las contraseñas no coinciden";
+    }
 
-//phone    
-} else if(!values.phone){
-            errors.phone = "Required phone";
-        }else if (!/^(\+57)?[0-9]{10}$/.test(values.phone)){
-            errors.phone= "debe tener min 10 digitos Col, "
-//age
-        } else if (!values.birthdate ){
-            errors.birthdate = "Required age";
-//city
-        }else if(!values.city){
-            errors.city = "Requiered city";
-//country
-        }else if(!values.country){
-            errors.country = "Requiered country";
-//document
-        } else if (!values.document){
-            errors.document= "Requiered document";
-        }else if(!/^\d{6,10}$/.test(values.document)){
-            errors.document= "Debe tener entre 6 a 10 digitos"
-//documentType
-        } else if(!values.documentType){
-            errors.documentType= "Requiered documentType"
-//genero
-        } else if (!values.genre){
-            errors.genre = "Requiered genre"
-        }
+    if (!values.address?.trim()) {
+      errors.address = "Direccion requerida";
+    } else if (!/^[a-zA-Z0-9\s#\-\.]{5,100}$/.test(values.address.trim())) {
+      errors.address = "Direccion invalida. Min 5, Max 100 caracteres";
+    }
+
+    if (!values.phone) {
+      errors.phone = "Telefono requerido";
+    } else if (!/^(\+57)?[0-9]{10}$/.test(values.phone)) {
+      errors.phone = "Debe tener 10 digitos";
+    }
+
+    if (!values.birthdate) {
+      errors.birthdate = "Fecha de nacimiento requerida";
+    }
+
+    if (!values.country) {
+      errors.country = "Pais requerido";
+    }
+
+    if (!values.city) {
+      errors.city = "Ciudad requerida";
+    }
+
+    if (!values.documentType) {
+      errors.documentType = "Tipo de documento requerido";
+    }
+
+    if (!values.document) {
+      errors.document = "Documento requerido";
+    } else if (!/^\d{6,10}$/.test(values.document)) {
+      errors.document = "El documento debe tener entre 6 y 10 digitos";
+    }
+
+    if (!values.genre) {
+      errors.genre = "Genero requerido";
+    }
+
     return errors;
 }
 
@@ -294,12 +311,13 @@ export const validateAvailabilityStep = (values: IInstructorRegisterProps): IIns
   // Validar rango horario
   // Si las horas vienen como "08:00", podemos comparar directamente los strings
   // o extraer el número: parseInt(values.startTime.split(':')[0])
+  if (!values.startTime || !values.endTime) {
+    errors.startTime = "Debes seleccionar un rango horario";
+    return errors;
+  }
+
   const start = parseInt(values.startTime.split(':')[0]);
   const end = parseInt(values.endTime.split(':')[0]);
-
-  if (!start) {
-    errors.startTime = "Debes seleccionar un rango horario";
-  }
 
   if (end <= start) {
     errors.endTime = "La hora de fin debe ser posterior a la de inicio.";

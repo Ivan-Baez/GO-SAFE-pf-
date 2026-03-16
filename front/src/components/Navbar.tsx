@@ -4,80 +4,132 @@ import { useAuth } from "@/context/AuthContext";
 import Image from "next/image";
 import Link from "next/link";
 
-
 export default function Navbar() {
-
-  const {userData,handleLogout} = useAuth ();
+  const { userData, handleLogout } = useAuth();
 
   return (
-    <nav className="flex items-center justify-between bg-[#e6dfd5] px-10 py-3 w-full">
-      <Link href= "/"
-        className="cursor-pointer"
-      >
-        <Image
-          src="/logo.png"
-          alt="GoSafe logo"
-          width={80}
-          height={80}
-        />
-      </Link>
-      <div>
+    <>
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap');
+
+        .nav-link {
+          font-family: 'Nunito', sans-serif;
+          font-size: 14px;
+          font-weight: 600;
+          color: #2a2a2a;
+          text-decoration: none;
+          transition: color 0.2s;
+          white-space: nowrap;
+        }
+        .nav-link:hover { color: #1a3d2b; }
+
+        .nav-logout {
+          font-family: 'Nunito', sans-serif;
+          font-size: 14px;
+          font-weight: 600;
+          color: #2a2a2a;
+          background: none;
+          border: none;
+          cursor: pointer;
+          padding: 0;
+          transition: color 0.2s;
+          white-space: nowrap;
+        }
+        .nav-logout:hover { color: #c0392b; }
+
+        .nav-search {
+          width: 100%;
+          max-width: 340px;
+          padding: 10px 18px;
+          border-radius: 10px;
+          border: none;
+          background: white;
+          font-size: 14px;
+          font-family: 'Nunito', sans-serif;
+          color: #333;
+          outline: none;
+          box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+        }
+        .nav-search::placeholder { color: #aaa; }
+      `}</style>
+
+      <nav style={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+        backgroundColor: "#e6dfd5",
+        padding: "12px 40px",
+        width: "100%",
+        gap: "24px",
+      }}>
+
+        {/* ── Logo ── */}
+        <Link href="/" style={{ flexShrink: 0 }}>
+          <Image src="/logo.png" alt="GoSafe logo" width={80} height={80} />
+        </Link>
+
         {userData?.token ? (
           <>
-        <div>
-          {/* 1. Barra de búsqueda  */}
-        <div className="flex-1 flex justify-center">
-          <input
-            type="text"
-            placeholder="Busca por aventura"
-            className="w-full pl-12 pr-4 py-2.5 rounded-2xl bg-gray-50 border border-gray-200 
-                     focus:bg-white focus:ring-2 focus:ring-[#EAB308]/20 focus:border-[#EAB308] 
-                     outline-none transition-all duration-300 text-sm shadow-sm"
-          />
-        </div>
-        {/* 2. Acciones del Usuario */}
-      </div>
-            <Link 
-              href="/dashboard" 
-              className="flex items-center gap-2 text-sm font-semibold text-gray-600 hover:text-gray-900 
-                   bg-white px-4 py-2 rounded-xl border border-gray-100 hover:shadow-sm transition-all active:scale-95"
-            >
-            <span className="text-base">👤</span> Dashboard
-            </Link>
+            {/* ── Buscador centro ── */}
+            <div style={{ flex: 1, display: "flex", justifyContent: "center" }}>
+              <input
+                type="text"
+                placeholder="Search your adventure"
+                className="nav-search"
+              />
+            </div>
 
-            <Link 
-              href="/cart" 
-              className="flex items-center gap-2 text-sm font-semibold text-gray-600 hover:text-gray-900 
-                   relative bg-white px-4 py-2 rounded-xl border border-gray-100 hover:shadow-sm transition-all active:scale-95"
-            >
-              <span className="text-base">🛒</span> Carrito
-            </Link>
-            <button
-              onClick={handleLogout}
-              className="flex items-center gap-2 text-sm font-bold text-red-500 hover:text-red-600 
-                   hover:bg-red-50 px-4 py-2 rounded-xl transition-all active:scale-95"
-            >
-             <span>🚪</span> Salir
-            </button>
+            {/* ── Links + cerrar sesión ── */}
+            <div style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "28px",
+              flexShrink: 0,
+            }}>
+              <Link href="/A&Q"        className="nav-link">💬 chat</Link>
+              <Link href="/cart"       className="nav-link">🛒 carrito</Link>
+              <Link href="/dashboard"  className="nav-link">👤 dashboard</Link>
+
+              {/* separador visual */}
+              <div style={{ width: "1px", height: "18px", backgroundColor: "#bbb" }} />
+
+              <button onClick={handleLogout} className="nav-logout">
+                🚪 cerrar sesion
+              </button>
+            </div>
           </>
         ) : (
-          <div className="flex gap-4">
-            <Link
-              href="/login"
-              className="px-4 py-2 border border-black rounded hover:bg-[#b8b1a6] w-37.5"
-            >
+          /* ── Sin sesión: Ingresar / Registrarme ── */
+          <div style={{ display: "flex", gap: "12px", marginLeft: "auto" }}>
+            <Link href="/login" style={{
+              padding: "9px 24px",
+              border: "1.5px solid #333",
+              borderRadius: "8px",
+              fontSize: "14px",
+              fontWeight: "600",
+              fontFamily: "'Nunito', sans-serif",
+              color: "#333",
+              textDecoration: "none",
+              transition: "background 0.2s",
+            }}>
               Ingresar
             </Link>
-
-            <Link
-              href="/RegisterForBoth"
-              className="px-4 py-2 border border-black rounded hover:bg-[#b8b1a6] w-37.5"
-            >
+            <Link href="/RegisterForBoth" style={{
+              padding: "9px 24px",
+              border: "1.5px solid #333",
+              borderRadius: "8px",
+              fontSize: "14px",
+              fontWeight: "600",
+              fontFamily: "'Nunito', sans-serif",
+              color: "#333",
+              textDecoration: "none",
+              transition: "background 0.2s",
+            }}>
               Registrarme
             </Link>
           </div>
         )}
-      </div>
-    </nav>
+      </nav>
+    </>
   );
 }

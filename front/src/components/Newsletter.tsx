@@ -6,7 +6,7 @@ export default function Newsletter() {
   const [email, setEmail] = useState('');
   const [status, setStatus] = useState('idle'); // idle | loading | success | error
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: { preventDefault: () => void; }) => {
     e.preventDefault();
     setStatus('loading');
 
@@ -23,7 +23,7 @@ export default function Newsletter() {
 
   return (
     <section className="px-6 py-12">
-      <div className="max-w-6xl mx-auto bg-gray-100 rounded-[2rem] p-10 md:p-20 relative overflow-hidden">
+      <div className="max-w-6xl mx-auto bg-gray-100 rounded-4x1[2rem] p-10 md:p-20 relative overflow-hidden">
         
         {/* --- CONTENIDO --- */}
         <div className="relative z-10 flex flex-col items-center text-center">
@@ -73,7 +73,7 @@ export default function Newsletter() {
         </div>
 
         {/* --- DECORACIÓN (Opcional, imitando el estilo de tu imagen anterior) --- */}
-        <div className="absolute bottom-0 right-0 w-32 h-32 bg-gray-200/50 rounded-tl-full -z-0" />
+        <div className="absolute bottom-0 right-0 w-32 h-32 bg-gray-200/50 rounded-tl-full -Z-0" />
       </div>
     </section>
   );

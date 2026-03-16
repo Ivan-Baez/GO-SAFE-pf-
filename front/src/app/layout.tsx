@@ -32,9 +32,10 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased flex h-screen items-center flex-col`}
       >
-        <Navbar />
+        
         <ToastContainer />
         <AuthProvider>
+          <Navbar />
           {children}
         </AuthProvider>
 

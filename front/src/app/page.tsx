@@ -1,6 +1,6 @@
 import HeroHome from "@/components/HeroHome";
 import CategoriesHome from "@/components/CategoriesHome";
-import Card from "@/components/TarjetaInstructores";
+import Card  from "@/components/TarjetaInstructores";
 import ReservationSteps from "@/components/ReservationSteps";
 
 export default function HomePage() {
@@ -8,7 +8,8 @@ export default function HomePage() {
     <section className="w-full">
       <HeroHome/>
       <CategoriesHome/>
-      <Card/>
+      <Card id={1} name={"alberto"} place={"Bogota D.C"} image={""} sport={"claimbing"} modality={"presencial"}/>
+      <Card id={2} name={"juliana"} place={"Cordoba"} image={""} sport={"kayak"} modality={"presencial"}/>
       <ReservationSteps/>
     </section>
   );

@@ -1,42 +1,79 @@
-"use client";
-import { useSearchParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import ExperienceCard from "@/components/ExperienceCard";
+import { getProductsDB } from "@/service/productService";
 
-export default function ExperiencesPage() {
-  const searchParams = useSearchParams();
-  const categoryFilter = searchParams.get('category'); // Esto captura "Climbing" de la URL
-  
-  const [experiences, setExperiences] = useState([]);
+export default async function ExperiencesPage() {
+  const fallbackExperiences: Array<{
+    id: string | number;
+    title: string;
+    difficulty: string;
+    price: number;
+    location: string;
+  }> = [
+    {
+      id: "demo-1",
+      title: "Climbing en Suesca",
+      difficulty: "Intermedio",
+      price: 80,
+      location: "Suesca, Colombia",
+    },
+    {
+      id: "demo-2",
+      title: "Escalada en El Peñol",
+      difficulty: "Avanzado",
+      price: 120,
+      location: "Guatape, Colombia",
+    },
+    {
+      id: "demo-3",
+      title: "Climbing en La Mojarra",
+      difficulty: "Principiante",
+      price: 60,
+      location: "Santander, Colombia",
+    },
+  ];
 
-  useEffect(() => {
-    // Aquí harías el fetch a tu backend
-    const fetchExperiences = async () => {
-      const response = await fetch('http://localhost:3000/experiences');
-      const data = await response.json();
-      
-      // Si hay un filtro, filtramos el array que viene del back
-      if (categoryFilter) {
-        setExperiences(data.filter((exp: any) => exp.category === categoryFilter));
-      } else {
-        setExperiences(data);
-      }
-    };
+  let usingFallback = false;
+  let experiences: Array<{
+    id: string | number;
+    title: string;
+    difficulty: string;
+    price: number;
+    location: string;
+  }> = [];
 
-    fetchExperiences();
-  }, [categoryFilter]); // Se vuelve a ejecutar si cambias de categoría
+  try {
+    const products = await getProductsDB();
+    experiences =
+      products.length > 0
+        ? products.map((product) => ({
+            id: product.id,
+            title: product.name,
+            difficulty: "Intermedio",
+            price: product.price,
+            location: "Colombia",
+          }))
+        : fallbackExperiences;
+    usingFallback = products.length === 0;
+  } catch {
+    experiences = fallbackExperiences;
+    usingFallback = true;
+  }
 
   return (
-    <div className="p-8">
-      <h1 className="text-3xl font-bold mb-6">
-        {categoryFilter ? `Experiences: ${categoryFilter}` : 'All Experiences'}
+    <div className="min-h-screen bg-green-900 p-10">
+      <h1 className="text-3xl font-bold text-white mb-8">
+        Experiencias de Climbing
       </h1>
-      
+
+      {usingFallback && (
+        <p className="mb-6 rounded-lg bg-white/10 p-4 text-sm text-white">
+          Mostrando experiencias de ejemplo mientras se cargan las reales.
+        </p>
+      )}
+
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {experiences.map((exp: any) => (
-          <div key={exp.id}>
-            {/* Aquí usas el componente <Card /> de tu compañero */}
-            <p>{exp.title}</p> 
-          </div>
+        {experiences.map((exp) => (
+          <ExperienceCard key={exp.id} experience={exp} />
         ))}
       </div>
     </div>

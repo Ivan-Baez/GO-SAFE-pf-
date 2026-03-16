@@ -26,7 +26,9 @@ export interface  IRegisterProps {
 }
 
 export interface IRegisterErrors{ 
-    name?:string
+    primernombre?:string
+    segundonombre?:string
+    username?:string
     documentType?:string
     document?:string
     genre?:string
@@ -133,12 +135,14 @@ export interface IInstructorRegisterProps {
   //Step Precios
   pricePerHour?: number | string;
   currency?: string;
+}
 export interface IService {
     id:number
     name:string
     place:string
     image: string
-    sport: string
+    sport?: string
+    modality:string
 }
 
 export interface IOrder {
@@ -163,7 +167,7 @@ export interface IUserSession {
 } 
 
 export interface IProduct {
-id: number;
+    id: number | string;
     name: string;
     price: number;
     description: string;

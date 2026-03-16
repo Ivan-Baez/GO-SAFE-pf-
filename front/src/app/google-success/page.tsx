@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
+import { Anybody } from "next/font/google";
 
 export default function GoogleSuccess() {
 
@@ -19,7 +20,12 @@ export default function GoogleSuccess() {
       const session = {
         token,
         user: {
-          email: "google-user"
+          id: 0,
+          name: "Google User",
+          email: "google-user",
+          address: "",
+          phone: "",
+          orders:[]
         }
       };
 

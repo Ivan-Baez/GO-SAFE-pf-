@@ -6,6 +6,7 @@ import {
   Param,
   Delete,
   UseGuards,
+  Req
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -19,10 +20,13 @@ import { Roles } from 'src/decorators/roles.decorator';
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  // @Post()
-  // create(@Body() createUserDto: CreateUserDto) {
-  //   return this.usersService.createUser(createUserDto);
-  // }
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard)
+  @Get('profile')
+  getProfile(@Req() req) {
+    const userId = req.user.id;
+    return this.usersService.findOne(userId);
+  }
 
   @ApiBearerAuth()
   @Roles(Role.Admin)
@@ -33,27 +37,27 @@ export class UsersController {
   }
 
   @ApiBearerAuth()
-  @Roles(Role.User)
   @Roles(Role.Admin)
-  @UseGuards(AuthGuard)
+  @Roles(Role.User)
+  @UseGuards(AuthGuard, RolesGuard)
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.usersService.findOne(id);
   }
 
   @ApiBearerAuth()
-  @Roles(Role.User)
   @Roles(Role.Admin)
-  @UseGuards(AuthGuard)
+  @Roles(Role.User)
+  @UseGuards(AuthGuard, RolesGuard)
   @Put(':id')
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     return this.usersService.update(id, updateUserDto);
   }
 
   @ApiBearerAuth()
-  @Roles(Role.User)
   @Roles(Role.Admin)
-  @UseGuards(AuthGuard)
+  @Roles(Role.User)
+  @UseGuards(AuthGuard, RolesGuard)
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.usersService.remove(id);

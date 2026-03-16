@@ -25,32 +25,39 @@ export default function Navbar() {
         {userData?.token ? (
           <>
         <div>
+          {/* 1. Barra de búsqueda  */}
         <div className="flex-1 flex justify-center">
           <input
             type="text"
             placeholder="Busca por aventura"
-            className="w-125 px-4 py-2 rounded-md bg-gray-100 outline-none"
+            className="w-full pl-12 pr-4 py-2.5 rounded-2xl bg-gray-50 border border-gray-200 
+                     focus:bg-white focus:ring-2 focus:ring-[#EAB308]/20 focus:border-[#EAB308] 
+                     outline-none transition-all duration-300 text-sm shadow-sm"
           />
         </div>
+        {/* 2. Acciones del Usuario */}
       </div>
             <Link 
               href="/dashboard" 
-              className="text-sm font-medium text-gray-700 hover:text-gray-900 transition-colors"
+              className="flex items-center gap-2 text-sm font-semibold text-gray-600 hover:text-gray-900 
+                   bg-white px-4 py-2 rounded-xl border border-gray-100 hover:shadow-sm transition-all active:scale-95"
             >
-              👤 Dashboard
+            <span className="text-base">👤</span> Dashboard
             </Link>
 
             <Link 
               href="/cart" 
-              className="text-sm font-medium text-gray-700 hover:text-gray-900 transition-colors relative"
+              className="flex items-center gap-2 text-sm font-semibold text-gray-600 hover:text-gray-900 
+                   relative bg-white px-4 py-2 rounded-xl border border-gray-100 hover:shadow-sm transition-all active:scale-95"
             >
-              🛒 Carrito
+              <span className="text-base">🛒</span> Carrito
             </Link>
             <button
               onClick={handleLogout}
-              className="text-sm font-medium text-red-600 hover:text-red-700 transition-colors"
+              className="flex items-center gap-2 text-sm font-bold text-red-500 hover:text-red-600 
+                   hover:bg-red-50 px-4 py-2 rounded-xl transition-all active:scale-95"
             >
-              🚪 Cerrar sesión
+             <span>🚪</span> Salir
             </button>
           </>
         ) : (

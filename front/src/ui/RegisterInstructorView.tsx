@@ -271,7 +271,7 @@ export default function RegisterInstructorView() {
     }
 
   };
-  
+
   return(
     <section>
       <Stepper currentStep={step} />

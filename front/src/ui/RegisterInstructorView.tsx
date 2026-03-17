@@ -117,7 +117,7 @@ export default function RegisterInstructorView() {
   return (
     <Formik
       initialValues={initialValues}
-      //validate={getValidationSchema}
+      validate={getValidationSchema}
       onSubmit={(values) => {
         if (step === 7) {
           handleFinalSubmit(values);

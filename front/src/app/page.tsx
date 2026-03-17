@@ -4,6 +4,7 @@ import ReservationSteps from "@/components/ReservationSteps";
 import TestimonialsHome from "@/components/TestimonialsHome";
 import PartnerLogos from "@/components/PartnerLogos";
 import Newsletter from "@/components/Newsletter";
+import InstructorSection from "@/components/InstructorSection";
 
 export default function HomePage() {
   return (
@@ -12,6 +13,7 @@ export default function HomePage() {
       <CategoriesHome/>
       <ReservationSteps/>
       <TestimonialsHome/>
+      <InstructorSection />
       <PartnerLogos/>
       <Newsletter/>
     </section>

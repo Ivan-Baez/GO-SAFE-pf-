@@ -83,14 +83,12 @@ export class CreateUserDto {
   @ApiProperty({
     description: 'User age',
     example: '13/05/1994',
-    minimum: 5,
-    maximum: 40,
   })
   @IsNotEmpty()
   @IsString()
   @MinLength(5)
   @MaxLength(40)
-  birthdate!: number;
+  birthdate!: string;
 
   @ApiProperty({
     description: 'Address',

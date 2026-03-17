@@ -38,7 +38,7 @@ export default function RootLayout({
           <Navbar />
           {children}
         </AuthProvider>
-
+        <Footer/>
       </body>
     </html>
   );

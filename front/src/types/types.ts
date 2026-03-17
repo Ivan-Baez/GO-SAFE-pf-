@@ -175,3 +175,7 @@ export interface IProduct {
     categoryId: number;
     stock: number;
 }
+
+export interface IUserData {
+  role: "user" | "instructor" | "admin";
+}

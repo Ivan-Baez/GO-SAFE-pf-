@@ -145,8 +145,9 @@ export default function RegisterInstructorView() {
             {step === 6 && <StepAvailability prev={prevStep} />}
             {step === 7 && (
               <StepPricing 
-                prev={prevStep} 
-              />
+  prev={prevStep}
+  next={nextStep}
+/>
             )}
           </div>
         </Form>

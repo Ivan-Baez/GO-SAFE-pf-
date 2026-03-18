@@ -23,7 +23,7 @@ export class User {
   id!: string;
 
   @Column({ type: 'varchar', length: 50, nullable: false })
-  fistName!: string;
+  firstName!: string;
 
   @Column({ type: 'varchar', length: 50, nullable: false })
   lastName!: string;

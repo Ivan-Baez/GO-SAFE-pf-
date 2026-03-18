@@ -169,6 +169,7 @@ export interface IUserSession {
 export interface IProduct {
     id: number | string;
     name: string;
+    place: string
     price: number;
     description: string;
     image: string;

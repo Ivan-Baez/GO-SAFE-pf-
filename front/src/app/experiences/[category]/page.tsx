@@ -30,7 +30,7 @@ export default function CategoryPage() {
           ))}
         </div>
       ) : (
-        <div className="text-center py-20 bg-white rounded-[32px] shadow-sm border border-gray-100">
+        <div className="text-center py-20 bg-white rounded-4x1[32px] shadow-sm border border-gray-100">
           <div className="text-6xl mb-4">🏜️</div>
           <h3 className="text-xl font-semibold text-gray-700">Ups! No hay nada por aquí</h3>
           <p className="text-gray-500">Todavía no tenemos actividades en {categorySlug}.</p>

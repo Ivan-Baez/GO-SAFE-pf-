@@ -64,7 +64,7 @@ export class AuthController {
           documentType: 'CC',
           document: 123456789,
           genre: 'Male',
-          birthdate: '13/05/1994',
+          birthdate: '13-05-1994',
           address: 'Calle 123 #45-67',
           phone: 3001234567,
           country: 'Colombia',

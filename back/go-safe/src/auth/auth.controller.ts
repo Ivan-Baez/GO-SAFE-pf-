@@ -58,7 +58,7 @@ export class AuthController {
       example1: {
         summary: 'User example',
         value: {
-          fistName: 'Juan',
+          firstName: 'Juan',
           lastName: 'Perez',
           userName: 'uPerez',
           documentType: 'CC',

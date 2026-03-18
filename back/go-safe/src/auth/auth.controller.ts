@@ -58,13 +58,13 @@ export class AuthController {
       example1: {
         summary: 'User example',
         value: {
-          fistName: 'Juan',
+          firstName: 'Juan',
           lastName: 'Perez',
           userName: 'uPerez',
           documentType: 'CC',
           document: 123456789,
           genre: 'Male',
-          birthdate: '13/05/1994',
+          birthdate: '13-05-1994',
           address: 'Calle 123 #45-67',
           phone: 3001234567,
           country: 'Colombia',
@@ -91,13 +91,13 @@ export class AuthController {
         summary: 'User example',
         value: {
           user: {
-            fistName: 'Carlos',
+            firstName: 'Carlos',
             lastName: 'Ramirez',
             documentType: 'CC',
             userName: 'gazas',
             document: 987654321,
             genre: 'Male',
-            birthdate: '13/05/1994',
+            birthdate: '13-05-1994',
             address: 'Calle 45 #23-10',
             phone: 3011234567,
             country: 'Colombia',

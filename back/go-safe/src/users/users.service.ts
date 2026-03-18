@@ -43,7 +43,8 @@ export class UsersService {
         message: 'User created successfully',
       };
     } catch (error) {
-      throw new InternalServerErrorException(error);
+      console.error(error);
+      throw new InternalServerErrorException('Error creating user');
     }
   }
 

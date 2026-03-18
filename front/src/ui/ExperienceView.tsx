@@ -1,91 +1,125 @@
 "use client";
 
 import { useAuth } from "@/context/AuthContext";
+import CommentsSection, { CommentItem } from "@/components/CommentsSection";
+import ExperienceContentSection from "@/components/ExperienceContentSection";
 import { IProduct } from "@/types/types";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
-const ExperienceView: React.FC<IProduct> = ({ name, id, image, description, price }) => {
-    const router = useRouter();
-    const { userData } = useAuth();
+const ExperienceView: React.FC<IProduct> = ({ name, id,place, image, description, price }) => {
+  const router = useRouter();
+  const { userData } = useAuth();
 
-    const handleAddToCart = () => {
-        if (!userData?.token) {
-            alert("Inicia sesion para agregar la aventura al carrito");
-            router.push("/login");
-            return;
-        }
+  const experienceItems = [
+    `Introduccion y briefing de seguridad para ${name}`,
+    `Practica guiada en ${place}`,
+    "Acompanamiento personalizado por instructor segun tu nivel",
+  ];
 
-        const cart = JSON.parse(localStorage.getItem("cart") || "[]") as IProduct[];
-        const productExist = cart.find((item: IProduct) => item.id === id);
+  const comments: CommentItem[] = [
+    {
+      id: 1,
+      author: "Maria Fernandez",
+      message: `Increible experiencia en ${place}. Super recomendado para quienes quieren aprender con seguridad.`,
+      rating: 5,
+      date: "Hace 2 dias",
+    },
+    {
+      id: 2,
+      author: "Lucas Gomez",
+      message: "Buen ritmo de clase y excelente trato del instructor.",
+      rating: 4,
+      date: "Hace 5 dias",
+    },
+  ];
 
-        if (productExist) {
-            alert("La aventura ya se encuentra en el carrito");
-            return;
-        }
+  const handleReserve = () => {
+    if (!userData?.token) {
+      alert("Inicia sesion para reservar esta aventura");
+      router.push("/login");
+      return;
+    }
 
-        cart.push({
-            id,
-            name,
-            image,
-            description,
-            price,
-            categoryId: 0,
-            stock: 1,
-        });
-
-        localStorage.setItem("cart", JSON.stringify(cart));
-        alert("Aventura agregada al carrito");
-    };
-
-    return (
-        <section className="w-full bg-[#f5f2eb] px-6 py-10 md:px-12">
-            <div className="mx-auto grid max-w-6xl gap-8 rounded-3xl bg-white p-6 shadow-sm md:grid-cols-2 md:p-10">
-                <div className="relative h-85 overflow-hidden rounded-2xl md:h-115">
-                    <Image
-                        src={image}
-                        alt={name}
-                        fill
-                        className="object-cover"
-                        sizes="(max-width: 768px) 100vw, 50vw"
-                    />
-                </div>
-
-                <div className="flex flex-col justify-between gap-6">
-                    <div>
-                        <p className="mb-2 inline-block rounded-full bg-[#dce9dc] px-3 py-1 text-xs font-semibold uppercase tracking-[0.08em] text-[#1a3d2b]">
-                            Go Safe Experience
-                        </p>
-                        <h1 className="text-3xl font-extrabold leading-tight text-[#1a1a1a] md:text-4xl">{name}</h1>
-                        <p className="mt-4 text-sm leading-7 text-[#3f3f3f] md:text-base">{description}</p>
-                    </div>
-
-                    <div className="rounded-2xl border border-[#e7e1d7] bg-[#fcfaf7] p-5">
-                        <p className="text-xs font-semibold uppercase tracking-widest text-[#5b5b5b]">Precio</p>
-                        <div className="mt-2 flex items-end gap-2">
-                            <span className="text-4xl font-black text-[#1a3d2b]">${price}</span>
-                            <span className="pb-1 text-sm font-semibold text-[#5d5d5d]">USD</span>
-                        </div>
-
-                        <div className="mt-5 flex flex-col gap-3 sm:flex-row">
-                            <button
-                                onClick={handleAddToCart}
-                                className="rounded-xl bg-[#1a3d2b] px-5 py-3 text-sm font-bold text-white transition hover:bg-[#225239]"
-                            >
-                                Agregar al carrito
-                            </button>
-                            <button
-                                onClick={() => router.push("/cart")}
-                                className="rounded-xl border border-[#1a3d2b] px-5 py-3 text-sm font-bold text-[#1a3d2b] transition hover:bg-[#eef4ee]"
-                            >
-                                Ver carrito
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+    localStorage.setItem(
+      "checkoutProduct",
+      JSON.stringify({ id, name, place, image, description, price, categoryId: 0, stock: 1 }),
     );
+    router.push("/checkout");
+  };
+
+  return (
+    <section className="w-full bg-[#f5f2eb] py-10 px-6">
+      {/* HEADER */}
+      <div className="mb-8 flex items-center gap-3">
+        <h1 className="text-2xl font-bold text-[#1a3d2b]"></h1>
+      </div>
+
+      {/* CONTENEDOR PRINCIPAL */}
+      <div className="mx-auto max-w-6xl rounded-2xl bg-white p-6 shadow">
+
+        <div className="grid md:grid-cols-3 gap-6">
+          
+          {/* IZQUIERDA */}
+          <div className="md:col-span-2 space-y-6">
+
+            {/* TITULO */}
+            <div>
+              <h2 className="text-xl font-bold text-[#1a3d2b]">
+                {name}
+              </h2>
+              <p className="text-sm text-gray-500">📍 {place}</p>
+            </div>
+
+            {/* IMAGEN */}
+            <div className="relative h-64 w-full overflow-hidden rounded-xl">
+              <Image src={image} alt={name} fill className="object-cover" />
+            </div>
+
+            {/* DESCRIPCIÓN */}
+            <div className="rounded-xl bg-[#f7efe5] p-4">
+              <p className="text-sm text-gray-700">{description}</p>
+            </div>
+
+            <ExperienceContentSection items={experienceItems} />
+
+          </div>
+
+          {/* DERECHA - CARD DE PAGO */}
+          <div className="rounded-xl border p-5 shadow-sm h-fit">
+            <h3 className="font-bold text-gray-700 mb-4">
+              Métodos de pago
+            </h3>
+
+            <p className="text-sm text-gray-500 mb-2">1 persona</p>
+
+            <div className="flex justify-between mb-4">
+              <span>Total</span>
+              <span className="font-bold">${price} USD</span>
+            </div>
+
+            <button
+              onClick={handleReserve}
+              className="w-full bg-yellow-400 text-black font-bold py-2 rounded-lg hover:bg-yellow-500 transition"
+            >
+              Reservar Instructor
+            </button>
+
+            <button
+              onClick={() => router.push("/cart")}
+              className="w-full mt-3 border border-gray-300 py-2 rounded-lg"
+            >
+              Ver carrito
+            </button>
+          </div>
+
+        </div>
+      </div>
+
+      <CommentsSection initialComments={comments} />
+
+    </section>
+  );
 };
 
 export default ExperienceView;

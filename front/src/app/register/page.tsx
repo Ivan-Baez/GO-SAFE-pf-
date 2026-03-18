@@ -1,7 +1,10 @@
-"use client";
-
-import RegisterForBoth from "../RegisterForBoth/page";
+import { Suspense } from "react"
+import RegisterView from "@/ui/RegisterView"
 
 export default function RegisterPage() {
-  return <RegisterForBoth />;
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <RegisterView />
+    </Suspense>
+  )
 }

@@ -22,7 +22,7 @@ export default function InstructorSidebar() {
     { name: "Crear experiencia", href: "/dashboard/experiences/create", icon: PlusCircle },
     { name: "Reservas", href: "/dashboard/bookings", icon: CalendarCheck },
     { name: "Reseñas", href: "/dashboard/reviews", icon: Star },
-    { name: "Mi perfil", href: "/dashboard/profile", icon: UserRound },
+    { name: "Mi perfil", href: `/instructors/1`, icon: UserRound },
     { name: "Configuración", href: "/dashboard/settings", icon: Settings },
   ];
 

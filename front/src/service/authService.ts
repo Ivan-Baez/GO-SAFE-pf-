@@ -42,7 +42,7 @@ export async function loginService(userData: ILoginProps) {
 export async function register (userData: IRegisterProps) {
     try{
     const payload = {
-      fistName: userData.primernombre,
+      firstName: userData.primernombre,
       lastName: userData.segundonombre,
       userName: userData.username,
       documentType: userData.documentType,

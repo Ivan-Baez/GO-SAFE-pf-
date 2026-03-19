@@ -88,7 +88,7 @@ export default function InstructorPublicProfile() {
                     alt={`${instructor.fistName} ${instructor.lastName}`}
                     width={180}
                     height={180}
-                    className="rounded-[24px] object-cover w-[180px] h-[180px]"
+                    className="rounded-3x1[24px] object-cover w-45[180px] h-45[180px]"
                   />
                 </div>
 

@@ -39,12 +39,12 @@ export default function CategoriesHome() {
         })}
       </div>
 
-      {/* Botón Ver más: lleva a todas las experiencias sin filtro */}
+      {/* Botón Descubrir más: lleva a todas las experiencias sin filtro */}
       <button 
         onClick={() => router.push('/experiences')}
         className="mt-12 px-10 py-3 bg-[#EAB308] text-black font-semibold rounded-lg hover:bg-[#CA8A04] transition-colors"
       >
-        Ver más
+        Descubrir más
       </button>
 
       <div className="absolute bottom-0 left-0 w-16 h-16 bg-[#D6755B] rounded-tr-3xl -translate-x-4 translate-y-4" />

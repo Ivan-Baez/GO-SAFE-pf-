@@ -4,6 +4,7 @@ import Link from "next/link";
 import {
   LayoutDashboard,
   Mountain,
+  PlusCircle,
   CalendarCheck,
   Star,
   UserRound,
@@ -18,6 +19,7 @@ export default function InstructorSidebar() {
   const menuItems = [
     { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
     { name: "Mis experiencias", href: "/dashboard/experiences", icon: Mountain },
+    { name: "Crear experiencia", href: "/dashboard/experiences/create", icon: PlusCircle },
     { name: "Reservas", href: "/dashboard/bookings", icon: CalendarCheck },
     { name: "Reseñas", href: "/dashboard/reviews", icon: Star },
     { name: "Mi perfil", href: `/instructors/1`, icon: UserRound },
@@ -25,7 +27,7 @@ export default function InstructorSidebar() {
   ];
 
   return (
-    <aside className="w-[260px] flex flex-col min-h-screen bg-[#1a3d2b] text-white p-6 justify-between">
+    <aside className="w-65[260px] flex flex-col min-h-screen bg-[#1a3d2b] text-white p-6 justify-between">
       <div>
         <div className="mb-10">
           <h2 className="text-2xl font-bold">GoSafe</h2>

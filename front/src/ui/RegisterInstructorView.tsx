@@ -118,6 +118,7 @@ export default function RegisterInstructorView() {
     <Formik
       initialValues={initialValues}
       validate={getValidationSchema}
+      validateOnMount={true}
       onSubmit={(values) => {
         if (step === 7) {
           handleFinalSubmit(values);
@@ -129,12 +130,6 @@ export default function RegisterInstructorView() {
       {({ errors, isSubmitting }) => (
         <Form>
           <Stepper currentStep={step} />
-          
-          {Object.keys(errors).length > 0 && (
-            <div className="max-w-md mx-auto mb-4 p-3 bg-red-100 text-red-700 rounded-lg text-sm">
-              <strong>Faltan campos obligatorios:</strong> {Object.keys(errors).join(", ")}
-            </div>
-          )}
 
           <div>
             {step === 1 && <PersonalData />}

@@ -20,15 +20,14 @@ const years = Array.from({ length: 100 }, (_, i) => currentYear - i);
 
 export default function PersonalData() {
 
-  const { errors, handleSubmit } = useFormikContext<any>();
-
+const { isValid, isSubmitting } = useFormikContext<any>();
 
   return (
     <div className="flex w-full min-h-screen relative overflow-hidden z-10 bg-white">
       <div className="flex flex-col w-full max-w-[500px] mx-auto p-6 min-h-screen relative overflow-hidden bg-white mb-50">
 
         <h2 className="text-2xl md:text-3xl font-bold text-[#1e3c31] text-center mb-8 leading-tight">
-          ¡únete a nuestra comunidad <br /> como instructor!
+          ¡Únete a nuestra comunidad <br /> como instructor!
         </h2>
 
         <div className="w-full space-y-3 z-10">
@@ -100,13 +99,11 @@ Nombre de usuario
             <div>
               <label className="block font-bold text-[#323235] mb-2 text-sm">Contraseña</label>
               <PasswordField name="password" placeholder="Tu contraseña" />
-              <ErrorMessage name="password" component="p" className="text-xs text-red-500 mt-1" />
             </div>
 
             <div>
               <label className="block font-bold text-[#323235] mb-2 text-sm">Confirmar Contraseña</label>
               <PasswordField name="confirmPassword" placeholder="Repite tu contraseña" />
-              <ErrorMessage name="confirmPassword" component="p" className="text-xs text-red-500 mt-1" />
             </div>
 
             <div>
@@ -183,8 +180,14 @@ Nombre de usuario
           <div className="pt-4 flex justify-center">
             <button
               type="submit"
-              className="w-full max-w-[280px] bg-[#f0ba3c] text-white font-bold py-3 px-6 rounded-2xl"
-            >
+              disabled={!isValid || isSubmitting}
+    className="w-full max-w-[280px] bg-[#f0ba3c] text-white font-bold py-3 px-6 rounded-2xl transition
+    hover:bg-[#dca91f]
+    disabled:bg-[#f0ba3c]/40
+    disabled:text-white/60
+    disabled:cursor-not-allowed
+    disabled:hover:bg-[#f0ba3c]/40"
+  >
               Continuar
             </button>
           </div>

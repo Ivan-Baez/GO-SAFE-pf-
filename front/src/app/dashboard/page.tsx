@@ -1,9 +1,9 @@
 "use client";
 
 import { useAuth } from "@/context/AuthContext";
-import UserDashboard from "@/components/dashboard/UserDashboard";
-import InstructorDashboard from "@/components/dashboard/InstructorDashboard";
-import AdminDashboard from "@/components/dashboard/AdminDashboard";
+import UserDashboard from "@/ui/UserDashboard";
+import InstructorDashboard from "@/ui/InstructorDashboard";
+import AdminDashboard from "@/ui/AdminDashboard";
 import { jwtDecode } from "jwt-decode";
 
 interface DecodedToken {

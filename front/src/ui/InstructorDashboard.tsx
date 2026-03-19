@@ -1,6 +1,6 @@
 "use client";
 
-import InstructorSidebar from "./InstructorSidebar";
+import InstructorSidebar from "../components/dashboard/InstructorSidebar";
 import { CalendarDays, Star, Wallet, MapPin, Plus, Users, Clock3 } from "lucide-react";
 
 export default function InstructorDashboard() {

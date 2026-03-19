@@ -33,19 +33,18 @@ export class AuthController {
   @Get('google/callback')
   @UseGuards(AuthGuard('google'))
   async googleAuthRedirect(@Req() req, @Res() res) {
-
     const googleUser = req.user;
 
     const result = await this.userService.googleLogin(googleUser);
 
     if (result.exists) {
       return res.redirect(
-        `http://localhost:3001/google-success?token=${result.token}`
+        `${process.env.URL_FRONT}/google-success?token=${result.token}`,
       );
     }
 
     return res.redirect(
-      `http://localhost:3001/register?token=${result.token}`
+      `${process.env.URL_FRONT}/register?token=${result.token}`,
     );
   }
 

@@ -67,7 +67,7 @@ export default function RegisterInstructorView() {
     // 2. OBJETO FINAL (DTO) - Ajustado al Swagger
     const baseData = {
       user: {
-        fistName: values.firstName || "Nombre", 
+        firstName: values.firstName || "Nombre", 
         lastName: values.lastName || "Apellido",
         userName: values.userName || (values.firstName ? values.firstName + "91" : "user_temp"),
         email: (values.email || "").toLowerCase().trim(),

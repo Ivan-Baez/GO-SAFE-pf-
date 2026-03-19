@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { jwtDecode } from "jwt-decode";
 import Link from "next/link";
 import { register } from "@/service/authService";
+import { Eye, EyeOff } from "lucide-react";
 
 // ── Design tokens ─────────────────────────────────────────────────────────────
 const GREEN       = "#1a3d2b";
@@ -58,6 +59,8 @@ function RegisterView() {
   const token       = searchParams.get("token");
 
   const [googleData, setGoogleData] = useState<any>(null);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   useEffect(() => {
     if (token && token !== "null") {
@@ -119,7 +122,9 @@ function RegisterView() {
           padding: "6px 40px 60px",
           position: "relative",
           zIndex: 10,
+          width: "100%",
           maxWidth: "820px",
+          margin: "0 auto",
         }}>
 
           {/* Title */}
@@ -280,8 +285,36 @@ function RegisterView() {
 
                   {/* Contraseña — blanco */}
                   <FieldWrap>
-                    <Field name="password" type="password" placeholder="Contraseña"
-                      className="reg-input" style={inputBase} />
+                    <div style={{ position: "relative" }}>
+                      <Field
+                        name="password"
+                        type={showPassword ? "text" : "password"}
+                        placeholder="Contraseña"
+                        className="reg-input"
+                        style={{ ...inputBase, paddingRight: "44px" }}
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowPassword(!showPassword)}
+                        aria-label={showPassword ? "Ocultar contraseña" : "Mostrar contraseña"}
+                        style={{
+                          position: "absolute",
+                          top: "50%",
+                          right: "12px",
+                          transform: "translateY(-50%)",
+                          border: "none",
+                          background: "transparent",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          color: "#6b7280",
+                          cursor: "pointer",
+                          padding: 0,
+                        }}
+                      >
+                        {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                      </button>
+                    </div>
                     <ErrorMessage name="password">{msg => <span style={errorStyle}>{msg}</span>}</ErrorMessage>
                   </FieldWrap>
 
@@ -299,8 +332,36 @@ function RegisterView() {
 
                   {/* Repetir contraseña — blanco */}
                   <FieldWrap>
-                    <Field name="confirmPassword" type="password" placeholder="Repetir contraseña"
-                      className="reg-input" style={inputBase} />
+                    <div style={{ position: "relative" }}>
+                      <Field
+                        name="confirmPassword"
+                        type={showConfirmPassword ? "text" : "password"}
+                        placeholder="Repetir contraseña"
+                        className="reg-input"
+                        style={{ ...inputBase, paddingRight: "44px" }}
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                        aria-label={showConfirmPassword ? "Ocultar confirmación" : "Mostrar confirmación"}
+                        style={{
+                          position: "absolute",
+                          top: "50%",
+                          right: "12px",
+                          transform: "translateY(-50%)",
+                          border: "none",
+                          background: "transparent",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          color: "#6b7280",
+                          cursor: "pointer",
+                          padding: 0,
+                        }}
+                      >
+                        {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                      </button>
+                    </div>
                     <ErrorMessage name="confirmPassword">{msg => <span style={errorStyle}>{msg}</span>}</ErrorMessage>
                   </FieldWrap>
 

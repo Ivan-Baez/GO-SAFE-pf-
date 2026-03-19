@@ -1,5 +1,5 @@
 import { Suspense } from "react"
-import RegisterView from "@/ui/RegisterView"
+import RegisterView from "@/ui/RegisterUsuarioView"
 
 export default function RegisterPage() {
   return (

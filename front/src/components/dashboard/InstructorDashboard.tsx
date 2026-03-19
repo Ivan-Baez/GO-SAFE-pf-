@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import InstructorSidebar from "./InstructorSidebar";
 import { CalendarDays, Star, Wallet, MapPin, Plus, Users, Clock3 } from "lucide-react";
 
@@ -63,10 +64,13 @@ export default function InstructorDashboard() {
             </p>
           </div>
 
-          <button className="flex items-center justify-center gap-2 bg-[#e7b52c] hover:bg-[#dca91f] text-[#1a1a1a] font-semibold px-5 py-3 rounded-xl shadow-sm transition w-full md:w-auto">
+          <Link
+            href="/dashboard/experiences/create"
+            className="flex items-center justify-center gap-2 bg-[#e7b52c] hover:bg-[#dca91f] text-[#1a1a1a] font-semibold px-5 py-3 rounded-xl shadow-sm transition w-full md:w-auto"
+          >
             <Plus size={18} />
             Crear experiencia
-          </button>
+          </Link>
         </div>
 
         {/* Estado perfil */}

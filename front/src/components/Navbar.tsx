@@ -10,7 +10,7 @@ export default function Navbar() {
 
   return (
     <nav className="flex items-center justify-between bg-[#e6dfd5] px-10 py-3 w-full gap-6">
-      <Link href="/" className="cursor-pointer flex-shrink-0">
+      <Link href="/" className="cursor-pointer shrink-0">
         <Image
           src="/logo.png"
           alt="GoSafe logo"
@@ -33,7 +33,7 @@ export default function Navbar() {
           </div>
 
           {/* Acciones */}
-          <div className="flex items-center gap-4 flex-shrink-0">
+          <div className="flex items-center gap-4 shrink-0">
             <Link
               href="/A&Q"
               className="flex items-center justify-center gap-2 px-4 py-2 border border-black rounded hover:bg-[#b8b1a6] w-37.5 text-center"
@@ -55,9 +55,11 @@ export default function Navbar() {
               className="flex items-center justify-center gap-2 px-4 py-2 border border-black rounded hover:bg-[#b8b1a6] w-37.5 text-center"
             >
               <UserRound size={18} />
-              <span>Dashboard</span>
+              <span>perfil</span>
             </Link>
-
+            <Link href="/dashboard/experiences/create"
+            > <span>crearEx</span>
+            </Link>
             <button
               onClick={handleLogout}
               className="flex items-center justify-center gap-2 px-4 py-2 border border-black rounded hover:bg-[#b8b1a6] w-37.5 text-center"

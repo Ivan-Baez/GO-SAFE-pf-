@@ -7,7 +7,7 @@ const Card = ({ id, name, place, image, sport, modality }: IService) => {
 
     return (
         <Link
-            href="/experiences"
+            href={`/instructors/${id}`}
             className="group overflow-hidden rounded-2xl border border-[#dfd6c9] bg-white shadow-[0_10px_26px_rgba(26,61,43,0.10)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_16px_32px_rgba(26,61,43,0.18)]"
         >
             <div className="relative h-52 overflow-hidden bg-[#dce7dc]">

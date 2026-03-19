@@ -41,11 +41,7 @@ const ExperienceView: React.FC<IProduct> = ({ name, id,place, image, description
       return;
     }
 
-    localStorage.setItem(
-      "checkoutProduct",
-      JSON.stringify({ id, name, place, image, description, price, categoryId: 0, stock: 1 }),
-    );
-    router.push("/checkout");
+    router.push("/cart");
   };
 
   return (

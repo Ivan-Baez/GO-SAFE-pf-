@@ -1,5 +1,5 @@
 import ExperienceCard from "@/components/ExperienceCard";
-import { getProductsDB } from "@/service/productService";
+import { getExperiencesCatalog } from "@/service/productService";
 
 export default async function ExperiencesPage() {
   const fallbackExperiences: Array<{
@@ -42,18 +42,9 @@ export default async function ExperiencesPage() {
   }> = [];
 
   try {
-    const products = await getProductsDB();
-    experiences =
-      products.length > 0
-        ? products.map((product) => ({
-            id: product.id,
-            title: product.name,
-            difficulty: "Intermedio",
-            price: product.price,
-            location: "Colombia",
-          }))
-        : fallbackExperiences;
-    usingFallback = products.length === 0;
+    const catalog = await getExperiencesCatalog();
+    experiences = catalog.length > 0 ? catalog : fallbackExperiences;
+    usingFallback = catalog.length === 0;
   } catch {
     experiences = fallbackExperiences;
     usingFallback = true;
@@ -62,7 +53,7 @@ export default async function ExperiencesPage() {
   return (
     <div className="min-h-screen bg-green-900 p-10">
       <h1 className="text-3xl font-bold text-white mb-8">
-        Experiencias de Climbing
+        Experiencias de todas las categorias
       </h1>
 
       {usingFallback && (

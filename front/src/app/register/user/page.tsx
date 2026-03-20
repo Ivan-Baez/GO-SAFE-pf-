@@ -1,7 +1,12 @@
-"use client";
-
-import RegisterView from "@/ui/RegisterView";
+import { Suspense } from "react";
+import RegisterView from "@/ui/RegisterUsuarioView";
 
 export default function RegisterUserPage() {
-  return <RegisterView />;
+  return (
+    <section className="w-full">
+      <Suspense fallback={<div>Loading...</div>}>
+        <RegisterView />
+      </Suspense>
+    </section>
+  );
 }

@@ -30,7 +30,7 @@ export default function TestimonialsHome() {
 
   return (
     <section className="bg-white py-20 px-6 md:px-20 overflow-hidden">
-      <div className="max-w-[1200px] mx-auto flex flex-col md:flex-row items-center gap-12 md:gap-24">
+      <div className="max-w-300[1200px] mx-auto flex flex-col md:flex-row items-center gap-12 md:gap-24">
         
         {/* --- LADO IZQUIERDO: TÍTULO Y DOTS --- */}
         <div className="flex-1 space-y-6">
@@ -61,7 +61,7 @@ export default function TestimonialsHome() {
         {/* --- LADO DERECHO: TARJETA ANIMADA --- */}
         <div className="flex-1 relative w-full max-w-lg">
           {/* Contenedor con altura fija para evitar saltos de layout */}
-          <div className="relative h-[250px] w-full">
+          <div className="relative h-62.5[250px] w-full">
             {testimonials.map((t, index) => (
               <div
                 key={t.id}

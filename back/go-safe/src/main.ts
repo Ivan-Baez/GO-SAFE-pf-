@@ -8,6 +8,10 @@ async function bootstrap() {
     'http://localhost:3000',
     'http://localhost:3001',
     'http://localhost:3002',
+    'http://localhost:5173',
+    'https://gosafe-5g57.onrender.com',
+    'https://gosafe-5g57.onrender.com/docs',
+    'https://gosafe-seven.vercel.app',
   ];
 
   const swaggerConfig = new DocumentBuilder()

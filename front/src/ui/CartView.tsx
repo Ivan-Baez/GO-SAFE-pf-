@@ -1,16 +1,9 @@
 "use client";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
 
 export default function CartView() {
-  const router = useRouter();
-
   // Placeholder for cart items - will be populated with actual data
   const cartItems: any[] = [];
-
-  const handleCheckout = () => {
-    router.push("/checkout");
-  };
 
   return (
     <div className="mt-12 p-8">
@@ -44,12 +37,9 @@ export default function CartView() {
             <span className="text-2xl font-bold">Total: $0</span>
           </div>
 
-          <button
-            onClick={handleCheckout}
-            className="w-full py-3 bg-[#2d5016] text-white rounded hover:bg-[#1f3a10] font-semibold"
-          >
-            Proceder al Pago
-          </button>
+          <p className="w-full py-3 text-center text-sm text-gray-500">
+            El pago se gestiona por API externa en una siguiente fase.
+          </p>
         </div>
       )}
     </div>

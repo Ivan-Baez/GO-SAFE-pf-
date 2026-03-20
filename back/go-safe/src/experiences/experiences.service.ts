@@ -6,7 +6,7 @@ import {
 import { CreateExperienceDto } from './dto/create-experience.dto';
 import { UpdateExperienceDto } from './dto/update-experience.dto';
 import { Experience } from './entities/experience.entity';
-import { Repository } from 'typeorm';
+import { ILike, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Instructor } from 'src/instructors/entities/instructor.entity';
 import { BuyExperienceDto } from './dto/buy-experience.dto';
@@ -47,8 +47,9 @@ export class ExperiencesService {
     }
   }
 
-  async findAll() {
-    const experiencesFound = await this.experiencesRepository.find();
+  async findAll(category?: string) {
+    const where = category ? { category: ILike(category.trim()) } : {};
+    const experiencesFound = await this.experiencesRepository.find({ where });
     return experiencesFound;
   }
 

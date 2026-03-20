@@ -1,16 +1,24 @@
-"use client";
-import { useParams } from 'next/navigation';
+import Link from 'next/link';
 import ExperienceCard from '@/components/ExperienceCard';
-import { EXPERIENCES } from "@/lib/experiencesHard"; // Importación nombrada
+import { getExperiencesByCategory, ExperienceCatalogItem } from '@/service/productService';
 
-export default function CategoryPage() {
-  const params = useParams();
-  const categorySlug = params.category as string; 
+interface CategoryPageProps {
+  params: Promise<{
+    category: string;
+  }>;
+}
 
-  // Filtrado de los datos hardcodeados directamente en el render
-  const filteredExperiences = EXPERIENCES.filter((exp) => 
-    exp.category.toLowerCase() === categorySlug.toLowerCase()
-  );
+export default async function CategoryPage({ params }: CategoryPageProps) {
+  const { category } = await params;
+  const categorySlug = decodeURIComponent(category);
+
+  let filteredExperiences: ExperienceCatalogItem[] = [];
+
+  try {
+    filteredExperiences = await getExperiencesByCategory(categorySlug);
+  } catch {
+    filteredExperiences = [];
+  }
 
   return (
     <div className="max-w-7xl mx-auto p-8 min-h-screen bg-gray-50/50">
@@ -19,21 +27,27 @@ export default function CategoryPage() {
           {categorySlug} Adventures
         </h1>
         <p className="text-gray-500 mt-2 font-medium">
-          {filteredExperiences.length} experiences found for this category.
+          {filteredExperiences.length} experiencias encontradas para esta categoria.
         </p>
+        <Link
+          href="/experiences"
+          className="mt-5 inline-block rounded-lg bg-[#EAB308] px-5 py-2 font-semibold text-black transition hover:bg-[#CA8A04]"
+        >
+          Ver todas las experiencias
+        </Link>
       </header>
       
       {filteredExperiences.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
           {filteredExperiences.map((exp) => (
-            <ExperienceCard key={exp.id} exp={exp} />
+            <ExperienceCard key={exp.id} experience={exp} />
           ))}
         </div>
       ) : (
-        <div className="text-center py-20 bg-white rounded-[32px] shadow-sm border border-gray-100">
+        <div className="text-center py-20 bg-white rounded-4xl shadow-sm border border-gray-100">
           <div className="text-6xl mb-4">🏜️</div>
           <h3 className="text-xl font-semibold text-gray-700">Ups! No hay nada por aquí</h3>
-          <p className="text-gray-500">Todavía no tenemos actividades en {categorySlug}.</p>
+          <p className="text-gray-500">Todavia no tenemos actividades en {categorySlug}.</p>
         </div>
       )}
     </div>

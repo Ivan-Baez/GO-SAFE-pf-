@@ -33,19 +33,18 @@ export class AuthController {
   @Get('google/callback')
   @UseGuards(AuthGuard('google'))
   async googleAuthRedirect(@Req() req, @Res() res) {
-
     const googleUser = req.user;
 
     const result = await this.userService.googleLogin(googleUser);
 
     if (result.exists) {
       return res.redirect(
-        `http://localhost:3001/google-success?token=${result.token}`
+        `${process.env.URL_FRONT}/google-success?token=${result.token}`,
       );
     }
 
     return res.redirect(
-      `http://localhost:3001/register?token=${result.token}`
+      `${process.env.URL_FRONT}/register?token=${result.token}`,
     );
   }
 
@@ -64,7 +63,7 @@ export class AuthController {
           documentType: 'CC',
           document: 123456789,
           genre: 'Male',
-          birthdate: '13/05/1994',
+          birthdate: '13-05-1994',
           address: 'Calle 123 #45-67',
           phone: 3001234567,
           country: 'Colombia',
@@ -97,7 +96,7 @@ export class AuthController {
             userName: 'gazas',
             document: 987654321,
             genre: 'Male',
-            birthdate: '13/05/1994',
+            birthdate: '13-05-1994',
             address: 'Calle 45 #23-10',
             phone: 3011234567,
             country: 'Colombia',

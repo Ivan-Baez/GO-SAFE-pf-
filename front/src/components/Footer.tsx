@@ -1,9 +1,8 @@
 export default function Footer() {
   return (
-    
-    <footer className="bg-[#e9e7e4] px-20 py-12 w-full">
+    <footer className="w-full bg-[#e9e7e4] px-6 py-12 md:px-10 lg:px-20">
       
-      <div className="grid grid-cols-5 gap-10 items-start">
+      <div className="grid grid-cols-1 items-start gap-10 sm:grid-cols-2 lg:grid-cols-5">
 
         <div>
           <h2 className="text-2xl font-semibold">GoSafe</h2>
@@ -57,9 +56,6 @@ export default function Footer() {
 
       <div className="text-center text-gray-500 text-sm mt-10">
         All rights gosafe@gmail.com
-      </div>
-      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-10">
-
       </div>
 
     </footer>

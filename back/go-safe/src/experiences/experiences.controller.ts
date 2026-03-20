@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   UseGuards,
+  Query,
 } from '@nestjs/common';
 import { ExperiencesService } from './experiences.service';
 import { CreateExperienceDto } from './dto/create-experience.dto';
@@ -57,8 +58,8 @@ export class ExperiencesController {
   }
 
   @Get()
-  findAll() {
-    return this.experiencesService.findAll();
+  findAll(@Query('category') category?: string) {
+    return this.experiencesService.findAll(category);
   }
 
   @Get(':id')

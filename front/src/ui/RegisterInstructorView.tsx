@@ -4,7 +4,6 @@ import { registerInstructor } from "@/service/authService";
 import { IInstructorRegisterProps } from "@/types/types";
 import { Formik, Form } from "formik";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
-import { uploadCertificate } from "@/service/authService";
 
 // Importar validaciones
 import { validateRegisterStep1, ValidateRegisterStep2, ValidateCertificationStep, validateEducationStep, validateDescriptionStep, validateAvailabilityStep, validatePriceStep} from "@/lib/validate";
@@ -37,60 +36,53 @@ export default function RegisterInstructorView() {
   const initialValues: IInstructorRegisterProps = {
     firstName: "", lastName: "", email: "", password: "", confirmPassword: "",
     birthDay: "", birthMonth: "", birthYear: "", address: "", city: "",
-    country: "", phone: "", isMajor: false, document: "", genre: "",
-    userName: "", profilePic: "", noEducation: false, titulo: "",
-    institucion: "", nivel: "", añoInicio: "", añoFin: "", actualidad: false,
-    noCertificado: false, nombreCertificado: "", certificadoFile: null, certificadoUrl: "",
-    bio: ""
+    country: "", phone: "", isMajor: false, document: "", documentType: "", genre: "",
+    userName: "", profilePic: "", noEducation: false, career: "",
+    institution: "", level: "", añoInicio: "", añoFin: "", onCourse: false,
+    noCertificado: false, title: "", url: "", title2: "",
+    url2: "", about: ""
   };
 
   const handleFinalSubmit = async (values: IInstructorRegisterProps) => {
-    // 1. Unificamos strings para el objeto instructor
-    const seccionBio = values.bio || "Sin biografía.";
-    
-    const seccionEducacion = values.noEducation
-      ? "Sin formación académica adicional."
-      : `Educación: ${values.titulo} en ${values.institucion} (${values.nivel}).`;
+  
+    const period = values.onCourse
+      ? `${values.añoInicio}-${values.añoInicio}`
+      : `${values.añoInicio}-${values.añoFin}`;
 
-    const fullAbout = `${seccionBio}\n${seccionEducacion}`.trim();
-    
-    //Certifications
-    //guarda la URL en una variable local
-    let certificadoUrl = values.certificadoUrl || "";
-
-    //sube el archivo, si existe
-    if (!values.noCertificado && values.certificadoFile) {
-      certificadoUrl = await uploadCertificate(values.certificadoFile);
-    }
-    
-    //arma fullCertificatios
-    const fullCertifications = values.noCertificado
-      ? "Sin certificaciones."
-      : certificadoUrl
-      ? `${values.nombreCertificado} - ${certificadoUrl}`.trim()
-      : `${values.nombreCertificado}`.trim();
+    // Certifications
+    const certifications = values.noCertificado
+    ? []
+    : [
+      { title: values.title, url: values.url },
+      { title: values.title2, url: values.url2 },
+    ].filter((cert) => cert.title && cert.url);
 
     // 2. OBJETO FINAL (DTO) - Ajustado al Swagger
     const baseData = {
       user: {
-        firstName: values.firstName || "Nombre", 
-        lastName: values.lastName || "Apellido",
-        userName: values.userName || (values.firstName ? values.firstName + "91" : "user_temp"),
-        email: (values.email || "").toLowerCase().trim(),
+        firstName: values.firstName, 
+        lastName: values.lastName,
+        userName: values.userName,
+        email: values.email?.toLowerCase().trim(),
         password: values.password,
-        birthdate: `${values.birthDay}/${values.birthMonth}/${values.birthYear}`,
-        genre: values.genre || "Male",
-        documentType: "CC",
-        document: Number(values.document) || 1234567,
-        phone: Number(values.phone) || 1234567,
-        country: values.country || "Colombia",
-        city: values.city || "Bogota",
-        address: values.address || "Calle 123",
-        profilePic: values.profilePic || "https://example.com/profile.jpg",
+        birthdate: `${values.birthDay}-${values.birthMonth}-${values.birthYear}`,
+        genre: values.genre,
+        documentType: values.documentType,
+        document: Number(values.document),
+        phone: Number(values.phone),
+        country: values.country,
+        city: values.city,
+        address: values.address,
+        profilePic: values.profilePic,
       },
       instructor: {
-        about: fullAbout,
-        certifications: fullCertifications
+        career: values.career,
+        institution: values.institution,
+        level: values.level,
+        period: period,
+        onCourse: values.onCourse,
+        about: values.about,
+        certifications,
       }
     };
 

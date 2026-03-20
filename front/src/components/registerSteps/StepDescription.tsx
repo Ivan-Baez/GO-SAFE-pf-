@@ -27,18 +27,18 @@ export default function StepDescription({ prev }: StepProps) {
 
           <Field
             as="textarea"
-            name="bio"
+            name="about"
             placeholder="Ej: Soy instructor de paracaidismo con más de 10 años de experiencia..."
             className="w-full h-48 py-4 px-4 resize-none align-top bg-[#f8f8f8] border border-gray-300 rounded-md text-gray-600 italic transition-all mb-1"
           />
 
           {/* contador */}
           <div className="text-right text-[11px] text-gray-400 mt-1 italic">
-            {values.bio?.length || 0} caracteres
+            {values.about?.length || 0} caracteres
           </div>
 
           <ErrorMessage
-            name="bio"
+            name="about"
             component="p"
             className="text-xs text-red-500 mt-1"
           />

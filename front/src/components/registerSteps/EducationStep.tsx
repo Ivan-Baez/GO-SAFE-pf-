@@ -27,7 +27,7 @@ export default function EducationStep({ prev }: StepProps) {
             Título / Carrera
           </label>
           <Field 
-            name="titulo" 
+            name="career" 
             placeholder="Ej: Lic. en Deporte" 
             className="inputStyles w-full"
           />
@@ -39,7 +39,7 @@ export default function EducationStep({ prev }: StepProps) {
             Institución
           </label>
           <Field 
-            name="institucion" 
+            name="institution" 
             placeholder="Nombre de la universidad o escuela" 
             className="inputStyles w-full"
           />
@@ -52,7 +52,7 @@ export default function EducationStep({ prev }: StepProps) {
           </label>
           <Field
             as="select"
-            name="nivel"
+            name="level"
             className="inputStyles w-full appearance-none italic text-gray-400"
           >
             <option value="" disabled>Selecciona nivel</option>
@@ -96,11 +96,11 @@ export default function EducationStep({ prev }: StepProps) {
         <div className="flex items-center space-x-3 pt-2">
           <Field
             type="checkbox"
-            name="actualidad"
-            id="actualidad"
+            name="onCourse"
+            id="onCourse"
             className="w-5 h-5 border-gray-300 rounded text-[#f0ba3c] focus:ring-[#f0ba3c]"
           />
-          <label htmlFor="actualidad" className="text-gray-600 text-sm">
+          <label htmlFor="onCourse" className="text-gray-600 text-sm">
             Actualmente estudiando
           </label>
         </div>

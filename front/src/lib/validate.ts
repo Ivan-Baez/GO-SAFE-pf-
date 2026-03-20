@@ -124,6 +124,10 @@ export const validateRegisterStep1 = (values: IInstructorRegisterProps): IInstru
     errors.lastName = "Mínimo 2 caracteres";
   }
 
+  if (!values.documentType) {
+    errors.documentType = "El tipo de documento es requerido";
+  }
+
   if (!values.document) {
     errors.document = "Tu documento es requerido";
   } else if (isNaN(Number(values.document))) {
@@ -239,12 +243,20 @@ export const ValidateCertificationStep = (values: IInstructorRegisterProps): IIn
       errors.category = "Selecciona un área para tu certificación.";
     }
     
-    if (!values.nombreCertificado) {
-      errors.nombreCertificado = "El nombre del certificado es obligatorio si no marcas la casilla.";
+    if (!values.title) {
+      errors.title = "El nombre del certificado es obligatorio si no marcas la casilla.";
     }
 
-    if (values.certificadoUrl && !values.certificadoUrl.startsWith('http')) {
-      errors.certificadoUrl = "La URL del certificado debe ser un enlace válido (http/https).";
+    if (!values.title2) {
+      errors.title2 = "El nombre del certificado es obligatorio si no marcas la casilla.";
+    }
+
+    if (values.url && !values.url.startsWith('http')) {
+      errors.url = "La URL del certificado debe ser un enlace válido (http/https).";
+    }
+
+    if (values.url2 && !values.url2.startsWith('http')) {
+      errors.url2 = "La URL del certificado debe ser un enlace válido (http/https).";
     }
   }
 
@@ -255,16 +267,16 @@ export const validateEducationStep = (values: IInstructorRegisterProps): IInstru
   const errors: IInstructorRegisterErrors = {};
   const currentYear = new Date().getFullYear();
 
-  if (!values.titulo) {
-    errors.titulo = "El título o carrera es obligatorio";
+  if (!values.career) {
+    errors.career = "El título o carrera es obligatorio";
   }
 
-  if (!values.institucion) {
-    errors.institucion = "La institución es obligatoria";
+  if (!values.institution) {
+    errors.institution = "La institución es obligatoria";
   }
 
-  if (!values.nivel) {
-    errors.nivel = "Selecciona un nivel de estudios";
+  if (!values.level) {
+    errors.level = "Selecciona un nivel de estudios";
   }
 
   // Validación de Años
@@ -274,7 +286,7 @@ export const validateEducationStep = (values: IInstructorRegisterProps): IInstru
     errors.añoInicio = "No puede ser un año futuro";
   }
 
-  if (!values.actualidad) {
+  if (!values.onCourse) {
     if (!values.añoFin) {
       errors.añoFin = "Año de fin requerido";
     } else if (values.añoInicio && values.añoFin < values.añoInicio) {
@@ -289,54 +301,12 @@ export const validateEducationStep = (values: IInstructorRegisterProps): IInstru
 export const validateDescriptionStep = (values: IInstructorRegisterProps): IInstructorRegisterErrors => {
   const errors: IInstructorRegisterErrors = {};
 
-  if (!values.bio) {
-    errors.bio = "La biografía es obligatoria.";
-  } else if (values.bio.length < 20) {
-    errors.bio = `Es muy corta. Escribe al menos ${20 - values.bio.length} caracteres más.`;
-  } else if (values.bio.length > 500) {
-    errors.bio = "Has superado el límite de 500 caracteres.";
-  }
-
-  return errors;
-};
-
-export const validateAvailabilityStep = (values: IInstructorRegisterProps): IInstructorRegisterErrors => {
-  const errors: IInstructorRegisterErrors = {};
-
-  // Validar que haya seleccionado al menos un día
-  if (!values.selectedDays || values.selectedDays.length === 0) {
-    errors.selectedDays = "Selecciona al menos un día de disponibilidad.";
-  }
-
-  // Validar rango horario
-  // Si las horas vienen como "08:00", podemos comparar directamente los strings
-  // o extraer el número: parseInt(values.startTime.split(':')[0])
-  if (!values.startTime || !values.endTime) {
-    errors.startTime = "Debes seleccionar un rango horario";
-    return errors;
-  }
-
-  const start = parseInt(values.startTime.split(':')[0]);
-  const end = parseInt(values.endTime.split(':')[0]);
-
-  if (end <= start) {
-    errors.endTime = "La hora de fin debe ser posterior a la de inicio.";
-  }
-
-  return errors;
-};
-
-export const validatePriceStep = (values: IInstructorRegisterProps): IInstructorRegisterErrors => {
-  const errors: IInstructorRegisterErrors = {};
-
-  const price = Number(values.pricePerHour);
-
-  if (!values.pricePerHour || values.pricePerHour === "") {
-    errors.pricePerHour = "Debes ingresar un valor por hora.";
-  } else if (isNaN(price) || price <= 0) {
-    errors.pricePerHour = "El precio debe ser un número mayor a 0.";
-  } else if (price > 1000000) { // Ejemplo de seguridad
-    errors.pricePerHour = "El precio parece demasiado alto.";
+  if (!values.about) {
+    errors.about = "La biografía es obligatoria.";
+  } else if (values.about.length < 20) {
+    errors.about = `Es muy corta. Escribe al menos ${20 - values.about.length} caracteres más.`;
+  } else if (values.about.length > 500) {
+    errors.about = "Has superado el límite de 500 caracteres.";
   }
 
   return errors;

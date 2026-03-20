@@ -65,34 +65,27 @@ export interface IInstructorRegisterErrors{
     // Step Certificación
     noCertificado?: boolean;
     category?: string;
-    nombreCertificado?: string;
-    certificadoUrl?: string;
+    title?: string;
+    title2?: string;
+    url?: string;
+    url2?: string;
     certifications?: string;
     //Step Education
-    titulo?: string;
-    institucion?: string;
-    nivel?: string;
+    career?: string;
+    institution?: string;
+    level?: string;
     añoInicio?: string;
     añoFin?: string;
-    actualidad?: boolean;
+    onCourse?: boolean;
     // Step About
-    bio?: string;
-    disponibilidad?: string;
-    precios?: string;
     about?: string;  
-    //Step Disponibilidad
-    selectedDays?: string;
-    startTime?: string;
-    endTime?: string;
-    //Step Precios
-    pricePerHour?: string;
 }
 
 export interface IInstructorRegisterProps {
   firstName?: string;
   lastName?: string;
   userName?: string;
-  email?: string;
+  email: string;
   password?: string;
   confirmPassword?: string; 
   documentType?: string;
@@ -112,31 +105,23 @@ export interface IInstructorRegisterProps {
   // Step Certificación
   noCertificado?: boolean;
   category?: string;
-  nombreCertificado?: string;
-  certificadoFile?: File | null;
-  certificadoUrl?: string;
+  title?: string;
+  title2?: string;
+  url?: string;
+  url2?: string;
   certifications?: string;
   //Step Education
-  titulo?: string;
-  institucion?: string;
-  nivel?: string;
+  career?: string;
+  institution?: string;
+  level?: string;
   añoInicio?: number | string; 
   añoFin?: number | string;
-  actualidad?: boolean;
+  onCourse?: boolean;
   noEducation?: boolean;
   // Step About
-  bio?: string;
-  disponibilidad?: string;
-  precios?: string;
   about?: string;
-  //Step Disponibilidad
-  selectedDays?: string[];
-  startTime?: string;
-  endTime?: string;
-  //Step Precios
-  pricePerHour?: number | string;
-  currency?: string;
 }
+
 export interface IService {
     id:number
     name:string
@@ -199,7 +184,7 @@ export interface IInstructor {
   rating?: number;
   totalReviews?: number;
   verified?: boolean;
-  title?: string;
+  career?: string;
   status?: string;
   instructorProfile: {
     about?: string;

@@ -4,7 +4,7 @@ import { DataSource } from 'typeorm';
 import { DataSourceOptions } from 'typeorm/browser';
 
 dotenvConfig({ path: '.development.env' });
-const isProduction = process.env.NODE_ENV === 'production';
+const isProduction = process.env.ENV === 'production';
 
 export const config = {
   type: 'postgres',
@@ -23,13 +23,16 @@ export const config = {
         password: process.env.DB_PASSWORD,
         database: process.env.DB_DATABASE,
       }),
-  entities: ['dist/**/*.entity{.ts,.js}'],
   autoLoadEntities: true,
-  dropSchema: true,
-  synchronize: true,
-  logging: true,
+  dropSchema: stringToBoolean(process.env.DB_DROP_SCHEMA) && isProduction,
+  synchronize: stringToBoolean(process.env.DB_SYNCHONIZE) && isProduction,
+  logging: stringToBoolean(process.env.DB_LOGGING) && isProduction,
   migrations: [],
 };
+
+function stringToBoolean(envvar?: string): boolean {
+  return envvar && envvar === 'true' ? true : false;
+}
 
 export default registerAs('typeorm', () => config);
 

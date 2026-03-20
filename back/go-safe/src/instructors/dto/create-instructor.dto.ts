@@ -1,10 +1,14 @@
+import { Type } from 'class-transformer';
 import {
   IsNotEmpty,
   IsOptional,
   IsString,
   MinLength,
   MaxLength,
+  ValidateNested,
+  IsArray,
 } from 'class-validator';
+import { CreateCertificationDto } from 'src/certifications/dto/create-certification.dto';
 
 export class CreateInstructorDto {
   /**
@@ -17,13 +21,8 @@ export class CreateInstructorDto {
   @MaxLength(500)
   about!: string;
 
-  /**
-   * Certifications or qualifications of the instructor
-   * Can be text or URLs to certification files
-   * @example IFSC Certified Climbing Instructor
-   */
-  @IsOptional()
-  @IsString()
-  @MaxLength(1000)
-  certifications?: string;
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => CreateCertificationDto)
+  certifications!: CreateCertificationDto[];
 }

@@ -83,7 +83,7 @@ export class AuthController {
 
   @Post('signup-instructor')
   @ApiBody({
-    type: CreateUserDto,
+    type: CreateUserInstructorDto,
     description: 'Create a new user',
     examples: {
       example1: {
@@ -106,9 +106,23 @@ export class AuthController {
             profilePic: 'https://example.com/profile.jpg',
           },
           instructor: {
+            career: 'Lincenciado en deportes',
+            institution: 'Servicio de eduacion nacional',
+            level: 'Profesional',
+            period: '2002-2004',
+            onCourse: true,
             about:
               'Professional climbing instructor with 10 years of experience',
-            certifications: 'IFSC certified climbing instructor',
+            certifications: [
+              {
+                title: 'firts aid',
+                url: 'www.certificate.com',
+              },
+              {
+                title: 'second aid',
+                url: 'www.certificate.com',
+              },
+            ],
           },
         },
       },

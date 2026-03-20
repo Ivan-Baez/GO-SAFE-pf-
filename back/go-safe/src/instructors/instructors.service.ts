@@ -28,6 +28,7 @@ export class InstructorsService {
     await this.validateSingUpData(data.user);
 
     const hashedPassword = await bcrypt.hash(data.user.password, 12);
+
     const user = this.usersRepository.create({
       ...data.user,
       password: hashedPassword,
@@ -39,6 +40,7 @@ export class InstructorsService {
     const instructor = this.instructorRepository.create({
       ...data.instructor,
       user,
+      certifications: data.instructor.certifications,
     });
 
     await this.instructorRepository.save(instructor);
@@ -51,7 +53,7 @@ export class InstructorsService {
   async findAll() {
     const usersFound = await this.usersRepository.find({
       relations: {
-        instructorProfile: true,
+        instructor: true,
       },
     });
     return usersFound;
@@ -62,7 +64,7 @@ export class InstructorsService {
       const userFound = await this.usersRepository.find({
         where: { id },
         relations: {
-          instructorProfile: true,
+          instructor: true,
         },
       });
 

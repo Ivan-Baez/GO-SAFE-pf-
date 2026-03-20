@@ -80,9 +80,6 @@ export class User {
   @Column({ type: 'boolean', default: true })
   status!: boolean;
 
-  @OneToOne(() => Instructor, (instructor) => instructor.user)
-  instructorProfile!: Instructor;
-
   @OneToMany(() => Order, (order) => order.user)
   orders!: Order[];
 
@@ -101,4 +98,7 @@ export class User {
 
   @OneToMany(() => Image, (image) => image.user)
   images!: Image[];
+
+  @OneToOne(() => Instructor, (instructor) => instructor.user)
+  instructor!: Instructor;
 }

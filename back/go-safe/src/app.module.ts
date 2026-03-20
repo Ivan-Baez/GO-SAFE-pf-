@@ -15,7 +15,6 @@ import { FileUploadModule } from './file-upload/file-upload.module';
 import { JwtModule } from '@nestjs/jwt';
 import { QaaModule } from './qaa/qaa.module';
 import { BlogsModule } from './blogs/blogs.module';
-import { CertificationsModule } from './certifications/certifications.module';
 
 @Module({
   imports: [
@@ -43,7 +42,6 @@ import { CertificationsModule } from './certifications/certifications.module';
     FileUploadModule,
     QaaModule,
     BlogsModule,
-    CertificationsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

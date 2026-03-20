@@ -22,7 +22,7 @@ export class CreateUserDto {
   @IsString()
   @MinLength(2)
   @MaxLength(50)
-  fistName!: string;
+  firstName!: string;
 
   @ApiProperty({
     description: 'User last name',

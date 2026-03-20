@@ -1,13 +1,44 @@
 "use client";
-import { Field, ErrorMessage, useFormikContext } from "formik";
+import { useState } from "react";
+import { Field, useFormikContext } from "formik";
+import { uploadCertificate } from "@/service/authService";
 
 interface StepProps {
   prev: () => void;
 }
 
 export default function CertificateStep({ prev }: StepProps) {
+  const { setFieldValue, values } = useFormikContext<any>();
+  const [fileName, setFileName] = useState("");
+  const [uploading, setUploading] = useState(false);
+  const [uploadError, setUploadError] = useState("");
 
-  const { values } = useFormikContext<any>();
+   const handleCertificateChange = async (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setUploadError("");
+    setFileName(file.name);
+    // por ahora guardamos el archivo en Formik
+    setFieldValue("certificadoFile", file);
+
+    try {
+      setUploading(true);
+      // 1. subír el archivo Cloudinary o backend:
+      const uploadedUrl = await uploadCertificate(file);
+      // 2. recibír la URL
+      setFieldValue("certificadoUrl", uploadedUrl);
+    } catch (error: any) {
+      console.error("Error subiendo certificado:", error);
+      setUploadError(error.message || "No se pudo subir el certificado");
+      // 3. guardár esa URL en certificadoUrl
+      setFieldValue("certificadoUrl", "");
+    } finally {
+      setUploading(false);
+    }
+  };
 
   return(
     <div className="flex flex-col items-center w-full max-w-md mx-auto p-6 min-h-screen bg-white">
@@ -34,34 +65,6 @@ export default function CertificateStep({ prev }: StepProps) {
 
         <div className={`space-y-4 transition-opacity ${values.noCertificado ? 'opacity-30 pointer-events-none' : 'opacity-100'}`}>
 
-          {/* Categoría */}
-          <div className="w-full">
-            <label className="block font-bold text-[#1e3c31] mb-2">
-              Área de certificación
-            </label>
-
-            <div className="relative">
-              <Field 
-                as="select" 
-                name="category" 
-                className="inputStyles w-full appearance-none cursor-pointer italic text-gray-400"
-              >
-                <option value="" disabled>Categoría</option>
-                <option value="deportes">Deportes</option>
-                <option value="arte">Arte</option>
-                <option value="tecnologia">Tecnología</option>
-              </Field>
-
-              <div className="absolute inset-y-0 right-4 flex items-center pointer-events-none text-gray-400">
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path>
-                </svg>
-              </div>
-            </div>
-
-            <ErrorMessage name="category" component="p" className="text-xs text-red-500 mt-1" />
-          </div>
-
           {/* Nombre certificado */}
           <div>
             <label className="block font-bold text-[#1e3c31] mb-2">Certificación</label>
@@ -80,15 +83,38 @@ export default function CertificateStep({ prev }: StepProps) {
           <div className="border-2 border-dashed border-gray-200 rounded-2xl p-8 flex flex-col items-center space-y-4 mt-10">
             <span className="font-bold text-[#1e3c31]">Sube tu certificado</span>
 
-            <Field 
-              name="certificadoUrl" 
-              type="text" 
-              placeholder="Pega la URL del certificado aquí" 
-              className="inputStyles w-full text-center text-sm"
-            />
+            <label className="cursor-pointer bg-[#f0ba3c] text-white font-semibold px-5 py-3 rounded-2xl hover:bg-[#dca91f] transition">
+              Seleccionar archivo
+              <input
+                type="file"
+                accept=".pdf,.jpg,.jpeg,.png"
+                className="hidden"
+                onChange={handleCertificateChange}
+              />
+            </label>
+
+            {fileName && (
+              <p className="text-sm text-gray-700 text-center">
+                Archivo seleccionado: {fileName}
+              </p>
+            )}
+
+            {uploading && (
+              <p className="text-sm text-[#1e3c31]">Subiendo certificado...</p>
+            )}
+
+            {!!values.certificadoUrl && !uploading && (
+              <p className="text-sm text-green-600 text-center">
+                Certificado subido correctamente
+              </p>
+            )}
+
+            {uploadError && (
+              <p className="text-sm text-red-500 text-center">{uploadError}</p>
+            )}
 
             <p className="text-[11px] text-gray-600 text-center">
-              Sólo se aceptarán documentos auténticos. Formatos: JPG, PNG.
+              Sólo se aceptarán documentos auténticos. Formatos: PDF, JPG, PNG.
             </p>
           </div>
         </div>
@@ -106,6 +132,7 @@ export default function CertificateStep({ prev }: StepProps) {
 
           <button 
             type="submit"
+            disabled={uploading}
             className="w-full min-w-[150px] max-w-[280px] bg-[#f0ba3c] hover:bg-[#e0ab2c] text-white font-bold py-3 px-6 rounded-2xl shadow-lg transition-all duration-300"
           >
             Continuar

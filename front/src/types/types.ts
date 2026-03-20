@@ -113,6 +113,7 @@ export interface IInstructorRegisterProps {
   noCertificado?: boolean;
   category?: string;
   nombreCertificado?: string;
+  certificadoFile?: File | null;
   certificadoUrl?: string;
   certifications?: string;
   //Step Education

@@ -42,7 +42,7 @@ export async function loginService(userData: ILoginProps) {
 export async function register (userData: IRegisterProps) {
     try{
     const payload = {
-      fistName: userData.primernombre,
+      firstName: userData.primernombre,
       lastName: userData.segundonombre,
       userName: userData.username,
       documentType: userData.documentType,
@@ -115,4 +115,33 @@ export async function registerInstructor(userData: any) {
     console.error("Error capturado en el servicio:", error.message);
     throw error;
   }
+}
+
+/**
+ * Sube un certificado al backend y devuelve la URL final.
+ * El backend debería encargarse de subir a Cloudinary y devolver la URL.
+ */
+ export async function uploadCertificate(file: File): Promise<string> {
+  const formData = new FormData();
+  formData.append("file", file);
+
+  const response = await fetch(`${APIURL}/upload`, {
+    method: "POST",
+    body: formData,
+  });
+
+  if (!response.ok) {
+    let message = "No se pudo subir el archivo";
+    try {
+      const errorData = await response.json();
+      message = errorData.message || message;
+    } catch {}
+    throw new Error(message);
+  }
+
+  const data = await response.json();
+
+  // según cómo responda el backend:
+  // puede ser data.url, data.secure_url, data.fileUrl, etc.
+  return data.url || data.secure_url || data.fileUrl;
 }

@@ -16,7 +16,7 @@ import {
 export default function InstructorPublicProfile() {
   const instructor = {
     id: "1",
-    fistName: "Eugenia",
+    firstName: "Eugenia",
     lastName: "R.",
     city: "Bariloche",
     country: "Argentina",
@@ -85,7 +85,7 @@ export default function InstructorPublicProfile() {
                 <div className="shrink-0">
                   <Image
                     src={instructor.profilePic}
-                    alt={`${instructor.fistName} ${instructor.lastName}`}
+                    alt={`${instructor.firstName} ${instructor.lastName}`}
                     width={180}
                     height={180}
                     className="rounded-[24px] object-cover w-[180px] h-[180px]"
@@ -98,7 +98,7 @@ export default function InstructorPublicProfile() {
                   </p>
 
                   <h1 className="text-3xl md:text-4xl font-bold text-[#1a3d2b] leading-tight">
-                    {instructor.fistName} {instructor.lastName}
+                    {instructor.firstName} {instructor.lastName}
                   </h1>
 
                   <p className="text-lg text-gray-700 mt-2">

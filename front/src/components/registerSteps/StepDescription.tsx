@@ -67,14 +67,14 @@ export default function StepDescription({ prev }: StepProps) {
           </button>
 
           <button
-            type="submit"
-            className="w-full min-w-[150px] max-w-[280px] bg-[#f0ba3c] hover:bg-[#e0ab2c] text-white font-bold py-3 px-6 rounded-2xl shadow-lg transition-all duration-300"
+            type="submit" 
+            className="w-full max-w-[200px] bg-[#f0ba3c] hover:bg-[#e0ab2c] text-[#1e3c31] font-extrabold py-3 px-6 rounded-2xl shadow-lg transition-all uppercase tracking-wider"
           >
-            Continuar
+            Finalizar
           </button>
+        </div>
 
         </div>
       </div>
-    </div>
   );
 }

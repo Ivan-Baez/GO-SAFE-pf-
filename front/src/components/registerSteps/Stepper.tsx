@@ -7,8 +7,6 @@ const steps = [
   "Certificación",
   "Educación",
   "Descripción",
-  "Disponibilidad",
-  "Precios",
 ];
 
 export default function Stepper({ currentStep }: { currentStep: number }) {

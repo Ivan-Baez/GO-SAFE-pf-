@@ -45,50 +45,72 @@ const { isValid, isSubmitting } = useFormikContext<any>();
               <ErrorMessage name="lastName" component="p" className="text-xs text-red-500 mt-1" />
             </div>
 
-<div>
-<label className="block font-bold text-[#323235] mb-2 text-sm">
-Documento
-</label>
+            <div className="flex gap-4 w-full">
+              <div className="w-1/3">
+                <label className="block font-bold text-[#323235] mb-2 text-sm">
+                Tipo de documento
+                </label>
 
-<Field
-  name="document"
-  type="text"
-  placeholder="Documento"
-  className="inputStyles w-full"
-/>
+                <Field
+                as="select"
+                name="documentType"
+                className="inputStyles w-full"
+                >
+                <option value="">Seleccionar</option>
+                <option value="dni">DNI</option>
+                <option value="pasaporte">Pasaporte</option>
+                <option value="cuil">CUIL</option>
+                <option value="cuit">CUIT</option>
+                </Field>
 
-<ErrorMessage name="document" component="p" className="text-xs text-red-500 mt-1"/>
-</div>
+                <ErrorMessage name="documentType" component="p" className="text-xs text-red-500 mt-1"/>
+              </div>
 
-<div>
-<label className="block font-bold text-[#323235] mb-2 text-sm">
-Género
-</label>
+              <div className="w-2/3">
+                <label className="block font-bold text-[#323235] mb-2 text-sm">
+                  Documento
+                </label>
 
-<Field as="select" name="genre" className="inputStyles w-full">
-<option value="">Seleccionar</option>
-<option value="male">Masculino</option>
-<option value="female">Femenino</option>
-<option value="other">Otro</option>
-</Field>
+                <Field
+                name="document"
+                type="text"
+                placeholder="Documento"
+                className="inputStyles w-full"
+                />
 
-<ErrorMessage name="genre" component="p" className="text-xs text-red-500 mt-1"/>
-</div>
+                <ErrorMessage name="document" component="p" className="text-xs text-red-500 mt-1"/>
+              </div>
+            </div>
 
-<div>
-<label className="block font-bold text-[#323235] mb-2 text-sm">
-Nombre de usuario
-</label>
+            <div>
+              <label className="block font-bold text-[#323235] mb-2 text-sm">
+              Género
+              </label>
 
-<Field
-  name="userName"
-  type="text"
-  placeholder="Usuario"
-  className="inputStyles w-full"
-/>
+              <Field as="select" name="genre" className="inputStyles w-full">
+              <option value="">Seleccionar</option>
+              <option value="male">Masculino</option>
+              <option value="female">Femenino</option>
+              <option value="other">Otro</option>
+              </Field>
 
-<ErrorMessage name="userName" component="p" className="text-xs text-red-500 mt-1"/>
-</div>
+              <ErrorMessage name="genre" component="p" className="text-xs text-red-500 mt-1"/>
+            </div>
+
+            <div>
+              <label className="block font-bold text-[#323235] mb-2 text-sm">
+              Nombre de usuario
+              </label>
+
+              <Field
+              name="userName"
+              type="text"
+              placeholder="Usuario"
+              className="inputStyles w-full"
+              />
+
+              <ErrorMessage name="userName" component="p" className="text-xs text-red-500 mt-1"/>
+            </div>
 
             <div>
               <label className="block font-bold text-[#323235] mb-2 text-sm">Email</label>
@@ -181,13 +203,13 @@ Nombre de usuario
             <button
               type="submit"
               disabled={!isValid || isSubmitting}
-    className="w-full max-w-[280px] bg-[#f0ba3c] text-white font-bold py-3 px-6 rounded-2xl transition
-    hover:bg-[#dca91f]
-    disabled:bg-[#f0ba3c]/40
-    disabled:text-white/60
-    disabled:cursor-not-allowed
-    disabled:hover:bg-[#f0ba3c]/40"
-  >
+              className="w-full max-w-[280px] bg-[#f0ba3c] text-white font-bold py-3 px-6 rounded-2xl transition
+              hover:bg-[#dca91f]
+              disabled:bg-[#f0ba3c]/40
+              disabled:text-white/60
+                disabled:cursor-not-allowed
+              disabled:hover:bg-[#f0ba3c]/40"
+               >
               Continuar
             </button>
           </div>

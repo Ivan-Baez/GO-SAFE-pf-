@@ -1,3 +1,4 @@
+import { Certifications } from 'src/certifications/entities/certification.entity';
 import { Experience } from 'src/experiences/entities/experience.entity';
 import { User } from 'src/users/entities/user.entity';
 import {
@@ -14,22 +15,33 @@ export class Instructor {
   @PrimaryGeneratedColumn('uuid')
   id!: string;
 
-  @OneToOne(() => User, (user) => user.instructorProfile)
-  @JoinColumn()
-  user!: User;
+  @Column({ type: 'varchar', length: 50, nullable: false })
+  career!: string;
 
-  @Column({
-    type: 'text',
-    nullable: false,
-  })
+  @Column({ type: 'varchar', length: 50, nullable: false })
+  institution!: string;
+
+  @Column({ type: 'varchar', length: 20, nullable: false })
+  level!: string;
+
+  @Column({ type: 'varchar', length: 20, nullable: false })
+  period!: string;
+
+  @Column({ type: 'boolean', default: false })
+  onCourse!: string;
+
+  @Column({ type: 'text', nullable: false })
   about!: string;
-
-  @Column({
-    type: 'text',
-    nullable: true,
-  })
-  certifications!: string;
 
   @OneToMany(() => Experience, (experience) => experience.instructor)
   experiences!: Experience[];
+
+  @OneToOne(() => User, (user) => user.instructor)
+  @JoinColumn()
+  user!: User;
+
+  @OneToMany(() => Certifications, (cert) => cert.instructor, {
+    cascade: true,
+  })
+  certifications!: Certifications[];
 }

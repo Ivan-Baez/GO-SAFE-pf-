@@ -23,11 +23,12 @@ export const config = {
         password: process.env.DB_PASSWORD,
         database: process.env.DB_DATABASE,
       }),
-
+  entities: ['dist/**/*.entity{.ts,.js}'],
   autoLoadEntities: true,
-
-  synchronize: !isProduction,
-  logging: !isProduction,
+  dropSchema: true,
+  synchronize: true,
+  logging: true,
+  migrations: [],
 };
 
 export default registerAs('typeorm', () => config);

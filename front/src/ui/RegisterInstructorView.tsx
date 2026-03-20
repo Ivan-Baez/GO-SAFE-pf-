@@ -90,7 +90,7 @@ export default function RegisterInstructorView() {
       },
       instructor: {
         about: fullAbout,
-        certifications: fullCertifications, o values.certificadoUrl
+        certifications: fullCertifications
       }
     };
 

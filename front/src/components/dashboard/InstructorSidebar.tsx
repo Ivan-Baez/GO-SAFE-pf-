@@ -20,8 +20,8 @@ export default function InstructorSidebar() {
     { name: "Mis experiencias", href: "/dashboard/experiences", icon: Mountain },
     { name: "Reservas", href: "/dashboard/bookings", icon: CalendarCheck },
     { name: "Reseñas", href: "/dashboard/reviews", icon: Star },
-    { name: "Mi perfil", href: `/instructors/1`, icon: UserRound },
-    { name: "Configuración", href: "/dashboard/settings", icon: Settings },
+    { name: "Mi perfil", href: `/dashboard/profile`, icon: UserRound },
+    { name: "Configuración", href: "/dashboard/settings", icon: Settings, disabled: true },
   ];
 
   return (
@@ -36,15 +36,27 @@ export default function InstructorSidebar() {
           {menuItems.map((item) => {
             const Icon = item.icon;
 
-            return (
-              <Link
-                key={item.name}
-                href={item.href}
-                className="flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-white/10 transition"
-              >
-                <Icon size={18} />
-                <span>{item.name}</span>
-              </Link>
+            if (item.disabled) {
+              return (
+                <div
+                  key={item.name}
+                  className="flex items-center gap-3 px-4 py-3 rounded-2xl text-white/40 cursor-not-allowed"
+                >
+                  <Icon size={18} />
+                  <span>{item.name}</span>
+                </div>
+              );
+          }         
+
+          return (
+            <Link
+              key={item.name}
+              href={item.href}
+              className="flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-white/10 transition"
+            >
+              <Icon size={18} />
+              <span>{item.name}</span>
+            </Link>
             );
           })}
         </nav>

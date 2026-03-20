@@ -6,7 +6,7 @@ import { Formik, Form } from "formik";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
 
 // Importar validaciones
-import { validateRegisterStep1, ValidateRegisterStep2, ValidateCertificationStep, validateEducationStep, validateDescriptionStep, validateAvailabilityStep, validatePriceStep} from "@/lib/validate";
+import { validateRegisterStep1, ValidateRegisterStep2, ValidateCertificationStep, validateEducationStep, validateDescriptionStep} from "@/lib/validate";
 
 // Componentes
 import PersonalData from "@/components/registerSteps/PersonalData";

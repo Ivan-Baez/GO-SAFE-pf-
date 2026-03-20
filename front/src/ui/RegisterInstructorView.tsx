@@ -4,6 +4,7 @@ import { registerInstructor } from "@/service/authService";
 import { IInstructorRegisterProps } from "@/types/types";
 import { Formik, Form } from "formik";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
+import { uploadCertificate } from "@/service/authService";
 
 // Importar validaciones
 import { validateRegisterStep1, ValidateRegisterStep2, ValidateCertificationStep, validateEducationStep, validateDescriptionStep, validateAvailabilityStep, validatePriceStep} from "@/lib/validate";
@@ -15,8 +16,6 @@ import StepPhoto from "@/components/registerSteps/StepPhoto";
 import CertificationStep from "@/components/registerSteps/CertificateStep";
 import EducationStep from "@/components/registerSteps/EducationStep";
 import StepDescription from "@/components/registerSteps/StepDescription";
-import StepAvailability from "@/components/registerSteps/StepAvailability";
-import StepPricing from "@/components/registerSteps/StepPricing";
 
 export default function RegisterInstructorView() {
   const { setUserData } = useAuth();
@@ -41,28 +40,35 @@ export default function RegisterInstructorView() {
     country: "", phone: "", isMajor: false, document: "", genre: "",
     userName: "", profilePic: "", noEducation: false, titulo: "",
     institucion: "", nivel: "", añoInicio: "", añoFin: "", actualidad: false,
-    noCertificado: false, category: "", nombreCertificado: "", certificadoUrl: "",
-    bio: "", selectedDays: [], startTime: "08:00", endTime: "17:00",
-    pricePerHour: "", currency: "USD",
+    noCertificado: false, nombreCertificado: "", certificadoFile: null, certificadoUrl: "",
+    bio: ""
   };
 
   const handleFinalSubmit = async (values: IInstructorRegisterProps) => {
     // 1. Unificamos strings para el objeto instructor
     const seccionBio = values.bio || "Sin biografía.";
-    const seccionDispo = (values.selectedDays && values.selectedDays.length > 0)
-      ? `Disponibilidad: ${values.selectedDays.join(", ")} de ${values.startTime} a ${values.endTime}.`
-      : "Disponibilidad no especificada.";
-    const seccionPrecio = values.pricePerHour
-      ? `Tarifa: ${values.pricePerHour} ${values.currency} por hora.`
-      : "Tarifa no especificada.";
+    
     const seccionEducacion = values.noEducation
       ? "Sin formación académica adicional."
       : `Educación: ${values.titulo} en ${values.institucion} (${values.nivel}).`;
 
-    const fullAbout = `${seccionBio}\n${seccionDispo}\n${seccionPrecio}\n${seccionEducacion}`.trim();
+    const fullAbout = `${seccionBio}\n${seccionEducacion}`.trim();
+    
+    //Certifications
+    //guarda la URL en una variable local
+    let certificadoUrl = values.certificadoUrl || "";
+
+    //sube el archivo, si existe
+    if (!values.noCertificado && values.certificadoFile) {
+      certificadoUrl = await uploadCertificate(values.certificadoFile);
+    }
+    
+    //arma fullCertificatios
     const fullCertifications = values.noCertificado
       ? "Sin certificaciones."
-      : `${values.nombreCertificado} (${values.category})`.trim();
+      : certificadoUrl
+      ? `${values.nombreCertificado} - ${certificadoUrl}`.trim()
+      : `${values.nombreCertificado}`.trim();
 
     // 2. OBJETO FINAL (DTO) - Ajustado al Swagger
     const baseData = {
@@ -108,8 +114,6 @@ export default function RegisterInstructorView() {
       case 3: return ValidateCertificationStep(values);
       case 4: return validateEducationStep(values);
       case 5: return validateDescriptionStep(values);
-      case 6: return validateAvailabilityStep(values);
-      case 7: return validatePriceStep(values);
       default: return {};
     }
   };
@@ -120,7 +124,7 @@ export default function RegisterInstructorView() {
       validate={getValidationSchema}
       validateOnMount={true}
       onSubmit={(values) => {
-        if (step === 7) {
+        if (step === 5) {
           handleFinalSubmit(values);
         } else {
           nextStep();
@@ -137,13 +141,6 @@ export default function RegisterInstructorView() {
             {step === 3 && <CertificationStep prev={prevStep} />}
             {step === 4 && <EducationStep prev={prevStep} />}
             {step === 5 && <StepDescription prev={prevStep} />}
-            {step === 6 && <StepAvailability prev={prevStep} />}
-            {step === 7 && (
-              <StepPricing 
-  prev={prevStep}
-  next={nextStep}
-/>
-            )}
           </div>
         </Form>
       )}

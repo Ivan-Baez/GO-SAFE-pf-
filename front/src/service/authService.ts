@@ -1,6 +1,5 @@
-import { ILoginProps, IRegisterProps } from "@/types/types";
+import { ILoginProps, IRegisterProps, IReview, IInstructorRegisterProps } from "@/types/types";
 import { toastSuccess, toastError } from "@/lib/toast";
-import { IInstructorRegisterProps } from "@/types/types";
 
 const APIURL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
 
@@ -114,5 +113,96 @@ export async function registerInstructor(userData: any) {
   } catch (error: any) {
     console.error("Error capturado en el servicio:", error.message);
     throw error;
+  }
+}
+
+/**
+ * Sube un certificado al backend y devuelve la URL final.
+ * El backend debería encargarse de subir a Cloudinary y devolver la URL.
+ */
+ export async function uploadCertificate(file: File): Promise<string> {
+  const formData = new FormData();
+  formData.append("file", file);
+
+  const response = await fetch(`${APIURL}/upload`, {
+    method: "POST",
+    body: formData,
+  });
+
+  if (!response.ok) {
+    let message = "No se pudo subir el archivo";
+    try {
+      const errorData = await response.json();
+      message = errorData.message || message;
+    } catch {}
+    throw new Error(message);
+  }
+
+  const data = await response.json();
+
+  // según cómo responda el backend:
+  // puede ser data.url, data.secure_url, data.fileUrl, etc.
+  return data.url || data.secure_url || data.fileUrl;
+}
+
+export async function getReviews(): Promise<IReview[]> {
+  try {
+    const response = await fetch(`${APIURL}/reviews`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || "No se pudieron obtener las reseñas");
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error: any) {
+    throw new Error(error.message || "Error al obtener las reseñas");
+  }
+}
+
+export async function getReviewsByInstructor(id: string) {
+  try {
+    const response = await fetch(`${APIURL}/reviews?instructorId=${id}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || "No se pudieron obtener las reseñas");
+    }
+
+    return await response.json();
+  } catch (error: any) {
+    throw new Error(error.message || "Error al obtener las reseñas");
+  }
+}
+
+export async function getInstructorById(id: string, token: string) {
+  try {
+    const response = await fetch(`${APIURL}/instructors/${id}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || "No se pudo obtener el instructor");
+    }
+
+    return await response.json();
+  } catch (error: any) {
+    throw new Error(error.message || "Error al obtener el instructor");
   }
 }

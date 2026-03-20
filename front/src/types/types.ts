@@ -113,6 +113,7 @@ export interface IInstructorRegisterProps {
   noCertificado?: boolean;
   category?: string;
   nombreCertificado?: string;
+  certificadoFile?: File | null;
   certificadoUrl?: string;
   certifications?: string;
   //Step Education
@@ -179,4 +180,40 @@ export interface IProduct {
 
 export interface IUserData {
   role: "user" | "instructor" | "admin";
+}
+
+export interface IReview {
+  id: string;
+  comment: string;
+  rating: number;
+  createdAt?: string;
+}
+
+export interface IInstructor {
+  id: string;
+  firstName: string;
+  lastName: string;
+  city: string;
+  country: string;
+  profilePic: string;
+  rating?: number;
+  totalReviews?: number;
+  verified?: boolean;
+  title?: string;
+  status?: string;
+  instructorProfile: {
+    about?: string;
+    certifications?: string;
+    experience?: string;
+    languages?: string;
+    modality?: string;
+    availability?: string;
+    level?: string;
+    duration?: string;
+    price?: number;
+    specialties?: string[];
+    activities?: string[];
+    tags?: string[];
+  };
+  reviews?: any[];
 }

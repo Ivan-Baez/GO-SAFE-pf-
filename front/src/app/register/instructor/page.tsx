@@ -1,5 +1,5 @@
 import { Suspense } from "react"
-import RegisterInstructorView from "@/ui/RegisterInstructorView"
+import RegisterInstructorView from "@/ui/instructor/RegisterInstructorView"
 
 export default function InstructorRegisterPage() {
   return (

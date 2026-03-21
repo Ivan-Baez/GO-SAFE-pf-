@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import ExperienceCard from '@/components/ExperienceCard';
+import ExperienceCard from '@/components/dashboard/InstructorExperienceCard';
 import { getExperiencesByCategory, ExperienceCatalogItem } from '@/service/productService';
 
 interface CategoryPageProps {

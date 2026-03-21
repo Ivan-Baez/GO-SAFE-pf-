@@ -1,4 +1,4 @@
-import InstructorStepsView from "@/ui/InstructorStepsView";
+import InstructorStepsView from "@/ui/instructor/InstructorStepsView";
 
 export default function InstructorStepsPage() {
     return(

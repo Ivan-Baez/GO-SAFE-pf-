@@ -1,4 +1,4 @@
-import ExperienceCard from "@/components/ExperienceCard";
+import ExperienceCard from "@/components/dashboard/InstructorExperienceCard";
 import { getExperiencesCatalog } from "@/service/productService";
 
 export default async function ExperiencesPage() {

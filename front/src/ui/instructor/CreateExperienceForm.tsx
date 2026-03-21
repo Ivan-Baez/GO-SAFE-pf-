@@ -1,6 +1,7 @@
 "use client";
 
 import { ChangeEvent, FormEvent, useMemo, useState } from "react";
+import InstructorSidebar from "@/components/dashboard/InstructorSidebar";
 
 type CreateExperienceFormValues = {
   title: string;
@@ -95,6 +96,9 @@ export default function CreateExperienceForm() {
   };
 
   return (
+    <section className="min-h-screen bg-gray-50 w-full flex ">
+       <InstructorSidebar/>
+            <div className="w-full mx-auto px-10 py-10  flex-1">
     <form onSubmit={handleSubmit}>
       <h1>Crear experiencia</h1>
       <p>
@@ -217,5 +221,7 @@ export default function CreateExperienceForm() {
         Limpiar formulario
       </button>
     </form>
+    </div>
+    </section>
   );
 }

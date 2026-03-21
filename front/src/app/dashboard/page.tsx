@@ -1,10 +1,10 @@
+//Rediriga a Dashboard segun rol
 "use client";
 
-import { useAuth } from "@/context/AuthContext";
-import UserDashboard from "@/ui/UserDashboard";
-import InstructorDashboard from "@/ui/InstructorDashboard";
-import AdminDashboard from "@/ui/AdminDashboard";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { jwtDecode } from "jwt-decode";
+import { useAuth } from "@/context/AuthContext";
 
 interface DecodedToken {
   id: string;
@@ -12,18 +12,23 @@ interface DecodedToken {
   role: "user" | "instructor" | "admin";
 }
 
-export default function Dashboard() {
+export default function DashboardRedirect() {
   const { userData } = useAuth();
+  const router = useRouter();
 
-  if (!userData) return <p>Cargando...</p>;
+  useEffect(() => {
+    if (!userData?.token) return;
 
-  const decoded = jwtDecode<DecodedToken>(userData.token);
+    const decoded = jwtDecode<DecodedToken>(userData.token);
 
-  return (
-    <div className="min-h-fit bg-[#f7f4ee] w-full ">
-      {decoded.role === "instructor" && <InstructorDashboard />}
-      {decoded.role === "admin" && <AdminDashboard />}
-      {decoded.role === "user" && <UserDashboard />}
-    </div>
-  )
+    if (decoded.role === "instructor") {
+      router.push("/instructor/dashboard");
+    } else if (decoded.role === "admin") {
+      router.push("/admin/dashboard");
+    } else {
+      router.push("/user/dashboard");
+    }
+  }, [userData, router]);
+
+  return <p>Cargando...</p>;
 }

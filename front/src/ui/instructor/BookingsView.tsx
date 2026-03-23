@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Clock3 } from "lucide-react";
-import { mockBookings } from "@/lib/moks/bookings";
+import { mockBookings } from "@/lib/mocks/bookings";
 import InstructorSidebar from "@/components/dashboard/InstructorSidebar";
 
 export interface IBooking {

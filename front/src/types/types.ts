@@ -202,3 +202,13 @@ export interface IInstructor {
   };
   reviews?: any[];
 }
+
+export interface IBlogPost {
+  id: string;
+  title: string;
+  image: string;
+  author: string;
+  date: string;
+  tags: string[];
+  content: string;
+}

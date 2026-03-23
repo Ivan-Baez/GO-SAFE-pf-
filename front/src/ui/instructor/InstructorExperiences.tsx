@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 import { jwtDecode } from "jwt-decode";
 import ExperienceCard from "@/components/dashboard/InstructorExperienceCard";
-import { mockExperiences } from "@/lib/moks/experiences";
+import { mockExperiences } from "@/lib/mocks/experiences";
 import InstructorSidebar from "@/components/dashboard/InstructorSidebar";
 
 interface DecodedToken {

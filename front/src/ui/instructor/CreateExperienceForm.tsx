@@ -109,7 +109,7 @@ export default function CreateExperienceForm() {
     setFileInputKey((previous) => previous + 1);
   };
 
-const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
   event.preventDefault();
 
   try {

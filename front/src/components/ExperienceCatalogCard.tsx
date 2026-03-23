@@ -3,12 +3,12 @@
 import { useRouter } from "next/navigation";
 
 interface ExperienceCatalogCardProps {
-  id: string;
+  id: string | number;
   title: string;
   difficulty: string;
   price: number;
   location: string;
-  category: string;
+  category?: string;
 }
 
 export default function ExperienceCatalogCard({
@@ -30,7 +30,10 @@ export default function ExperienceCatalogCard({
 
       <p className="text-gray-600 mb-1">📍 {location}</p>
       <p className="text-gray-600 mb-1">Dificultad: {difficulty}</p>
-      <p className="text-gray-600 mb-3">Categoría: {category}</p>
+
+      {category && (
+        <p className="text-gray-600 mb-3">Categoría: {category}</p>
+      )}
 
       <p className="text-green-700 font-bold">${price}</p>
     </div>

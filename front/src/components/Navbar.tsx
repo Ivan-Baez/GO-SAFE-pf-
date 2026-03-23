@@ -3,7 +3,7 @@
 import { useAuth } from "@/context/AuthContext";
 import Image from "next/image";
 import Link from "next/link";
-import { UserRound, ShoppingCart, LogOutIcon, MessageCircle } from "lucide-react";
+import { UserRound, ShoppingCart, LogOutIcon, MessageCircle, Text, LogInIcon, UserPen } from "lucide-react";
 
 export default function Navbar() {
   const { userData, handleLogout } = useAuth();
@@ -58,6 +58,14 @@ export default function Navbar() {
               <span>Dashboard</span>
             </Link>
 
+            <Link
+            href="/blogs"
+            className="px-4 py-2 border border-black rounded hover:bg-[#b8b1a6] w-37.5 flex items-center justify-center gap-2 text-center"
+            >
+            <Text size={18} />
+            <span>Blog</span>
+            </Link>
+
             <button
               onClick={handleLogout}
               className="flex items-center justify-center gap-2 px-4 py-2 border border-black rounded hover:bg-[#b8b1a6] w-37.5 text-center"
@@ -70,17 +78,25 @@ export default function Navbar() {
       ) : (
         <div className="flex gap-4 ml-auto">
           <Link
+            href="/blog"
+            className="px-4 py-2 border border-black rounded hover:bg-[#b8b1a6] w-37.5 flex items-center justify-center gap-2 text-center"
+          >
+            Blog
+          </Link>
+          <Link
             href="/login"
             className="px-4 py-2 border border-black rounded hover:bg-[#b8b1a6] w-37.5 flex items-center justify-center gap-2 text-center"
           >
-            Ingresar
+            <LogInIcon size={18} />
+            <span>Ingresar</span>
           </Link>
 
           <Link
             href="/RegisterForBoth"
             className="px-4 py-2 border border-black rounded hover:bg-[#b8b1a6] w-37.5 flex items-center justify-center gap-2 text-center"
           >
-            Registrarme
+            <UserPen size={18} />
+           <span>Registrarme</span>
           </Link>
         </div>
       )}

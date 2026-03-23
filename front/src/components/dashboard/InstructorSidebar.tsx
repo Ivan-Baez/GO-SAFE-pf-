@@ -4,7 +4,7 @@ import Link from "next/link";
 import {
   LayoutDashboard,
   Mountain,
-  PlusCircle,
+  StickyNote,
   CalendarCheck,
   Star,
   UserRound,
@@ -18,6 +18,7 @@ export default function InstructorSidebar() {
 
  const menuItems = [
   { name: "Dashboard", href: "/instructor/dashboard", icon: LayoutDashboard },
+  { name: "Mi blog ", href: "/instructor/dashboard/blog", icon: StickyNote },
   { name: "Mis experiencias", href: "/instructor/dashboard/experiences", icon: Mountain },
   { name: "Reservas", href: "/instructor/dashboard/bookings", icon: CalendarCheck },
   { name: "Reseñas", href: "/instructor/dashboard/reviews", icon: Star },

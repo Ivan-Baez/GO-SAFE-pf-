@@ -5,6 +5,7 @@ import { useAuth } from "@/context/AuthContext";
 import { jwtDecode } from "jwt-decode";
 import ExperienceCard from "@/components/dashboard/InstructorExperienceCard";
 import { mockExperiences } from "@/lib/moks/experiences";
+import InstructorSidebar from "@/components/dashboard/InstructorSidebar";
 
 interface DecodedToken {
   id: string;
@@ -135,7 +136,7 @@ export default function InstructorExperiences() {
 
   if (experiences.length === 0) {
     return (
-      <section className="w-full bg-[#f5f2eb] py-10 px-6">
+      <section className="min-h-screen bg-gray-50 w-full flex">
         <div className="mx-auto max-w-6xl rounded-2xl bg-white p-6 shadow">
           <h1 className="text-2xl font-bold text-[#1a3d2b] mb-6">
             Mis experiencias
@@ -160,8 +161,10 @@ export default function InstructorExperiences() {
   };
 
   return (
-    <section className="w-full bg-[#f5f2eb] py-10 px-6">
-      <div className="mx-auto max-w-6xl rounded-2xl bg-white p-6 shadow">
+    <section className="min-h-screen bg-gray-50 w-full flex">
+       <InstructorSidebar />
+      
+      <div className="max-w-6xl mx-auto flex-1 px-10 py-10">
         <div className="mb-8 flex items-center gap-3">
           <h1 className="text-2xl font-bold text-[#1a3d2b]">
             Mis experiencias

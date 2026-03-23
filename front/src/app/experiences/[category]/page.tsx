@@ -1,6 +1,6 @@
-import Link from 'next/link';
-import ExperienceCard from '@/components/dashboard/InstructorExperienceCard';
-import { getExperiencesByCategory, ExperienceCatalogItem } from '@/service/productService';
+import Link from "next/link";
+import ExperienceCatalogCard from "@/components/ExperienceCatalogCard";
+import { getExperiencesByCategory, ExperienceCatalogItem } from "@/service/productService";
 
 interface CategoryPageProps {
   params: Promise<{
@@ -36,11 +36,11 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
           Ver todas las experiencias
         </Link>
       </header>
-      
+
       {filteredExperiences.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
           {filteredExperiences.map((exp) => (
-            <ExperienceCard key={exp.id} experience={exp} />
+            <ExperienceCatalogCard key={exp.id} {...exp} />
           ))}
         </div>
       ) : (

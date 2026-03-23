@@ -65,7 +65,7 @@ export default function InstructorDashboard() {
           </div>
 
           <Link
-            href="/dashboard/experiences/create"
+            href="/instructor/dashboard/experiences/create"
             className="flex items-center justify-center gap-2 bg-[#e7b52c] hover:bg-[#dca91f] text-[#1a1a1a] font-semibold px-5 py-3 rounded-xl shadow-sm transition w-full md:w-auto"
           >
             <Plus size={18} />
@@ -83,10 +83,6 @@ export default function InstructorDashboard() {
               Tu perfil está <span className="font-semibold text-[#1a3d2b]">aprobado</span> y visible para los usuarios.
             </p>
           </div>
-
-          <button className="px-4 py-2 rounded-xl border border-[#1a3d2b] text-[#1a3d2b] hover:bg-[#1a3d2b] hover:text-white transition font-medium w-full md:w-auto">
-            Editar perfil
-          </button>
         </div>
 
         {/* Cards resumen */}
@@ -170,9 +166,6 @@ export default function InstructorDashboard() {
                     <span className="px-3 py-1 rounded-full bg-[#f7f4ee] text-gray-700 text-sm">
                       {exp.students} alumnos
                     </span>
-                    <button className="px-4 py-2 rounded-xl border border-[#1a3d2b] text-[#1a3d2b] hover:bg-[#1a3d2b] hover:text-white transition text-sm">
-                      Editar
-                    </button>
                   </div>
                 </div>
               ))}

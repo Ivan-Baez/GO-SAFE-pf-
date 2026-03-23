@@ -1,4 +1,4 @@
-import InstructorEditProfile from "@/ui/instructor/InstructorEditProfile"
+import InstructorEditProfile from "@/ui/instructor/InstructorProfile"
 
 export default function InstructorProfilePage() {
   return (

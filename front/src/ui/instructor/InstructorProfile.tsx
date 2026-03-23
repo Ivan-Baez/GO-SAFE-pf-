@@ -148,14 +148,10 @@ export default function InstructorProfile() {
 
               {/* SIDEBAR DERECHO */}
               <div>
-                <div className="bg-white rounded-[28px] p-6">
+                <div className="rounded-[28px] p-6 bg-[#e7b52c]">
                   <h2 className="text-xl font-bold">
-                    ${instructor.instructorProfile?.price ?? 0}
+                    Valor hora: ${instructor.instructorProfile?.price ?? 0}
                   </h2>
-
-                  <button className="w-full mt-4 bg-[#e7b52c] py-3 rounded-xl">
-                    Editar perfil
-                  </button>
                 </div>
               </div>
             </div>

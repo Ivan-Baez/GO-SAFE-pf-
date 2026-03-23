@@ -19,7 +19,6 @@ export default function InstructorSidebar() {
   const menuItems = [
     { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
     { name: "Mis experiencias", href: "/dashboard/experiences", icon: Mountain },
-    { name: "Crear experiencia", href: "/dashboard/experiences/create", icon: PlusCircle },
     { name: "Reservas", href: "/dashboard/bookings", icon: CalendarCheck },
     { name: "Reseñas", href: "/dashboard/reviews", icon: Star },
     { name: "Mi perfil", href: `/dashboard/profile`, icon: UserRound },

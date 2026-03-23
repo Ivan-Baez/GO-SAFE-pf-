@@ -16,14 +16,14 @@ import { useAuth } from "@/context/AuthContext";
 export default function InstructorSidebar() {
   const { handleLogout } = useAuth();
 
-  const menuItems = [
-    { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
-    { name: "Mis experiencias", href: "/dashboard/experiences", icon: Mountain },
-    { name: "Reservas", href: "/dashboard/bookings", icon: CalendarCheck },
-    { name: "Reseñas", href: "/dashboard/reviews", icon: Star },
-    { name: "Mi perfil", href: `/dashboard/profile`, icon: UserRound },
-    { name: "Configuración", href: "/dashboard/settings", icon: Settings, disabled: true },
-  ];
+ const menuItems = [
+  { name: "Dashboard", href: "/instructor/dashboard", icon: LayoutDashboard },
+  { name: "Mis experiencias", href: "/instructor/dashboard/experiences", icon: Mountain },
+  { name: "Reservas", href: "/instructor/dashboard/bookings", icon: CalendarCheck },
+  { name: "Reseñas", href: "/instructor/dashboard/reviews", icon: Star },
+  { name: "Mi perfil", href: "/instructor/dashboard/profile", icon: UserRound },
+  { name: "Configuración", href: "/instructor/dashboard/settings", icon: Settings, disabled: true },
+];
 
   return (
     <aside className="w-65[260px] flex flex-col min-h-screen bg-[#1a3d2b] text-white p-6 justify-between">

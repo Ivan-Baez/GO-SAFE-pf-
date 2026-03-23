@@ -55,11 +55,9 @@ export default function Navbar() {
               className="flex items-center justify-center gap-2 px-4 py-2 border border-black rounded hover:bg-[#b8b1a6] w-37.5 text-center"
             >
               <UserRound size={18} />
-              <span>perfil</span>
+              <span>Dashboard</span>
             </Link>
-            <Link href="/dashboard/experiences/create"
-            > <span>crearEx</span>
-            </Link>
+
             <button
               onClick={handleLogout}
               className="flex items-center justify-center gap-2 px-4 py-2 border border-black rounded hover:bg-[#b8b1a6] w-37.5 text-center"

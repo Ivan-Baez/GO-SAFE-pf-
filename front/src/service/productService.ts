@@ -4,6 +4,7 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
 interface ExperienceApi {
     id?: string;
     title: string;
+    imageUrl?: string;
     location?: string;
     city?: string;
     country?: string;
@@ -19,6 +20,7 @@ interface ExperienceApi {
 export interface ExperienceCatalogItem {
     id: string;
     title: string;
+    image: string;
     difficulty: string;
     price: number;
     location: string;
@@ -78,7 +80,7 @@ export async function getProductsDB(): Promise<IProduct[]> {
         place: item.location || [item.city, item.country].filter(Boolean).join(", ") || "Ubicacion por confirmar",
         price: Number(item.price),
         description: item.description,
-        image: DEFAULT_EXPERIENCE_IMAGE,
+        image: item.imageUrl || DEFAULT_EXPERIENCE_IMAGE,
         categoryId: 0,
         stock: item.capacity ?? 1,
     }));
@@ -96,6 +98,7 @@ export async function getProductsDB(): Promise<IProduct[]> {
 const mapApiToCatalogItem = (item: ExperienceApi): ExperienceCatalogItem => ({
     id: item.id ?? item.title,
     title: item.title,
+    image: item.imageUrl || DEFAULT_EXPERIENCE_IMAGE,
     difficulty: item.dificulty || "Intermedio",
     price: Number(item.price),
     location: item.location || [item.city, item.country].filter(Boolean).join(", ") || "Ubicacion por confirmar",
@@ -152,7 +155,7 @@ export async function getProductByID(id: string): Promise<IProduct> {
             place: item.location || [item.city, item.country].filter(Boolean).join(", ") || "Ubicacion por confirmar",
             price: Number(item.price),
             description: item.description,
-            image: DEFAULT_EXPERIENCE_IMAGE,
+            image: item.imageUrl || DEFAULT_EXPERIENCE_IMAGE,
             categoryId: 0,
             stock: item.capacity ?? 1,
             duration: item.duration,

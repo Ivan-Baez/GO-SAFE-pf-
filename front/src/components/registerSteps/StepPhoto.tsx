@@ -3,13 +3,38 @@ import { Field, useFormikContext } from "formik";
 
 interface StepProps {
   prev: () => void;
+  setFieldValue: (field: string, value: any) => void;
 }
 
-export default function StepPhoto({ prev }: StepProps) {
+export default function StepPhoto({ prev, setFieldValue }: StepProps) {
   const { values, handleSubmit, errors } = useFormikContext<any>();
 
+  const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("upload_preset", "ymu1yrch");
+
+    try {
+    const res = await fetch(
+      "https://api.cloudinary.com/v1_1/dgikbcdmg/image/upload",
+      {
+        method: "POST",
+        body: formData,
+      }
+    );
+
+    const data = await res.json();
+    setFieldValue("profilePic", data.secure_url);
+    } catch (error) {
+    console.error("Error subiendo imagen:", error);
+    }
+  };
+
   return (
-    <div className="flex flex-col items-center w-full max-w-[450px] mx-auto p-6 min-h-screen bg-white">
+    <div className="flex flex-col items-center w-full max-w-112.5[450px] mx-auto p-6 min-h-screen bg-white">
 
       <div className="w-full text-left mb-6">
         <h2 className="text-2xl font-bold text-[#1e3c31] mb-2">Foto de perfil</h2>
@@ -19,7 +44,6 @@ export default function StepPhoto({ prev }: StepProps) {
       </div>
 
       <div className="w-full space-y-6">
-
         {/* Preview de la foto */}
         <div className="flex items-center gap-4 p-4 border-t border-b border-gray-100">
           <div className="w-20 h-20 bg-gray-100 rounded-2xl overflow-hidden flex items-center justify-center">
@@ -31,7 +55,7 @@ export default function StepPhoto({ prev }: StepProps) {
               />
             ) : (
               <div className="w-12 h-12 bg-gray-200 rounded-lg"></div>
-            )}
+            )} 
           </div>
 
           <div>
@@ -43,20 +67,20 @@ export default function StepPhoto({ prev }: StepProps) {
             </p>
           </div>
         </div>
-
-        {/* Input URL */}
+        
+        {/* Upload imagen */}
         <div>
-          <Field
-            name="profilePic"
-            type="text"
-            placeholder="Pega la URL de tu foto aquí..."
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleUpload}
             className="inputStyles w-full text-sm"
           />
-          <p className="text-[10px] text-gray-400 mt-1 italic">
-            * Por ahora usa una URL de imagen (ej: Google o Facebook)
-          </p>
-        </div>
 
+          <p className="text-[10px] text-gray-400 mt-1 italic">
+            * Selecciona una imagen desde tu dispositivo
+          </p>
+        </div> 
         {/* Consejos */}
         <div className="space-y-3 pt-4">
           <h4 className="font-bold text-[#1e3c31] text-sm">Qué necesita tu foto?</h4>
@@ -88,7 +112,7 @@ export default function StepPhoto({ prev }: StepProps) {
 
           <button
             type="submit"
-            className="min-w-[150px] bg-[#f0ba3c] hover:bg-[#e0ab2c] text-white font-bold py-3 px-6 rounded-2xl shadow-lg transition-all duration-300"
+            className="min-w-37.5[150px] bg-[#f0ba3c] hover:bg-[#e0ab2c] text-white font-bold py-3 px-6 rounded-2xl shadow-lg transition-all duration-300"
           >
             Continuar
           </button>

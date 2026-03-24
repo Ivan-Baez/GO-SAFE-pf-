@@ -123,13 +123,13 @@ export default function RegisterInstructorView() {
         }
       }}
     >
-      {({ errors, isSubmitting }) => (
+      {({ errors, isSubmitting, setFieldValue }) => (
         <Form>
           <Stepper currentStep={step} />
 
           <div>
             {step === 1 && <PersonalData />}
-            {step === 2 && <StepPhoto prev={prevStep} />}
+            {step === 2 && <StepPhoto prev={prevStep} setFieldValue={setFieldValue} />}
             {step === 3 && <CertificationStep prev={prevStep} />}
             {step === 4 && <EducationStep prev={prevStep} />}
             {step === 5 && <StepDescription prev={prevStep} />}

@@ -1,44 +1,54 @@
-import ExperienceCard from "@/components/ExperienceCard";
+import ExperienceCatalogCard from "@/components/ExperienceCatalogCard";
 import { getExperiencesCatalog } from "@/service/productService";
 
 export default async function ExperiencesPage() {
   const fallbackExperiences: Array<{
-    id: string | number;
-    title: string;
-    difficulty: string;
-    price: number;
-    location: string;
-  }> = [
-    {
-      id: "demo-1",
-      title: "Climbing en Suesca",
-      difficulty: "Intermedio",
-      price: 80,
-      location: "Suesca, Colombia",
-    },
-    {
-      id: "demo-2",
-      title: "Escalada en El Peñol",
-      difficulty: "Avanzado",
-      price: 120,
-      location: "Guatape, Colombia",
-    },
-    {
-      id: "demo-3",
-      title: "Climbing en La Mojarra",
-      difficulty: "Principiante",
-      price: 60,
-      location: "Santander, Colombia",
-    },
-  ];
+  id: string | number;
+  title: string;
+  image: string;
+  difficulty: string;
+  price: number;
+  location: string;
+  category: string;
+}> = [
+  {
+    id: "demo-1",
+    title: "Climbing en Suesca",
+    image: "/Decore2.png",
+    difficulty: "Intermedio",
+    price: 80,
+    location: "Suesca, Colombia",
+    category: "Climbing",
+  },
+  {
+    id: "demo-2",
+    title: "Escalada en El Peñol",
+    image: "/Decore2.png",
+    difficulty: "Avanzado",
+    price: 120,
+    location: "Guatape, Colombia",
+    category: "Climbing",
+  },
+  {
+    id: "demo-3",
+    title: "Climbing en La Mojarra",
+    image: "/Decore2.png",
+    difficulty: "Principiante",
+    price: 60,
+    location: "Santander, Colombia",
+    category: "Climbing",
+  },
+];
 
   let usingFallback = false;
   let experiences: Array<{
     id: string | number;
     title: string;
+    image: string;
     difficulty: string;
     price: number;
     location: string;
+    category: string;
   }> = [];
 
   try {
@@ -64,7 +74,7 @@ export default async function ExperiencesPage() {
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {experiences.map((exp) => (
-          <ExperienceCard key={exp.id} experience={exp} />
+          <ExperienceCatalogCard key={exp.id} {...exp} />
         ))}
       </div>
     </div>

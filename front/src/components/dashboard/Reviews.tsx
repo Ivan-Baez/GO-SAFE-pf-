@@ -2,6 +2,10 @@
 
 import { Star } from "lucide-react";
 
+interface ReviewsProps {
+  reviews?: any[];
+}
+
 const mockReviews = [
   {
     id: 1,
@@ -33,7 +37,7 @@ const mockReviews = [
 ];
 
 
-export default function Reviews({ reviews }: { reviews: any[] }) {
+export default function Reviews({ reviews = [] }: ReviewsProps) {
   if (!reviews.length) {
     return <p className="text-gray-500">No hay reseñas todavía.</p>;
   }

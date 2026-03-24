@@ -153,6 +153,11 @@ export default function CreateExperienceForm() {
       });
 
       if (!response.ok) {
+        if (response.status === 403) {
+          toastError("Sesion expirada. Por favor inicia sesion nuevamente.");
+          router.push("/login");
+          return;
+        }
         const errorData = await response.json().catch(() => ({}));
         throw new Error(errorData.message || `Error ${response.status}`);
       }

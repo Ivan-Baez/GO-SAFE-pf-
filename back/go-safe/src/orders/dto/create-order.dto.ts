@@ -1,3 +1,7 @@
+import { IsNotEmpty, IsString } from 'class-validator';
+
 export class CreateOrderDto {
-  status: boolean;
+  @IsNotEmpty()
+  @IsString()
+  experienceId!: string;
 }

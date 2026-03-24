@@ -4,9 +4,27 @@ import { useAuth } from "@/context/AuthContext";
 import Image from "next/image";
 import Link from "next/link";
 import { UserRound, ShoppingCart, LogOutIcon, MessageCircle } from "lucide-react";
+import { jwtDecode } from "jwt-decode";
+
+interface DecodedToken {
+  role?: string;
+}
 
 export default function Navbar() {
   const { userData, handleLogout } = useAuth();
+
+  let userRole = "";
+
+  if (userData?.token) {
+    try {
+      const decoded = jwtDecode<DecodedToken>(userData.token);
+      userRole = (decoded.role || "").toLowerCase();
+    } catch {
+      userRole = "";
+    }
+  }
+
+  const showCart = userRole !== "instructor" && userRole !== "admin";
 
   return (
     <nav className="flex items-center justify-between bg-[#e6dfd5] px-10 py-3 w-full gap-6">
@@ -42,13 +60,15 @@ export default function Navbar() {
               <span>Chat</span>
             </Link>
 
-            <Link
-              href="/cart"
-              className="flex items-center justify-center gap-2 px-4 py-2 border border-black rounded hover:bg-[#b8b1a6] w-37.5 text-center"
-            >
-              <ShoppingCart size={18} />
-              <span>Carrito</span>
-            </Link>
+            {showCart && (
+              <Link
+                href="/cart"
+                className="flex items-center justify-center gap-2 px-4 py-2 border border-black rounded hover:bg-[#b8b1a6] w-37.5 text-center"
+              >
+                <ShoppingCart size={18} />
+                <span>Carrito</span>
+              </Link>
+            )}
 
             <Link
               href="/dashboard"
@@ -56,9 +76,6 @@ export default function Navbar() {
             >
               <UserRound size={18} />
               <span>perfil</span>
-            </Link>
-            <Link href="/dashboard/experiences/create"
-            > <span>crearEx</span>
             </Link>
             <button
               onClick={handleLogout}

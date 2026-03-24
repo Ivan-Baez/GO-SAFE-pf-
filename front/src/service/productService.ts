@@ -12,6 +12,8 @@ interface ExperienceApi {
     description: string;
     price: number | string;
     capacity?: number;
+    duration?: string;
+    ageRange?: string;
 }
 
 export interface ExperienceCatalogItem {
@@ -153,6 +155,10 @@ export async function getProductByID(id: string): Promise<IProduct> {
             image: DEFAULT_EXPERIENCE_IMAGE,
             categoryId: 0,
             stock: item.capacity ?? 1,
+            duration: item.duration,
+            ageRange: item.ageRange,
+            capacity: item.capacity,
+            difficulty: item.dificulty,
         };
     }  catch (error: unknown) {
         // Si falla el backend pero es un ID demo, devolverlo

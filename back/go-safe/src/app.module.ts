@@ -29,7 +29,7 @@ import { BlogsModule } from './blogs/blogs.module';
     }),
     JwtModule.register({
       global: true,
-      signOptions: { expiresIn: '1h' },
+      signOptions: { expiresIn: '7d' },
       secret: process.env.JWT_SECRET,
     }),
     UsersModule,

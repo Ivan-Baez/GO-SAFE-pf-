@@ -49,9 +49,12 @@ export class UsersService {
   }
 
   async loginUser(credentials: LoginDto) {
-    const userFound = await this.usersRepository.findOneBy({
-      email: credentials.email,
-    });
+    const email = credentials.email?.trim().toLowerCase();
+
+    const userFound = await this.usersRepository
+      .createQueryBuilder('user')
+      .where('LOWER(TRIM(user.email)) = :email', { email })
+      .getOne();
 
     if (!userFound)
       throw new UnauthorizedException('Email or password incorrect!');
@@ -75,9 +78,20 @@ export class UsersService {
       return {
         login: true,
         access_token: token,
+        user: {
+          id: userFound.id,
+          name: `${userFound.firstName} ${userFound.lastName}`,
+          email: userFound.email,
+          address: userFound.address,
+          phone: String(userFound.phone),
+          orders: userFound.orders ?? [],
+        },
         role: userFound.role,
       };
     } catch (error) {
+      if (error instanceof UnauthorizedException) {
+        throw error;
+      }
       throw new InternalServerErrorException(error);
     }
   }
@@ -176,12 +190,18 @@ export class UsersService {
       where: { email },
     });
 
-    const payload = {
-      email,
-      firstName,
-      lastName,
-      picture,
-    };
+    const payload = user
+      ? {
+          id: user.id,
+          email: user.email,
+          role: user.role,
+        }
+      : {
+          email,
+          firstName,
+          lastName,
+          picture,
+        };
 
     const token = this.jwtService.sign(payload);
 

@@ -6,10 +6,16 @@ import ExperienceContentSection from "@/components/ExperienceContentSection";
 import { IProduct } from "@/types/types";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { Clock3, Users, BarChart2, Baby } from "lucide-react";
+import { useState } from "react";
+import { toastError } from "@/lib/toast";
 
-const ExperienceView: React.FC<IProduct> = ({ name, id,place, image, description, price }) => {
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
+
+const ExperienceView: React.FC<IProduct> = ({ name, id, place, image, description, price, duration, ageRange, capacity, difficulty }) => {
   const router = useRouter();
   const { userData } = useAuth();
+  const [isLoading, setIsLoading] = useState(false);
 
   const experienceItems = [
     `Introduccion y briefing de seguridad para ${name}`,
@@ -34,14 +40,42 @@ const ExperienceView: React.FC<IProduct> = ({ name, id,place, image, description
     },
   ];
 
-  const handleReserve = () => {
+  const handleReserve = async () => {
     if (!userData?.token) {
       alert("Inicia sesion para reservar esta aventura");
       router.push("/login");
       return;
     }
 
-    router.push("/cart");
+    try {
+      setIsLoading(true);
+      const response = await fetch(`${API_URL}/orders/checkout`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${userData.token}`,
+        },
+        body: JSON.stringify({ experienceId: String(id) }),
+      });
+
+      if (!response.ok) {
+        if (response.status === 403) {
+          toastError("Sesion expirada. Por favor inicia sesion nuevamente.");
+          router.push("/login");
+          return;
+        }
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.message || `Error ${response.status}`);
+      }
+
+      const { initPoint } = await response.json();
+      window.location.href = initPoint;
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : "No se pudo iniciar el pago";
+      toastError(message);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -77,6 +111,38 @@ const ExperienceView: React.FC<IProduct> = ({ name, id,place, image, description
               <p className="text-sm text-gray-700">{description}</p>
             </div>
 
+            {/* DETALLES DE LA EXPERIENCIA */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+              {duration && (
+                <div className="flex flex-col items-center gap-1 rounded-xl border border-[#ece7df] bg-[#f7f4ee] p-3 text-center">
+                  <Clock3 size={20} className="text-[#1a3d2b]" />
+                  <span className="text-xs text-gray-500">Duracion</span>
+                  <span className="text-sm font-semibold text-[#1a3d2b]">{duration}</span>
+                </div>
+              )}
+              {ageRange && (
+                <div className="flex flex-col items-center gap-1 rounded-xl border border-[#ece7df] bg-[#f7f4ee] p-3 text-center">
+                  <Baby size={20} className="text-[#1a3d2b]" />
+                  <span className="text-xs text-gray-500">Edad</span>
+                  <span className="text-sm font-semibold text-[#1a3d2b]">{ageRange} años</span>
+                </div>
+              )}
+              {capacity && (
+                <div className="flex flex-col items-center gap-1 rounded-xl border border-[#ece7df] bg-[#f7f4ee] p-3 text-center">
+                  <Users size={20} className="text-[#1a3d2b]" />
+                  <span className="text-xs text-gray-500">Capacidad</span>
+                  <span className="text-sm font-semibold text-[#1a3d2b]">{capacity} personas</span>
+                </div>
+              )}
+              {difficulty && (
+                <div className="flex flex-col items-center gap-1 rounded-xl border border-[#ece7df] bg-[#f7f4ee] p-3 text-center">
+                  <BarChart2 size={20} className="text-[#1a3d2b]" />
+                  <span className="text-xs text-gray-500">Dificultad</span>
+                  <span className="text-sm font-semibold text-[#1a3d2b]">{difficulty}</span>
+                </div>
+              )}
+            </div>
+
             <ExperienceContentSection items={experienceItems} />
 
           </div>
@@ -96,9 +162,10 @@ const ExperienceView: React.FC<IProduct> = ({ name, id,place, image, description
 
             <button
               onClick={handleReserve}
-              className="w-full bg-yellow-400 text-black font-bold py-2 rounded-lg hover:bg-yellow-500 transition"
+              disabled={isLoading}
+              className="w-full bg-yellow-400 text-black font-bold py-2 rounded-lg hover:bg-yellow-500 transition disabled:opacity-60 disabled:cursor-not-allowed"
             >
-              Reservar Instructor
+              {isLoading ? "Redirigiendo..." : "Reservar con Mercado Pago"}
             </button>
 
             <button

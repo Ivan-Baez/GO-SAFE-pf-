@@ -24,7 +24,7 @@ export default function BlogCard({
   return (
     <article
       onClick={() => router.push(`/blogs/${id}`)}
-      className="group relative h-[480px] overflow-hidden rounded-2xl cursor-pointer"
+      className="group relative h-120[480px] overflow-hidden rounded-2xl cursor-pointer"
     >
       <img
         src={image}
@@ -32,7 +32,7 @@ export default function BlogCard({
         className="h-full w-full object-cover transition duration-300 group-hover:scale-105"
       />
 
-      <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/30 to-transparent" />
+      <div className="absolute inset-0 bg-lienar-to-t from-black/75 via-black/30 to-transparent" />
 
       <div className="absolute inset-x-0 bottom-0 p-5 text-white">
         <p className="mb-3 text-xs font-medium uppercase tracking-wide text-white/80">

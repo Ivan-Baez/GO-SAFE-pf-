@@ -155,12 +155,16 @@ export interface IUserSession {
 export interface IProduct {
     id: number | string;
     name: string;
-    place: string
+    place: string;
     price: number;
     description: string;
     image: string;
     categoryId: number;
     stock: number;
+    duration?: string;
+    ageRange?: string;
+    capacity?: number;
+    difficulty?: string;
 }
 
 export interface IUserData {

@@ -11,6 +11,8 @@ import { toastError, toastSuccess } from "@/lib/toast";
 import { useAuth } from "@/context/AuthContext";
 import { Eye, EyeOff } from "lucide-react";
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
+
 export default function LoginView() {
 
   const router = useRouter();
@@ -41,19 +43,30 @@ export default function LoginView() {
           }}
           validate={validateFormLogin}
           onSubmit={async (values) => {
+            const normalizedValues = {
+              email: values.email.trim().toLowerCase(),
+              password: values.password,
+            };
 
             try {
 
               const response = await axios.post(
-                `${process.env.NEXT_PUBLIC_API_URL}/auth/signin`,
-                values
+                `${API_URL}/auth/signin`,
+                normalizedValues
               );
 
               const data = response.data;
 
               const session = {
                 token: data.access_token,
-                user: data.user
+                user: data.user ?? {
+                  id: "",
+                  name: "",
+                  email: normalizedValues.email,
+                  address: "",
+                  phone: "",
+                  orders: [],
+                }
               };
 
               setUserData(session);
@@ -62,9 +75,11 @@ export default function LoginView() {
 
               router.push("/");
 
-            } catch (error) {
-
-              toastError("Credenciales incorrectas");
+            } catch (error: any) {
+              const message =
+                error?.response?.data?.message ||
+                "No se pudo iniciar sesion. Verifica servidor y credenciales.";
+              toastError(Array.isArray(message) ? message.join(", ") : message);
 
             }
 

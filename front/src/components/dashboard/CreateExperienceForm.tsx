@@ -1,12 +1,10 @@
 "use client";
 
-import { ChangeEvent, useMemo, useState } from "react";
-import InstructorSidebar from "@/components/dashboard/InstructorSidebar";
+import { ChangeEvent, FormEvent, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { jwtDecode } from "jwt-decode";
 import { useAuth } from "@/context/AuthContext";
 import { toastSuccess, toastError } from "@/lib/toast";
-import { getInstructorById } from "@/service/authService";
 import { CATEGORIES } from "@/lib/categoriesHome";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
@@ -33,6 +31,10 @@ interface DecodedToken {
   role: string;
 }
 
+type UploadedImageResponse = {
+  url?: string;
+};
+
 const EMPTY_VALUES: CreateExperienceFormValues = {
   title: "",
   category: "",
@@ -56,7 +58,6 @@ export default function CreateExperienceForm() {
   const [images, setImages] = useState<File[]>([]);
   const [fileInputKey, setFileInputKey] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [imageUrl, setImageUrl] = useState("");
 
   const computedDuration = useMemo(() => {
     if (!values.startDateTime || !values.endDateTime) {
@@ -110,134 +111,104 @@ export default function CreateExperienceForm() {
     setFileInputKey((previous) => previous + 1);
   };
 
-const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-  event.preventDefault();
+  const uploadExperienceImage = async (image: File): Promise<string | undefined> => {
+    const formData = new FormData();
+    formData.append("file", image);
 
-  try {
+    const response = await fetch(`${API_URL}/upload`, {
+      method: "POST",
+      body: formData,
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      throw new Error(errorData.message || "No se pudo subir la imagen");
+    }
+
+    const uploadedImage: UploadedImageResponse = await response.json();
+    return uploadedImage.url;
+  };
+
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
     if (!userData?.token) {
-      toastError("No hay sesión activa");
+      toastError("Debes iniciar sesion como instructor");
+      router.push("/login");
+      return;
+    }
+
+    if (computedDuration === "" || computedDuration === "Rango de fechas invalido") {
+      toastError("Revisa las fechas de inicio y fin");
       return;
     }
 
     const decoded = jwtDecode<DecodedToken>(userData.token);
 
-    // obtener instructor real
-    const instructorResponse = await getInstructorById(decoded.id, userData.token);
-    const instructorData = Array.isArray(instructorResponse)
-      ? instructorResponse[0]
-      : instructorResponse;
-
-    const realInstructorId = instructorData?.instructor?.id;
-
-    if (!realInstructorId) {
-      toastError("No se pudo obtener el id del instructor");
-      return;
-    }
-
     const startDate = values.startDateTime.split("T")[0];
     const ageRange = `${values.minAge}-${values.maxAge}`;
 
-    const start = new Date(values.startDateTime);
-    const end = new Date(values.endDateTime);
-    const diffMs = end.getTime() - start.getTime();
-    const diffHours = diffMs / (1000 * 60 * 60);
+    try {
+      setIsSubmitting(true);
+      let imageUrl: string | undefined;
 
-    const duration = diffHours > 0 ? `${diffHours} hours` : "1 hour";
-
-    const payload = {
-      date: startDate,
-      country: values.country,
-      city: values.city,
-      title: values.title,
-      location: values.location,
-      description: values.description,
-      price: Math.round(Number(values.price)),
-      capacity: Number(values.capacity),
-      ageRange,
-      dificulty: values.difficulty,
-      category: values.category,
-      duration,
-      instructorId: realInstructorId,
-     // image: imageUrl,
-    };
-
-    console.log("HANDLE SUBMIT SE EJECUTA");
-    console.log("VALUES:", values);
-    console.log("TOKEN:", userData?.token);
-    console.log("PAYLOAD EXPERIENCE:", payload);
-
-    setIsSubmitting(true);
-    console.log("ANTES DEL FETCH");
-
-    const response = await fetch(`${API_URL}/experiences`, {
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json",
-    Authorization: `Bearer ${userData.token}`,
-  },
-  body: JSON.stringify(payload),
-});
-
-const responseData = await response.json();
-console.log("STATUS EXPERIENCE:", response.status);
-console.log("RESPONSE EXPERIENCE:", responseData);
-
-if (!response.ok) {
-  throw new Error(responseData.message || "Error al crear experiencia");
-}
-
-console.log("DESPUES DEL FETCH");
-console.log("EXPERIENCIA CREADA:", responseData);
-
-    toastSuccess("Experiencia creada correctamente");
-    resetForm();
-    router.push("/instructor/dashboard/experiences");
-  } catch (error: any) {
-    console.error("Error creando experiencia:", error);
-    toastError(error.message || "No se pudo crear la experiencia");
-  } finally {
-    setIsSubmitting(false);
-  }
-};
-
-const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-  const file = e.target.files?.[0];
-  if (!file) return;
-
-  const formData = new FormData();
-  formData.append("file", file);
-  formData.append("upload_preset", "ymu1yrch");
-
-  try {
-    const res = await fetch(
-      "https://api.cloudinary.com/v1_1/dgikbcdmg/image/upload",
-      {
-        method: "POST",
-        body: formData,
+      if (images.length > 0) {
+        imageUrl = await uploadExperienceImage(images[0]);
       }
-    );
 
-    if (!res.ok) {
-      throw new Error("Error subiendo imagen");
+      const payload = {
+        title: values.title,
+        category: values.category,
+        country: values.country,
+        city: values.city,
+        location: values.location,
+        date: startDate,
+        description: values.description,
+        price: Number(values.price),
+        capacity: Number(values.capacity),
+        ageRange,
+        dificulty: values.difficulty,
+        duration: computedDuration,
+        instructorId: decoded.id,
+        imageUrl,
+      };
+
+      const response = await fetch(`${API_URL}/experiences`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${userData.token}`,
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (!response.ok) {
+        if (response.status === 403) {
+          toastError("Sesion expirada. Por favor inicia sesion nuevamente.");
+          router.push("/login");
+          return;
+        }
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.message || `Error ${response.status}`);
+      }
+
+      toastSuccess("Experiencia creada con exito");
+      resetForm();
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : "No se pudo crear la experiencia";
+      toastError(message);
+    } finally {
+      setIsSubmitting(false);
     }
-
-    const data = await res.json();
-    console.log("Imagen subida:", data.secure_url);
-
-    setImageUrl(data.secure_url);
-  } catch (error) {
-    console.error("Error subiendo imagen:", error);
-  }
-};
+  };
 
   const fieldClassName =
     "mt-2 w-full rounded-xl border border-[#d8d4cb] bg-white px-4 py-3 text-[#1a3d2b] outline-none transition focus:border-[#1a3d2b] focus:ring-2 focus:ring-[#1a3d2b]/20";
   const labelClassName = "text-sm font-semibold text-[#1a3d2b]";
 
   return (
-      <section className="min-h-screen bg-gray-50 w-full flex ">
-          <InstructorSidebar/>
-      <div className="w-full mx-auto px-10 py-10  flex-1">
+    <section className="w-full bg-[#f7f4ee] px-4 py-8 sm:px-6 lg:px-8">
+      <div className="mx-auto w-full max-w-5xl">
         <div className="mb-6 rounded-3xl border border-[#e8e1d4] bg-white p-6 shadow-sm sm:p-8">
           <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#8c8a84]">
             Panel de instructor
@@ -340,7 +311,7 @@ const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
                     name="price"
                     type="number"
                     min="0"
-                    step="1"
+                    step="0.01"
                     value={values.price}
                     onChange={handleChange}
                     className={fieldClassName}
@@ -500,24 +471,24 @@ const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
               </div>
 
               <div className="mt-4">
-                <label className="mb-1 rounded-xl bg-[#e7b52c] px-6 py-3 font-semibold text-[#1f1f1f] transition hover:bg-[#d7a61e] disabled:cursor-not-allowed disabled:opacity-50" htmlFor="fileUpload">
-                  Seleccionar imágen
+                <label className={labelClassName} htmlFor="images">
+                  Imagenes del lugar
                 </label>
                 <input
-  type="file"
-  accept="image/*"
-  onChange={handleUpload}
-  className="hidden"
-  id="fileUpload"
-/>
+                  key={fileInputKey}
+                  id="images"
+                  name="images"
+                  type="file"
+                  multiple
+                  accept="image/*"
+                  onChange={(event) => {
+                    const selectedFiles = event.target.files ? Array.from(event.target.files) : [];
+                    setImages(selectedFiles);
+                  }}
+                  className="mt-2 block w-full text-sm text-[#4f534f] file:mr-4 file:rounded-lg file:border-0 file:bg-[#e9dbc3] file:px-4 file:py-2 file:text-sm file:font-semibold file:text-[#1a3d2b] hover:file:bg-[#dccaa9]"
+                  required
+                />
                 <p className="mt-2 text-sm text-[#6d706c]">Imagenes seleccionadas: {images.length}</p>
-                {imageUrl && (
-  <img
-    src={imageUrl}
-    alt="preview"
-    className="w-40 h-28 object-cover rounded mt-2"
-  />
-)}
               </div>
             </section>
           </div>

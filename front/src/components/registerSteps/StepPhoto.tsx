@@ -34,7 +34,7 @@ export default function StepPhoto({ prev, setFieldValue }: StepProps) {
   };
 
   return (
-    <div className="flex flex-col items-center w-full max-w-[450px] mx-auto p-6 min-h-screen bg-white">
+    <div className="flex flex-col items-center w-full max-w-112.5[450px] mx-auto p-6 min-h-screen bg-white">
 
       <div className="w-full text-left mb-6">
         <h2 className="text-2xl font-bold text-[#1e3c31] mb-2">Foto de perfil</h2>
@@ -112,7 +112,7 @@ export default function StepPhoto({ prev, setFieldValue }: StepProps) {
 
           <button
             type="submit"
-            className="min-w-[150px] bg-[#f0ba3c] hover:bg-[#e0ab2c] text-white font-bold py-3 px-6 rounded-2xl shadow-lg transition-all duration-300"
+            className="min-w-37.5[150px] bg-[#f0ba3c] hover:bg-[#e0ab2c] text-white font-bold py-3 px-6 rounded-2xl shadow-lg transition-all duration-300"
           >
             Continuar
           </button>

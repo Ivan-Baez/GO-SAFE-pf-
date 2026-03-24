@@ -5,6 +5,7 @@ export default async function ExperiencesPage() {
   const fallbackExperiences: Array<{
   id: string | number;
   title: string;
+  image: string;
   difficulty: string;
   price: number;
   location: string;
@@ -13,6 +14,7 @@ export default async function ExperiencesPage() {
   {
     id: "demo-1",
     title: "Climbing en Suesca",
+    image: "/Decore2.png",
     difficulty: "Intermedio",
     price: 80,
     location: "Suesca, Colombia",
@@ -21,6 +23,7 @@ export default async function ExperiencesPage() {
   {
     id: "demo-2",
     title: "Escalada en El Peñol",
+    image: "/Decore2.png",
     difficulty: "Avanzado",
     price: 120,
     location: "Guatape, Colombia",
@@ -29,6 +32,7 @@ export default async function ExperiencesPage() {
   {
     id: "demo-3",
     title: "Climbing en La Mojarra",
+    image: "/Decore2.png",
     difficulty: "Principiante",
     price: 60,
     location: "Santander, Colombia",
@@ -40,6 +44,7 @@ export default async function ExperiencesPage() {
   let experiences: Array<{
     id: string | number;
     title: string;
+    image: string;
     difficulty: string;
     price: number;
     location: string;

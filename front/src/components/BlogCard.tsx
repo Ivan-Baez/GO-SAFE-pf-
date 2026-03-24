@@ -24,7 +24,7 @@ export default function BlogCard({
   return (
     <article
       onClick={() => router.push(`/blogs/${id}`)}
-      className="group relative h-[480px] overflow-hidden rounded-2xl cursor-pointer"
+      className="group relative h-120[480px] overflow-hidden rounded-2xl cursor-pointer"
     >
       {/* Imagen */}
       <img

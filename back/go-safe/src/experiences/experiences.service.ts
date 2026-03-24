@@ -25,7 +25,11 @@ export class ExperiencesService {
 
   async create(createExperienceDto: CreateExperienceDto) {
     const instructorFound = await this.instructorRepository.findOne({
-      where: { id: createExperienceDto.instructorId },
+      where: [
+        { id: createExperienceDto.instructorId },
+        { user: { id: createExperienceDto.instructorId } },
+      ],
+      relations: { user: true },
     });
 
     if (!instructorFound) {

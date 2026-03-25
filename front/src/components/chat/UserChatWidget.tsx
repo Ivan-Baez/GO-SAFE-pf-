@@ -1,89 +1,104 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import io from "socket.io-client";
-
-const socket = io("http://localhost:3000");
+import { Message, User } from "@/types/types";
+import { useEffect, useRef, useState } from "react";
+import { io, Socket } from "socket.io-client";
 
 export default function UserChatWidget() {
-    const [open, setOpen] = useState(false);
-    const [messages, setMessages] = useState<any[]>([]);
-    const [input, setInput] = useState("");
-    const [notification, setNotification] = useState(false);
-    const [user, setUser] = useState<any>(null);
+  const socketRef = useRef<Socket | null>(null);
 
-    useEffect(() => {
-        let id = localStorage.getItem("chatUserId");
+  const [open, setOpen] = useState(false);
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [input, setInput] = useState("");
+  const [notification, setNotification] = useState(false);
+  const [user, setUser] = useState<User | null>(null);
 
-        if (!id) {
-            id = Math.random().toString();
-            localStorage.setItem("chatUserId", id);
-        }
+  // 🔌 conexión socket (una sola vez)
+  useEffect(() => {
+    const socket = io(
+      process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000",
+    );
 
-        const newUser = { id, name: "Usuario" };
+    socketRef.current = socket;
 
-        setUser(newUser);
+    let id = localStorage.getItem("chatUserId");
 
-        socket.emit("joinUser", newUser);
+    if (!id) {
+      id = Math.random().toString();
+      localStorage.setItem("chatUserId", id);
+    }
 
-        socket.on("receiveAdminMessage", (msg) => {
-            setMessages((prev) => [...prev, msg]);
+    const newUser = { id, name: "Usuario" };
 
-            if (!open) {
-                setNotification(true);
-            }
-        });
+    setUser(newUser);
 
-        return () => socket.off("receiveAdminMessage");
-    }, [open]);
+    socket.emit("joinUser", newUser);
 
-    if (!user) return null;
+    const handleAdminMessage = (msg: any) => {
+      setMessages((prev) => [...prev, msg]);
 
-    const send = () => {
-        if (!input) return;
-
-        setMessages((prev) => [...prev, { content: input }]);
-
-        socket.emit("userMessage", { content: input });
-
-        setInput("");
+      if (!open) {
+        setNotification(true);
+      }
     };
 
-    return (
-        <>
-            <div
-                className="chat-float-btn"
-                onClick={() => {
-                    setOpen(!open);
-                    setNotification(false);
-                }}
-            >
-                💬
-                {notification && <span className="chat-dot"></span>}
-            </div>
+    socket.on("receiveAdminMessage", handleAdminMessage);
 
-            {open && (
-                <div className="chat-container">
-                    <div className="chat-header">Soporte</div>
+    return () => {
+      socket.off("receiveAdminMessage", handleAdminMessage);
+      socket.disconnect();
+    };
+  }, []);
 
-                    <div className="chat-messages">
-                        {messages.map((m, i) => (
-                            <div key={i} className={m.admin ? "msg-other" : "msg-user"}>
-                                {m.content}
-                            </div>
-                        ))}
-                    </div>
+  if (!user) return null;
 
-                    <div className="chat-input">
-                        <input
-                            value={input}
-                            onChange={(e) => setInput(e.target.value)}
-                            placeholder="Escribe..."
-                        />
-                        <button onClick={send}>➤</button>
-                    </div>
-                </div>
-            )}
-        </>
-    );
+  const send = () => {
+    if (!input.trim() || !socketRef.current) return;
+
+    setMessages((prev) => [...prev, { content: input }]);
+
+    socketRef.current.emit("userMessage", {
+      content: input,
+    });
+
+    setInput("");
+  };
+
+  return (
+    <>
+      <div
+        className="chat-float-btn"
+        onClick={() => {
+          setOpen(!open);
+          setNotification(false);
+        }}
+      >
+        💬
+        {notification && <span className="chat-dot"></span>}
+      </div>
+
+      {open && (
+        <div className="chat-container">
+          <div className="chat-header">Soporte</div>
+
+          <div className="chat-messages">
+            {messages.map((m, i) => (
+              <div key={i} className={m.admin ? "msg-other" : "msg-user"}>
+                {m.content}
+              </div>
+            ))}
+          </div>
+
+          <div className="chat-input">
+            <input
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              placeholder="Escribe..."
+            />
+            <button onClick={send}>➤</button>
+          </div>
+        </div>
+      )}
+    </>
+  );
 }

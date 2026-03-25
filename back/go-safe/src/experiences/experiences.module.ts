@@ -10,5 +10,6 @@ import { User } from 'src/users/entities/user.entity';
   imports: [TypeOrmModule.forFeature([Experience, Instructor, User])],
   controllers: [ExperiencesController],
   providers: [ExperiencesService],
+  exports: [ExperiencesService],
 })
 export class ExperiencesModule {}

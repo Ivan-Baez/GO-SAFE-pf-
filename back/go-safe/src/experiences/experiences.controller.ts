@@ -89,6 +89,19 @@ export class ExperiencesController {
   @ApiBearerAuth()
   @Roles(Role.User)
   @UseGuards(AuthGuard, RolesGuard)
+  @ApiBody({
+    type: BuyExperienceDto,
+    description: 'Create a new user',
+    examples: {
+      example1: {
+        summary: 'User example',
+        value: {
+          userId: '',
+          experienceId: '',
+        },
+      },
+    },
+  })
   @Post('buy')
   buyExperience(@Body() dto: BuyExperienceDto) {
     return this.experiencesService.buyExperience(dto);

@@ -16,7 +16,6 @@ import { CreateUserDto } from 'src/users/dto/create-user.dto';
 import { UsersService } from 'src/users/users.service';
 import { AuthGuard } from '@nestjs/passport';
 import { InstructorsService } from '../instructors/instructors.service';
-import { Instructor } from '../instructors/entities/instructor.entity';
 import { Role } from './guards/roles.enum';
 
 @Controller('auth')

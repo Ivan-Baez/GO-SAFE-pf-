@@ -120,7 +120,6 @@ export class ExperiencesService {
           id: instructorId,
         },
       },
-      relations: ['instructor'],
     });
 
     return experiences;
@@ -132,5 +131,38 @@ export class ExperiencesService {
       .innerJoin('experience.users', 'user')
       .where('user.id = :userId', { userId })
       .getMany();
+  }
+
+  async findAllInstructorBookings(instructorId: string) {
+    // 1. Validación rápida (más eficiente que findOne)
+    const exists = await this.instructorRepository.exist({
+      where: { id: instructorId },
+    });
+
+    if (!exists) {
+      throw new NotFoundException('Instructor not found');
+    }
+
+    // 2. Query única (JOINs)
+    const rawData = await this.experiencesRepository
+      .createQueryBuilder('e')
+      .innerJoin('e.instructor', 'i')
+      .innerJoin('e.users', 'u')
+      .where('i.id = :instructorId', { instructorId })
+      .select([
+        'e.title AS "experienceTitle"',
+        'e.location AS "location"',
+        'e.date AS "date"',
+        'u.userName AS "userName"',
+      ])
+      .getRawMany();
+
+    // 3. Formateo de fecha + estructura final
+    return rawData.map((item) => ({
+      userName: item.userName,
+      experienceTitle: item.experienceTitle,
+      location: item.location,
+      date: item.date,
+    }));
   }
 }

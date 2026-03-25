@@ -41,9 +41,7 @@ export default function LoginView() {
           }}
           validate={validateFormLogin}
           onSubmit={async (values) => {
-
             try {
-
               const response = await axios.post(
                 `${process.env.NEXT_PUBLIC_API_URL}/auth/signin`,
                 values
@@ -51,9 +49,11 @@ export default function LoginView() {
 
               const data = response.data;
 
+              console.log("LOGIN RESPONSE:", data);
+
               const session = {
                 token: data.access_token,
-                user: data.user
+                user: data.user, 
               };
 
               setUserData(session);
@@ -63,9 +63,7 @@ export default function LoginView() {
               router.push("/");
 
             } catch (error) {
-
               toastError("Credenciales incorrectas");
-
             }
 
           }}

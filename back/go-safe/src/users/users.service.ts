@@ -49,37 +49,38 @@ export class UsersService {
   }
 
   async loginUser(credentials: LoginDto) {
-    const userFound = await this.usersRepository.findOneBy({
-      email: credentials.email,
+    const user = await this.usersRepository.findOne({
+      where: { email: credentials.email },
     });
 
-    if (!userFound)
-      throw new UnauthorizedException('Email or password incorrect!');
-
-    try {
-      const match = await bcrypt.compare(
-        credentials.password,
-        userFound.password,
-      );
-
-      if (!match)
-        throw new UnauthorizedException('Email or password incorrect!');
-
-      const payload = {
-        id: userFound.id,
-        email: userFound.email,
-        role: userFound.role,
-      };
-
-      const token = this.jwtService.sign(payload);
-      return {
-        login: true,
-        access_token: token,
-        role: userFound.role,
-      };
-    } catch (error) {
-      throw new InternalServerErrorException(error);
+    if (!user) {
+      throw new UnauthorizedException('Usuario no encontrado');
     }
+
+    const isMatch = await bcrypt.compare(credentials.password, user.password);
+
+    if (!isMatch) {
+      throw new UnauthorizedException('Contraseña incorrecta');
+    }
+
+    const payload = {
+      id: user.id,
+      email: user.email,
+      role: user.role,
+      name: user.firstName,
+    };
+
+    return {
+      login: true,
+      access_token: this.jwtService.sign(payload),
+
+      user: {
+        id: user.id,
+        name: user.firstName,
+        email: user.email,
+        role: user.role,
+      },
+    };
   }
 
   async findAll() {

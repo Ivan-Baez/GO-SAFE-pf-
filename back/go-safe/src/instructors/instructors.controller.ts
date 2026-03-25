@@ -15,13 +15,23 @@ import { RolesGuard } from 'src/auth/guards/roles.guard';
 import { Role } from 'src/auth/guards/roles.enum';
 import { Roles } from 'src/decorators/roles.decorator';
 import { ExperiencesService } from 'src/experiences/experiences.service';
+import { ReviewsService } from 'src/reviews/reviews.service';
 
 @Controller('instructors')
 export class InstructorsController {
   constructor(
     private readonly instructorsService: InstructorsService,
     private readonly experiencesService: ExperiencesService,
+    private readonly reviewsService: ReviewsService,
   ) {}
+
+  @ApiBearerAuth()
+  @Roles(Role.Instructor)
+  @UseGuards(AuthGuard, RolesGuard)
+  @Get(':id/reviews')
+  findReviewsByInstructor(@Param('id') id: string) {
+    return this.reviewsService.findReviewsByInstructor(id);
+  }
 
   @ApiBearerAuth()
   @Roles(Role.Instructor)

@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import BlogsView from "@/ui/BlogsView";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
@@ -25,5 +27,3 @@ export default async function BlogPage(){
         </section>
     )
 }
-
-export const dynamic = 'force-dynamic';

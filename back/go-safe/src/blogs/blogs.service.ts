@@ -1,37 +1,80 @@
 // src/blogs/blogs.service.ts
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Blog } from './entities/blog.entity';
 import { CreateBlogDto } from './dto/create-blog.dto';
-import { UpdateBlogDto } from './dto/update-blog.dto';
+import { User } from 'src/users/entities/user.entity';
 
 @Injectable()
 export class BlogsService {
   constructor(
     @InjectRepository(Blog)
-    private readonly blogRepository: Repository<Blog>,
+    private blogRepository: Repository<Blog>,
+
+    @InjectRepository(User)
+    private usersRepository: Repository<User>,
   ) {}
 
-  async create(createBlogDto: CreateBlogDto): Promise<Blog> {
-    const blog = this.blogRepository.create(createBlogDto);
-    return this.blogRepository.save(blog);
+  // 📝 Crear blog
+  async create(dto: CreateBlogDto, userId: string) {
+    const userExists = await this.usersRepository.findOne({
+      where: { id: userId },
+    });
+
+    if (!userExists) {
+      throw new NotFoundException('User not found');
+    }
+
+    const blog = this.blogRepository.create({
+      title: dto.title,
+      text: dto.text,
+      imageUrl: dto.imageUrl,
+      user: { id: userId },
+    });
+
+    await this.blogRepository.save(blog);
+
+    return {
+      message: 'Blog created successfully',
+    };
   }
 
-  async findAll(): Promise<Blog[]> {
-    return this.blogRepository.find();
+  async findAll() {
+    return this.blogRepository
+      .createQueryBuilder('b')
+      .leftJoin('b.user', 'u')
+      .select([
+        'b.id',
+        'b.title',
+        'b.text',
+        'b.imageUrl',
+        'b.createdAt',
+        'u.userName',
+      ])
+      .orderBy('b.createdAt', 'DESC')
+      .getMany();
   }
 
-  async findOne(id: string): Promise<Blog | null> {
-    return this.blogRepository.findOne({ where: { id } });
-  }
+  async findOne(id: string) {
+    const blog = await this.blogRepository
+      .createQueryBuilder('b')
+      .leftJoin('b.user', 'u')
+      .where('b.id = :id', { id })
+      .select([
+        'b.id',
+        'b.title',
+        'b.text',
+        'b.imageUrl',
+        'b.createdAt',
+        'u.userName',
+      ])
+      .getOne();
 
-  async update(id: string, updateBlogDto: UpdateBlogDto): Promise<Blog | null> {
-    await this.blogRepository.update(id, updateBlogDto);
-    return this.findOne(id);
-  }
+    if (!blog) {
+      throw new NotFoundException('Blog not found');
+    }
 
-  async remove(id: string): Promise<void> {
-    await this.blogRepository.delete(id);
+    return blog;
   }
 }

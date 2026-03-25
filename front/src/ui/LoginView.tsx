@@ -43,13 +43,7 @@ export default function LoginView() {
           }}
           validate={validateFormLogin}
           onSubmit={async (values) => {
-            const normalizedValues = {
-              email: values.email.trim().toLowerCase(),
-              password: values.password,
-            };
-
             try {
-
               const response = await axios.post(
                 `${API_URL}/auth/signin`,
                 normalizedValues
@@ -57,16 +51,11 @@ export default function LoginView() {
 
               const data = response.data;
 
+              console.log("LOGIN RESPONSE:", data);
+
               const session = {
                 token: data.access_token,
-                user: data.user ?? {
-                  id: "",
-                  name: "",
-                  email: normalizedValues.email,
-                  address: "",
-                  phone: "",
-                  orders: [],
-                }
+                user: data.user, 
               };
 
               setUserData(session);
@@ -75,12 +64,8 @@ export default function LoginView() {
 
               router.push("/");
 
-            } catch (error: any) {
-              const message =
-                error?.response?.data?.message ||
-                "No se pudo iniciar sesion. Verifica servidor y credenciales.";
-              toastError(Array.isArray(message) ? message.join(", ") : message);
-
+            } catch (error) {
+              toastError("Credenciales incorrectas");
             }
 
           }}

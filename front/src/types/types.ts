@@ -143,7 +143,7 @@ export interface IOrder {
 export interface IUserSession {
     token: string;
     user: {
-    id: number;
+    id: string;
     name: string;
     email: string;
     address: string;

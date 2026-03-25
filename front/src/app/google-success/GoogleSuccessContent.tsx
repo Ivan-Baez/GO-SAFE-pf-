@@ -25,7 +25,7 @@ export default function GoogleSuccessContent() {
       },
     });
 
-    router.replace("/"); // 👈 mejor que push
+    router.replace("/");
   }, [params, router, setUserData]);
 
   return <p>Iniciando sesión con Google...</p>;

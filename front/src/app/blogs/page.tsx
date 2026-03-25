@@ -27,5 +27,3 @@ export default async function BlogPage(){
         </section>
     )
 }
-
-export const dynamic = 'force-dynamic';

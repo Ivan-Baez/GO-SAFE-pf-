@@ -6,6 +6,7 @@ import { jwtDecode } from "jwt-decode";
 import ExperienceCard from "@/components/dashboard/InstructorExperienceCard";
 import { mockExperiences } from "@/lib/mocks/experiences";
 import InstructorSidebar from "@/components/dashboard/InstructorSidebar";
+import DashboardLayout from "@/components/dashboard/DashboardLayout";
 
 interface DecodedToken {
   id: string;
@@ -110,49 +111,55 @@ export default function InstructorExperiences() {
 
   if (loading) {
     return (
-      <section className="w-full bg-[#f5f2eb] py-10 px-6">
-        <div className="mx-auto max-w-6xl rounded-2xl bg-white p-6 shadow">
-          <h1 className="text-2xl font-bold text-[#1a3d2b] mb-6">
-            Mis experiencias
-          </h1>
-          <p className="text-gray-500">Cargando experiencias...</p>
-        </div>
-      </section>
+      <DashboardLayout sidebar={<InstructorSidebar />}>
+        <section className="w-full bg-[#f5f2eb] py-10 px-6">
+          <div className="mx-auto max-w-6xl rounded-2xl bg-white p-6 shadow">
+            <h1 className="text-2xl font-bold text-[#1a3d2b] mb-6">
+              Mis experiencias
+            </h1>
+            <p className="text-gray-500">Cargando experiencias...</p>
+          </div>
+        </section>
+      </DashboardLayout>
     );
   }
 
   if (error) {
     return (
-      <section className="w-full bg-[#f5f2eb] py-10 px-6">
-        <div className="mx-auto max-w-6xl rounded-2xl bg-white p-6 shadow">
-          <h1 className="text-2xl font-bold text-[#1a3d2b] mb-6">
-            Mis experiencias
-          </h1>
-          <p className="text-red-500">{error}</p>
-        </div>
-      </section>
+      <DashboardLayout sidebar={<InstructorSidebar />}>
+        <section className="w-full bg-[#f5f2eb] py-10 px-6">
+          <div className="mx-auto max-w-6xl rounded-2xl bg-white p-6 shadow">
+            <h1 className="text-2xl font-bold text-[#1a3d2b] mb-6">
+              Mis experiencias
+            </h1>
+            <p className="text-red-500">{error}</p>
+          </div>
+        </section>
+      </DashboardLayout>
     );
   }
 
   if (experiences.length === 0) {
     return (
-      <section className="min-h-screen bg-gray-50 w-full flex">
-        <div className="mx-auto max-w-6xl rounded-2xl bg-white p-6 shadow">
-          <h1 className="text-2xl font-bold text-[#1a3d2b] mb-6">
-            Mis experiencias
-          </h1>
+      <DashboardLayout sidebar={<InstructorSidebar />}>
+        <section className="min-h-screen bg-gray-50 w-full p-10">
+          <div className="mx-auto max-w-6xl rounded-2xl bg-white p-6 shadow">
+            <h1 className="text-2xl font-bold text-[#1a3d2b] mb-6">
+              Mis experiencias
+            </h1>
 
-          <div className="rounded-xl border border-dashed border-gray-300 bg-[#f7efe5] p-8 text-center">
-            <h2 className="text-lg font-semibold text-[#1a3d2b] mb-2">
-              Todavía no creaste experiencias
-            </h2>
-            <p className="text-sm text-gray-600">
-              Cuando publiques una experiencia, va a aparecer acá para que puedas
-              verla y editarla.
-            </p>
+            <div className="rounded-xl border border-dashed border-gray-300 bg-[#f7efe5] p-8 text-center">
+              <h2 className="text-lg font-semibold text-[#1a3d2b] mb-2">
+                Todavía no creaste experiencias
+              </h2>
+              <p className="text-sm text-gray-600">
+                Cuando publiques una experiencia, va a aparecer acá para que puedas
+                verla y editarla.
+              </p>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      </DashboardLayout>
     );
   }
 
@@ -161,9 +168,7 @@ export default function InstructorExperiences() {
   };
 
   return (
-    <section className="min-h-screen bg-gray-50 w-full flex">
-       <InstructorSidebar />
-      
+    <DashboardLayout sidebar={<InstructorSidebar />}>
       <div className="max-w-6xl mx-auto flex-1 px-10 py-10">
         <div className="mb-8 flex items-center gap-3">
           <h1 className="text-2xl font-bold text-[#1a3d2b]">
@@ -195,6 +200,6 @@ export default function InstructorExperiences() {
           ))}
         </div>
       </div>
-    </section>
+    </DashboardLayout>
   );
 }

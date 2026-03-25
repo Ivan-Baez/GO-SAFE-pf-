@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { useAuth } from "@/context/AuthContext";
 
 export type CommentItem = {
   id: number;
@@ -43,10 +44,10 @@ const CommentsSection: React.FC<CommentsSectionProps> = ({
   title = "Comentarios",
   initialComments,
 }) => {
+  const { userData } = useAuth();
   const [comments, setComments] = useState<CommentItem[]>(
     initialComments?.length ? initialComments : DEFAULT_COMMENTS,
   );
-  const [author, setAuthor] = useState("");
   const [message, setMessage] = useState("");
   const [rating, setRating] = useState(5);
 
@@ -57,18 +58,19 @@ const CommentsSection: React.FC<CommentsSectionProps> = ({
   }, [comments]);
 
   const handleAddComment = () => {
-    if (!author.trim() || !message.trim()) return;
+    const authorName = userData?.user?.name?.trim();
+
+    if (!authorName || !message.trim()) return;
 
     const newComment: CommentItem = {
       id: Date.now(),
-      author: author.trim(),
+      author: authorName,
       message: message.trim(),
       rating,
       date: "Ahora",
     };
 
     setComments((prev) => [newComment, ...prev]);
-    setAuthor("");
     setMessage("");
     setRating(5);
   };
@@ -86,13 +88,9 @@ const CommentsSection: React.FC<CommentsSectionProps> = ({
       </div>
 
       <div className="mb-6 grid gap-3 rounded-xl bg-[#f7efe5] p-4 md:grid-cols-12">
-        <input
-          type="text"
-          value={author}
-          onChange={(event) => setAuthor(event.target.value)}
-          placeholder="Tu nombre"
-          className="rounded-lg border border-gray-300 px-3 py-2 text-sm md:col-span-3"
-        />
+        <div className="rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-600 md:col-span-3">
+          {userData?.user?.name || "Inicia sesion para comentar"}
+        </div>
 
         <input
           type="text"
@@ -116,7 +114,8 @@ const CommentsSection: React.FC<CommentsSectionProps> = ({
 
         <button
           onClick={handleAddComment}
-          className="rounded-lg bg-[#1a3d2b] px-4 py-2 text-sm font-semibold text-white transition hover:bg-[#245a3f] md:col-span-2"
+          disabled={!userData?.user?.name}
+          className="rounded-lg bg-[#1a3d2b] px-4 py-2 text-sm font-semibold text-white transition hover:bg-[#245a3f] disabled:cursor-not-allowed disabled:opacity-60 md:col-span-2"
         >
           Publicar
         </button>

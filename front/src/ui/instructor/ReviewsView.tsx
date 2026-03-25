@@ -1,11 +1,11 @@
 import InstructorSidebar from "@/components/dashboard/InstructorSidebar"
 import Reviews from "@/components/dashboard/Reviews"
+import DashboardLayout from "@/components/dashboard/DashboardLayout"
 
 export default function ReviwesView(){
     return(
-        <section className="min-h-screen bg-gray-50 w-full flex">
-          <InstructorSidebar />
+        <DashboardLayout sidebar={<InstructorSidebar />}>
           <Reviews />
-        </section>
+        </DashboardLayout>
     )
 }

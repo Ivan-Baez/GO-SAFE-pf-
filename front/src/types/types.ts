@@ -143,7 +143,7 @@ export interface IOrder {
 export interface IUserSession {
     token: string;
     user: {
-    id: string;
+    id: string | number;
     name: string;
     email: string;
     address: string;
@@ -216,3 +216,15 @@ export interface IBlogPost {
   tags: string[];
   content: string;
 }
+
+
+export type User = {
+    id: string;
+    name: string;
+};
+
+export type Message = {
+    content: string;
+    admin?: boolean;
+    user?: User;
+};

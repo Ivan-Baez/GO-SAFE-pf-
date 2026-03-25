@@ -1,113 +1,122 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import io from "socket.io-client";
-
-const socket = io("http://localhost:3000");
+import { Message, User } from "@/types/types";
+import { useEffect, useRef, useState } from "react";
+import { io, Socket } from "socket.io-client";
 
 export default function AdminChat() {
-    const [users, setUsers] = useState<any[]>([]);
-    const [selectedUser, setSelectedUser] = useState<any>(null);
-    const [messages, setMessages] = useState<any[]>([]);
-    const [allMessages, setAllMessages] = useState<any[]>([]);
-    const [input, setInput] = useState("");
+  const socketRef = useRef<Socket | null>(null);
 
-    useEffect(() => {
-        socket.emit("joinAdmin");
+  const [users, setUsers] = useState<User[]>([]);
+  const [selectedUser, setSelectedUser] = useState<User | null>(null);
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [allMessages, setAllMessages] = useState<Message[]>([]);
+  const [input, setInput] = useState("");
 
-        socket.on("receiveUserMessage", (msg) => {
-            setUsers((prev) => {
-                const exists = prev.find((u) => u.id === msg.user.id);
-                if (exists) return prev;
-                return [...prev, msg.user];
-            });
+  useEffect(() => {
+    const socket = io(
+      process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000",
+    );
 
-            setAllMessages((prev) => [...prev, msg]);
+    socketRef.current = socket;
 
-            if (!selectedUser) {
-                setSelectedUser(msg.user);
-            }
+    socket.emit("joinAdmin");
 
-            if (selectedUser?.id === msg.user.id) {
-                setMessages((prev) => [...prev, msg]);
-            }
-        });
+    const handleUserMessage = (msg: Message) => {
+      if (!msg.user) return;
 
-        return () => socket.off("receiveUserMessage");
-    }, [selectedUser]);
+      const user = msg.user;
 
-    useEffect(() => {
-        if (!selectedUser) return;
+      setUsers((prev) => {
+        const exists = prev.find((u) => u.id === user.id);
+        if (exists) return prev;
+        return [...prev, user];
+      });
 
-        const filtered = allMessages.filter(
-            (m) => m.user?.id === selectedUser.id
-        );
+      setAllMessages((prev) => [...prev, msg]);
 
-        setMessages(filtered);
-    }, [selectedUser]);
-
-    const send = () => {
-        if (!input || !selectedUser) return;
-
-        const msg = { content: input, admin: true };
-
-        setMessages((prev) => [...prev, msg]);
-
-        socket.emit("adminMessage", {
-            userId: selectedUser.id,
-            content: input,
-        });
-
-        setInput("");
+      setSelectedUser((prev) => prev ?? user);
     };
 
-    return (
-        <div className="admin-chat-container">
+    socket.on("receiveUserMessage", handleUserMessage);
 
-            {/* USERS */}
-            <div className="admin-users">
-                <h3>Usuarios</h3>
+    return () => {
+      socket.off("receiveUserMessage", handleUserMessage);
+      socket.disconnect();
+    };
+  }, []);
 
-                {users.map((u) => (
-                    <div
-                        key={u.id}
-                        className={`user-item ${selectedUser?.id === u.id ? "active" : ""
-                            }`}
-                        onClick={() => setSelectedUser(u)}
-                    >
-                        👤 {u.name}
-                    </div>
-                ))}
-            </div>
+  // 🧠 Filtrar mensajes por usuario seleccionado
+  useEffect(() => {
+    if (!selectedUser) return;
 
-            {/* CHAT */}
-            <div className="admin-chat-box">
+    const filtered = allMessages.filter((m) => m.user?.id === selectedUser.id);
 
-                <div className="admin-chat-header">
-                    {selectedUser ? `Chat con ${selectedUser.name}` : "Selecciona usuario"}
-                </div>
+    setMessages(filtered);
+  }, [selectedUser, allMessages]);
 
-                <div className="admin-chat-messages">
-                    {messages.map((m, i) => (
-                        <div
-                            key={i}
-                            className={m.admin ? "msg-admin" : "msg-user"}
-                        >
-                            {m.content}
-                        </div>
-                    ))}
-                </div>
+  // 📤 Enviar mensaje
+  const send = () => {
+    if (!input.trim() || !selectedUser || !socketRef.current) return;
 
-                <div className="admin-chat-input">
-                    <input
-                        value={input}
-                        onChange={(e) => setInput(e.target.value)}
-                        placeholder="Responder..."
-                    />
-                    <button onClick={send}>Enviar</button>
-                </div>
+    const msg: Message = {
+      content: input,
+      admin: true,
+    };
 
-            </div>
+    // Actualización optimista
+    setMessages((prev) => [...prev, msg]);
+
+    socketRef.current.emit("adminMessage", {
+      userId: selectedUser.id,
+      content: input,
+    });
+
+    setInput("");
+  };
+
+  return (
+    <div className="admin-chat-container">
+      {/* USERS */}
+      <div className="admin-users">
+        <h3>Usuarios</h3>
+
+        {users.map((u) => (
+          <div
+            key={u.id}
+            className={`user-item ${selectedUser?.id === u.id ? "active" : ""}`}
+            onClick={() => setSelectedUser(u)}
+          >
+            👤 {u.name}
+          </div>
+        ))}
+      </div>
+
+      {/* CHAT */}
+      <div className="admin-chat-box">
+        <div className="admin-chat-header">
+          {selectedUser
+            ? `Chat con ${selectedUser.name}`
+            : "Selecciona usuario"}
         </div>
-    );
+
+        <div className="admin-chat-messages">
+          {messages.map((m, i) => (
+            <div key={i} className={m.admin ? "msg-admin" : "msg-user"}>
+              {m.content}
+            </div>
+          ))}
+        </div>
+
+        <div className="admin-chat-input">
+          <input
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            placeholder="Responder..."
+          />
+          <button onClick={send}>Enviar</button>
+        </div>
+      </div>
+    </div>
+  );
 }

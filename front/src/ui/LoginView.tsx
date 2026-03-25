@@ -14,24 +14,17 @@ import { Eye, EyeOff } from "lucide-react";
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
 
 export default function LoginView() {
-
   const router = useRouter();
   const { setUserData } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
 
   const handleGoogleLogin = () => {
-
-    window.location.href =
-      `${process.env.NEXT_PUBLIC_API_URL}/auth/google`;
-
+    window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/auth/google`;
   };
 
   return (
-
     <div className="flex flex-col items-center justify-center min-h-screen bg-white px-4">
-
       <div className="w-full max-w-sm">
-
         <h1 className="mt-6 mb-10 text-3xl font-bold text-center text-gray-800">
           Iniciar Sesión
         </h1>
@@ -44,9 +37,13 @@ export default function LoginView() {
           validate={validateFormLogin}
           onSubmit={async (values) => {
             try {
+              const normalizedValues = {
+                email: values.email.toLowerCase().trim(),
+                password: values.password,
+              };
               const response = await axios.post(
                 `${API_URL}/auth/signin`,
-                normalizedValues
+                normalizedValues,
               );
 
               const data = response.data;
@@ -55,7 +52,7 @@ export default function LoginView() {
 
               const session = {
                 token: data.access_token,
-                user: data.user, 
+                user: data.user,
               };
 
               setUserData(session);
@@ -63,16 +60,12 @@ export default function LoginView() {
               toastSuccess("¡Bienvenido!");
 
               router.push("/");
-
             } catch (error) {
               toastError("Credenciales incorrectas");
             }
-
           }}
         >
-
           <Form className="flex flex-col gap-4 w-full">
-
             <div>
               <Field
                 type="email"
@@ -101,7 +94,9 @@ export default function LoginView() {
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
                   className="absolute inset-y-0 right-3 flex items-center text-gray-400 hover:text-gray-600"
-                  aria-label={showPassword ? "Ocultar contraseña" : "Mostrar contraseña"}
+                  aria-label={
+                    showPassword ? "Ocultar contraseña" : "Mostrar contraseña"
+                  }
                 >
                   {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                 </button>
@@ -120,26 +115,21 @@ export default function LoginView() {
             >
               Iniciar sesión
             </button>
-
           </Form>
-
         </Formik>
 
         <div className="flex items-center my-8">
-
           <div className="grow border-t"></div>
 
           <span className="mx-3 text-sm text-gray-400">o</span>
 
           <div className="grow border-t"></div>
-
         </div>
 
         <button
           onClick={handleGoogleLogin}
           className="flex items-center justify-center gap-3 w-full border rounded-xl py-3 hover:bg-gray-50"
         >
-
           <Image
             src="https://www.svgrepo.com/show/475656/google-color.svg"
             alt="Google"
@@ -147,29 +137,16 @@ export default function LoginView() {
             height={20}
           />
 
-          <span className="text-sm font-semibold">
-            Ingresar con Google
-          </span>
-
+          <span className="text-sm font-semibold">Ingresar con Google</span>
         </button>
 
         <p className="mt-8 text-center text-sm text-gray-600">
-
           ¿No tienes cuenta?{" "}
-
-          <Link
-            href="/register"
-            className="text-amber-600 font-bold"
-          >
+          <Link href="/register" className="text-amber-600 font-bold">
             Regístrate aquí
           </Link>
-
         </p>
-
       </div>
-
     </div>
-
   );
-
 }

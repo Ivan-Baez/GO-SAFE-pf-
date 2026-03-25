@@ -30,7 +30,7 @@ import { ChatModule } from './chat/chat.module';
     }),
     JwtModule.register({
       global: true,
-      signOptions: { expiresIn: '1h' },
+      signOptions: { expiresIn: '7d' },
       secret: process.env.JWT_SECRET,
     }),
     UsersModule,

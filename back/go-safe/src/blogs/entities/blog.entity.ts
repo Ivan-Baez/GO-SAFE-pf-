@@ -1,26 +1,35 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
-import { ApiProperty, ApiHideProperty } from '@nestjs/swagger';
+import {
+  Column,
+  Entity,
+  PrimaryGeneratedColumn,
+  ManyToOne,
+  JoinColumn,
+} from 'typeorm';
 import { User } from '../../users/entities/user.entity';
 
-@Entity('blogs')
+@Entity({ name: 'blogs' })
 export class Blog {
-  @ApiProperty({ example: 'uuid-v4', description: 'ID único del blog' })
   @PrimaryGeneratedColumn('uuid')
-  id: string;
+  id!: string;
 
-  @ApiProperty({ example: 'Texto del blog', description: 'Contenido principal' })
-  @Column({ type: 'text', nullable: false, default: '' })
-  text: string;
+  @Column({ type: 'varchar', length: 150 })
+  title!: string;
 
-  @ApiProperty({
-    example: 'https://miimagen.com/img.png',
-    description: 'Imagen asociada',
-    required: false,
+  @Column({ type: 'text' })
+  text!: string;
+
+  @Column({ type: 'text', nullable: true })
+  imageUrl!: string;
+
+  @Column({
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP',
   })
-  @Column({ nullable: true })
-  imageUrl: string;
+  createdAt!: Date;
 
-  @ApiHideProperty()
-  @ManyToOne(() => User, (user) => user.blogs, { eager: true })
-  user: User;
+  @ManyToOne(() => User, (user) => user.blogs, {
+    onDelete: 'CASCADE',
+  })
+  @JoinColumn({ name: 'user_id' })
+  user!: User;
 }

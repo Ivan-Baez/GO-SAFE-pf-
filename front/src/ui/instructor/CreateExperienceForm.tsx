@@ -7,6 +7,7 @@ import { jwtDecode } from "jwt-decode";
 import { useAuth } from "@/context/AuthContext";
 import { toastSuccess, toastError } from "@/lib/toast";
 import { getInstructorById } from "@/service/authService";
+import { CATEGORIES } from "@/lib/categoriesHome";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
 
@@ -274,16 +275,23 @@ const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
                   <label className={labelClassName} htmlFor="category">
                     Categoria
                   </label>
-                  <input
+                  <select
                     id="category"
                     name="category"
-                    type="text"
                     value={values.category}
                     onChange={handleChange}
-                    placeholder="Ej: Climbing"
                     className={fieldClassName}
                     required
-                  />
+                  >
+                    <option value="" disabled>
+                      Selecciona una categoria
+                    </option>
+                    {CATEGORIES.map((category) => (
+                      <option key={category.id} value={category.slug}>
+                        {category.name}
+                      </option>
+                    ))}
+                  </select>
                 </div>
 
                 <div>

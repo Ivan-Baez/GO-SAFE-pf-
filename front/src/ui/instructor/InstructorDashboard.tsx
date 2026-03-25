@@ -1,5 +1,7 @@
 "use client";
 
+import DashboardLayout from "@/components/dashboard/DashboardLayout";
+import DashboardStatCard from "@/components/dashboard/DashboardStatCard";
 import InstructorSidebar from "@/components/dashboard/InstructorSidebar";
 import { CalendarDays, Star, Wallet, MapPin, Plus, Users, Clock3 } from "lucide-react";
 import Link from "next/link";
@@ -46,10 +48,8 @@ export default function InstructorDashboard() {
   ];
 
   return (
-    <section className="min-h-screen bg-gray-50 w-full flex ">
-        <InstructorSidebar />
-
-      <div className="w-full mx-auto px-10 py-10  flex-1">
+    <DashboardLayout sidebar={<InstructorSidebar />}>
+      <div className="mx-auto w-full px-10 py-10 flex-1">
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-5 mb-8">
           <div>
@@ -87,37 +87,34 @@ export default function InstructorDashboard() {
 
         {/* Cards resumen */}
         <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5 mb-10">
-          <div className="bg-white rounded-3xl p-5 shadow-sm border border-[#ece7df]">
-            <div className="w-11 h-11 rounded-2xl bg-[#f2c24d]/20 flex items-center justify-center mb-4">
-              <MapPin size={20} className="text-[#c58a00]" />
-            </div>
-            <p className="text-sm text-gray-500">Experiencias publicadas</p>
-            <h3 className="text-3xl font-bold text-[#1a3d2b] mt-1">6</h3>
-          </div>
-
-          <div className="bg-white rounded-3xl p-5 shadow-sm border border-[#ece7df]">
-            <div className="w-11 h-11 rounded-2xl bg-[#df6d51]/15 flex items-center justify-center mb-4">
-              <Users size={20} className="text-[#df6d51]" />
-            </div>
-            <p className="text-sm text-gray-500">Reservas recibidas</p>
-            <h3 className="text-3xl font-bold text-[#1a3d2b] mt-1">24</h3>
-          </div>
-
-          <div className="bg-white rounded-3xl p-5 shadow-sm border border-[#ece7df]">
-            <div className="w-11 h-11 rounded-2xl bg-[#1a3d2b]/10 flex items-center justify-center mb-4">
-              <Star size={20} className="text-[#1a3d2b]" />
-            </div>
-            <p className="text-sm text-gray-500">Valoración promedio</p>
-            <h3 className="text-3xl font-bold text-[#1a3d2b] mt-1">4.8</h3>
-          </div>
-
-          <div className="bg-white rounded-3xl p-5 shadow-sm border border-[#ece7df]">
-            <div className="w-11 h-11 rounded-2xl bg-[#f2c24d]/20 flex items-center justify-center mb-4">
-              <Wallet size={20} className="text-[#c58a00]" />
-            </div>
-            <p className="text-sm text-gray-500">Ingresos del mes</p>
-            <h3 className="text-3xl font-bold text-[#1a3d2b] mt-1">$480</h3>
-          </div>
+          <DashboardStatCard
+            icon={MapPin}
+            title="Experiencias publicadas"
+            value={6}
+            iconWrapperClassName="bg-[#f2c24d]/20"
+            iconClassName="text-[#c58a00]"
+          />
+          <DashboardStatCard
+            icon={Users}
+            title="Reservas recibidas"
+            value={24}
+            iconWrapperClassName="bg-[#df6d51]/15"
+            iconClassName="text-[#df6d51]"
+          />
+          <DashboardStatCard
+            icon={Star}
+            title="Valoración promedio"
+            value={4.8}
+            iconWrapperClassName="bg-[#1a3d2b]/10"
+            iconClassName="text-[#1a3d2b]"
+          />
+          <DashboardStatCard
+            icon={Wallet}
+            title="Ingresos del mes"
+            value="$480"
+            iconWrapperClassName="bg-[#f2c24d]/20"
+            iconClassName="text-[#c58a00]"
+          />
         </div>
 
         {/* Secciones */}
@@ -203,6 +200,6 @@ export default function InstructorDashboard() {
           </div>
         </div>
       </div>
-    </section>
+    </DashboardLayout>
   );
 }

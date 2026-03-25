@@ -11,6 +11,8 @@ import { toastError, toastSuccess } from "@/lib/toast";
 import { useAuth } from "@/context/AuthContext";
 import { Eye, EyeOff } from "lucide-react";
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
+
 export default function LoginView() {
 
   const router = useRouter();
@@ -43,8 +45,8 @@ export default function LoginView() {
           onSubmit={async (values) => {
             try {
               const response = await axios.post(
-                `${process.env.NEXT_PUBLIC_API_URL}/auth/signin`,
-                values
+                `${API_URL}/auth/signin`,
+                normalizedValues
               );
 
               const data = response.data;

@@ -1,6 +1,13 @@
-// src/blogs/dto/create-blog.dto.ts
+import { IsString, IsUrl, IsOptional } from 'class-validator';
+
 export class CreateBlogDto {
-  text: string;
-  userId: string;
+  @IsString()
+  title!: string;
+
+  @IsString()
+  text!: string;
+
+  @IsOptional()
+  @IsUrl()
   imageUrl?: string;
 }

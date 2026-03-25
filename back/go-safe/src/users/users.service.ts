@@ -177,12 +177,18 @@ export class UsersService {
       where: { email },
     });
 
-    const payload = {
-      email,
-      firstName,
-      lastName,
-      picture,
-    };
+    const payload = user
+      ? {
+          id: user.id,
+          email: user.email,
+          role: user.role,
+        }
+      : {
+          email,
+          firstName,
+          lastName,
+          picture,
+        };
 
     const token = this.jwtService.sign(payload);
 

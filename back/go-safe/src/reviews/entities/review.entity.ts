@@ -1,18 +1,26 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  Unique,
+  JoinColumn,
+} from 'typeorm';
 import { User } from '../../users/entities/user.entity';
 import { Experience } from '../../experiences/entities/experience.entity';
 import { ApiHideProperty } from '@nestjs/swagger';
+import { Min, Max, IsInt } from 'class-validator';
 
 @Entity({ name: 'reviews' })
+@Unique(['user', 'experience'])
 export class Reviews {
   @PrimaryGeneratedColumn('uuid')
   id!: string;
 
-  @Column({
-    type: 'decimal',
-    precision: 3,
-    scale: 2,
-  })
+  @IsInt()
+  @Min(1)
+  @Max(5)
+  @Column({ type: 'int' })
   rate!: number;
 
   @Column({ type: 'text' })
@@ -22,12 +30,18 @@ export class Reviews {
     type: 'timestamp',
     default: () => 'CURRENT_TIMESTAMP',
   })
-  createAt!: Date;
+  createdAt!: Date;
 
-  @ManyToOne(() => Experience, (experience) => experience.reviews)
+  @ManyToOne(() => Experience, (experience) => experience.reviews, {
+    onDelete: 'CASCADE',
+  })
+  @JoinColumn({ name: 'experience_id' })
   experience!: Experience;
 
   @ApiHideProperty()
-  @ManyToOne(() => User, (user) => user.reviews)
+  @ManyToOne(() => User, (user) => user.reviews, {
+    onDelete: 'CASCADE',
+  })
+  @JoinColumn({ name: 'user_id' })
   user!: User;
 }

@@ -24,7 +24,8 @@ export const config = {
         database: process.env.DB_DATABASE,
       }),
   autoLoadEntities: true,
-  dropSchema: stringToBoolean(process.env.DB_DROP_SCHEMA) || !isProduction,
+  // Never drop schema by default; only if explicitly enabled in env.
+  dropSchema: stringToBoolean(process.env.DB_DROP_SCHEMA),
   synchronize: stringToBoolean(process.env.DB_SYNCHONIZE) || !isProduction,
   logging: stringToBoolean(process.env.DB_LOGGING) || !isProduction,
   migrations: [],

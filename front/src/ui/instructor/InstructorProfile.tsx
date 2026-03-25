@@ -7,6 +7,7 @@ import { getInstructorById } from "@/service/authService";
 import { jwtDecode } from "jwt-decode";
 import { useAuth } from "@/context/AuthContext";
 import InstructorSidebar from "@/components/dashboard/InstructorSidebar";
+import DashboardLayout from "@/components/dashboard/DashboardLayout";
 
 import { Mountain } from "lucide-react";
 
@@ -67,9 +68,7 @@ export default function InstructorProfile() {
   }, [userData]);
 
   return (
-    <section className="min-h-screen bg-gray-50 w-full flex">
-      <InstructorSidebar />
-
+    <DashboardLayout sidebar={<InstructorSidebar />}>
       <div className="w-full flex-1 px-10 py-10">
         {loading ? (
           <p className="p-6">Cargando perfil...</p>
@@ -88,7 +87,7 @@ export default function InstructorProfile() {
                       alt="Instructor"
                       width={180}
                       height={180}
-                      className="rounded-[24px] object-cover w-[180px] h-[180px]"
+                      className="h-45 w-45 rounded-3xl object-cover"
                     />
 
                     <div className="flex-1">
@@ -158,6 +157,6 @@ export default function InstructorProfile() {
           </div>
         )}
       </div>
-    </section>
+    </DashboardLayout>
   );
 }

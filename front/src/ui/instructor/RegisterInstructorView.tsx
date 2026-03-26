@@ -105,9 +105,9 @@ export default function RegisterInstructorView() {
     switch (step) {
       case 1: return validateRegisterStep1(values);
       case 2: return ValidateRegisterStep2(values);
-      case 3: return ValidateCertificationStep(values);
-      case 4: return validateEducationStep(values);
-      case 5: return validateDescriptionStep(values);
+      //case 3: return ValidateCertificationStep(values);
+      case 3: return validateEducationStep(values);
+      case 4: return validateDescriptionStep(values);
       default: return {};
     }
   };
@@ -118,7 +118,7 @@ export default function RegisterInstructorView() {
       validate={getValidationSchema}
       validateOnMount={true}
       onSubmit={(values) => {
-        if (step === 5) {
+        if (step === 4) {
           handleFinalSubmit(values);
         } else {
           nextStep();
@@ -132,9 +132,9 @@ export default function RegisterInstructorView() {
           <div>
             {step === 1 && <PersonalData />}
             {step === 2 && <StepPhoto prev={prevStep} setFieldValue={setFieldValue} />}
-            {step === 3 && <CertificationStep prev={prevStep} />}
-            {step === 4 && <EducationStep prev={prevStep} />}
-            {step === 5 && <StepDescription prev={prevStep} />}
+            {/* {step === 3 && <CertificationStep prev={prevStep} />} */}
+            {step === 3 && <EducationStep prev={prevStep} />}
+            {step === 4 && <StepDescription prev={prevStep} />}
           </div>
         </Form>
       )}

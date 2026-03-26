@@ -4,7 +4,7 @@ import { Check } from "lucide-react"; // O cualquier librería de iconos que use
 const steps = [
   "Datos personales",
   "Foto",
-  "Certificación",
+  //"Certificación",
   "Educación",
   "Descripción",
 ];

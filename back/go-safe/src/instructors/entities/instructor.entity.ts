@@ -40,8 +40,8 @@ export class Instructor {
   @JoinColumn()
   user!: User;
 
-  @OneToMany(() => Certifications, (cert) => cert.instructor, {
-    cascade: true,
-  })
-  certifications!: Certifications[];
+  // @OneToMany(() => Certifications, (cert) => cert.instructor, {
+  //   cascade: true,
+  // })
+  // certifications!: Certifications[];
 }

@@ -170,7 +170,7 @@ export default function CreateExperienceForm() {
         dificulty: values.difficulty,
         duration: computedDuration,
         instructorId: decoded.id,
-        imageUrl,
+        imageUrl: imageUrl
       };
 
       const response = await fetch(`${API_URL}/experiences`, {

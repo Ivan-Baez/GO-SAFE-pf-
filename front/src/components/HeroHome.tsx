@@ -4,18 +4,16 @@ export default function HeroHome() {
 
       {/* FONDO VERDE FULL WIDTH */}
       <div
-        className="
-        absolute
-        right-0
-        top-0
-        w-[1000px]
-        h-[500px]
-        bg-[url('/greenBlob.png')]
-        bg-no-repeat
-        bg-contain
-        pointer-events-none
-        "
-      />
+  className="
+    absolute right-0 top-0
+    w-[70%] h-[400px]
+    md:w-[60%] md:h-[500px]
+    lg:w-[50%]
+    bg-[url('/greenBlob.png')]
+    bg-no-repeat bg-contain
+    pointer-events-none
+  "
+/>
 
       {/* CONTENIDO CENTRADO */}
       <div className="max-w-6xl mx-auto px-8 py-20 flex justify-between gap-10">

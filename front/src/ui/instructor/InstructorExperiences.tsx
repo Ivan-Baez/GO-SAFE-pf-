@@ -3,8 +3,7 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 import { jwtDecode } from "jwt-decode";
-import ExperienceCard from "@/components/dashboard/InstructorExperienceCard";
-import { mockExperiences } from "@/lib/mocks/experiences";
+import InstructorExperienceCard from "@/components/dashboard/InstructorExperienceCard";
 import InstructorSidebar from "@/components/dashboard/InstructorSidebar";
 import DashboardLayout from "@/components/dashboard/DashboardLayout";
 
@@ -12,6 +11,25 @@ interface DecodedToken {
   id: string;
   email: string;
   role: "user" | "instructor" | "admin";
+}
+
+interface BackendExperience {
+  id: string;
+  date: string;
+  country: string;
+  city: string;
+  title: string;
+  location: string;
+  description: string;
+  price: number;
+  capacity: number;
+  ageRange: string;
+  dificulty: string;
+  category: string;
+  duration: string;
+  image?: string;
+  imageUrl?: string;
+  instructorId?: string;
 }
 
 export interface IInstructorExperience {
@@ -27,94 +45,96 @@ export interface IInstructorExperience {
   ageRange: string;
   difficulty: string;
   category: string;
-  duration: number;
+  duration: string;
   image: string;
   instructorID: string;
 }
 
-//const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
-const USE_MOCK = true;
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
 
 export default function InstructorExperiences() {
-  //const { userData } = useAuth();
+  const { userData } = useAuth();
 
   const [experiences, setExperiences] = useState<IInstructorExperience[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  //useEffect para mock
   useEffect(() => {
-  const fetchExperiences = async () => {
-    try {
-      setLoading(true);
+    const fetchExperiences = async () => {
+      try {
+        setLoading(true);
+        setError("");
 
-      if (USE_MOCK) {
-  setTimeout(() => {
-    setError(""); // 👈 importante
-    setExperiences(mockExperiences);
-    setLoading(false);
-  }, 500);
-  return;
-}
+        if (!userData?.token) {
+          throw new Error("No se encontró la sesión del instructor.");
+        }
 
-      // fetch real (cuando exista)
-    } catch (err) {
-      setError("Error");
-    }
-  };
+        const decoded = jwtDecode<DecodedToken>(userData.token);
+        const instructorId = decoded.id;
 
-  fetchExperiences();
-}, []);
+        const response = await fetch(
+          `${API_URL}/instructors/${instructorId}/experiences`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${userData.token}`,
+            },
+          }
+        );
 
-//useEffect real
-//   useEffect(() => {
-//     const fetchExperiences = async () => {
-//       try {
-//         setLoading(true);
-//         setError("");
+        const data = await response.json();
+        console.log("INSTRUCTOR EXPERIENCES:", data);
 
-//         if (!userData?.token) {
-//           throw new Error("No se encontró la sesión del instructor.");
-//         }
+        if (!response.ok) {
+          throw new Error(
+            data.message || "No se pudieron cargar tus experiencias."
+          );
+        }
 
-//         const decoded = jwtDecode<DecodedToken>(userData.token);
-//         const instructorId = decoded.id;
+        const normalizedData: IInstructorExperience[] = Array.isArray(data)
+          ? data.map((exp: BackendExperience) => ({
+              id: exp.id,
+              date: exp.date,
+              country: exp.country,
+              city: exp.city,
+              title: exp.title,
+              location: exp.location,
+              description: exp.description,
+              price: Number(exp.price),
+              capacity: Number(exp.capacity),
+              ageRange: exp.ageRange,
+              difficulty: exp.dificulty,
+              category: exp.category,
+              duration: exp.duration,
+              image:
+                exp.image ||
+                exp.imageUrl ||
+                "https://via.placeholder.com/400x250",
+              instructorID: exp.instructorId || instructorId,
+            }))
+          : [];
 
-//         const response = await fetch(
-//           `${API_URL}/experiences/instructor/${instructorId}`,
-//           {
-//             method: "GET",
-//             headers: {
-//               "Content-Type": "application/json",
-//               Authorization: `Bearer ${userData.token}`,
-//             },
-//           }
-//         );
+        setExperiences(normalizedData);
+      } catch (err: any) {
+        console.error("Error cargando experiencias:", err);
+        setError(
+          err.message || "Ocurrió un error al cargar las experiencias."
+        );
+      } finally {
+        setLoading(false);
+      }
+    };
 
-//         if (!response.ok) {
-//           throw new Error("No se pudieron cargar tus experiencias.");
-//         }
-
-//         const data = await response.json();
-
-//         // Por si el back devuelve null o algo raro
-//         setExperiences(Array.isArray(data) ? data : []);
-//       } catch (err: any) {
-//         setError(err.message || "Ocurrió un error al cargar las experiencias.");
-//       } finally {
-//         setLoading(false);
-//       }
-//     };
-
-//     fetchExperiences();
-//   }, [userData]);
+    fetchExperiences();
+  }, [userData]);
 
   if (loading) {
     return (
       <DashboardLayout sidebar={<InstructorSidebar />}>
-        <section className="w-full bg-[#f5f2eb] py-10 px-6">
+        <section className="w-full bg-[#f5f2eb] px-6 py-10">
           <div className="mx-auto max-w-6xl rounded-2xl bg-white p-6 shadow">
-            <h1 className="text-2xl font-bold text-[#1a3d2b] mb-6">
+            <h1 className="mb-6 text-2xl font-bold text-[#1a3d2b]">
               Mis experiencias
             </h1>
             <p className="text-gray-500">Cargando experiencias...</p>
@@ -127,9 +147,9 @@ export default function InstructorExperiences() {
   if (error) {
     return (
       <DashboardLayout sidebar={<InstructorSidebar />}>
-        <section className="w-full bg-[#f5f2eb] py-10 px-6">
+        <section className="w-full bg-[#f5f2eb] px-6 py-10">
           <div className="mx-auto max-w-6xl rounded-2xl bg-white p-6 shadow">
-            <h1 className="text-2xl font-bold text-[#1a3d2b] mb-6">
+            <h1 className="mb-6 text-2xl font-bold text-[#1a3d2b]">
               Mis experiencias
             </h1>
             <p className="text-red-500">{error}</p>
@@ -142,19 +162,19 @@ export default function InstructorExperiences() {
   if (experiences.length === 0) {
     return (
       <DashboardLayout sidebar={<InstructorSidebar />}>
-        <section className="min-h-screen bg-gray-50 w-full p-10">
+        <section className="min-h-screen w-full bg-gray-50 p-10">
           <div className="mx-auto max-w-6xl rounded-2xl bg-white p-6 shadow">
-            <h1 className="text-2xl font-bold text-[#1a3d2b] mb-6">
+            <h1 className="mb-6 text-2xl font-bold text-[#1a3d2b]">
               Mis experiencias
             </h1>
 
             <div className="rounded-xl border border-dashed border-gray-300 bg-[#f7efe5] p-8 text-center">
-              <h2 className="text-lg font-semibold text-[#1a3d2b] mb-2">
+              <h2 className="mb-2 text-lg font-semibold text-[#1a3d2b]">
                 Todavía no creaste experiencias
               </h2>
               <p className="text-sm text-gray-600">
-                Cuando publiques una experiencia, va a aparecer acá para que puedas
-                verla y editarla.
+                Cuando publiques una experiencia, va a aparecer acá para que
+                puedas verla y editarla.
               </p>
             </div>
           </div>
@@ -164,12 +184,12 @@ export default function InstructorExperiences() {
   }
 
   const handleDelete = (id: string) => {
-  setExperiences((prev) => prev.filter((exp) => exp.id !== id));
+    setExperiences((prev) => prev.filter((exp) => exp.id !== id));
   };
 
   return (
     <DashboardLayout sidebar={<InstructorSidebar />}>
-      <div className="max-w-6xl mx-auto flex-1 px-10 py-10">
+      <div className="mx-auto max-w-6xl flex-1 px-10 py-10">
         <div className="mb-8 flex items-center gap-3">
           <h1 className="text-2xl font-bold text-[#1a3d2b]">
             Mis experiencias
@@ -178,7 +198,7 @@ export default function InstructorExperiences() {
 
         <div className="flex flex-col gap-4">
           {experiences.map((experience) => (
-            <ExperienceCard
+            <InstructorExperienceCard
               key={experience.id}
               id={experience.id}
               date={experience.date}
@@ -192,7 +212,7 @@ export default function InstructorExperiences() {
               ageRange={experience.ageRange}
               difficulty={experience.difficulty}
               category={experience.category}
-              duration={experience.duration}
+              duration={Number(experience.duration)}
               image={experience.image}
               instructorID={experience.instructorID}
               onDelete={handleDelete}

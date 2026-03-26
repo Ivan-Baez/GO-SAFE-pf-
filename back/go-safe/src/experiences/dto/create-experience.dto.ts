@@ -1,7 +1,9 @@
 import {
   IsNotEmpty,
   IsNumber,
+  IsOptional,
   IsString,
+  IsUrl,
   Max,
   MaxLength,
   Min,
@@ -138,4 +140,13 @@ export class CreateExperienceDto {
   @IsString()
   @MaxLength(50)
   instructorId!: string;
+
+  /**
+   * Image URL associated with the experience
+   * @example https://res.cloudinary.com/demo/image/upload/sample.jpg
+   */
+  @IsOptional()
+  @IsString()
+  @IsUrl()
+  imageUrl?: string;
 }

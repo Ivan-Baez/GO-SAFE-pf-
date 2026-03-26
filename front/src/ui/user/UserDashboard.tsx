@@ -10,11 +10,11 @@ import { toastError, toastSuccess } from "@/lib/toast";
 import {
     UserCircle2,
     Mail,
-    PencilLine,
     NotebookPen,
     CalendarDays,
     MapPin,
     Save,
+    Upload,
 } from "lucide-react";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
@@ -58,6 +58,7 @@ export default function UserDashboard() {
     const { userData, setUserData } = useAuth();
     const [isSavingProfile, setIsSavingProfile] = useState(false);
     const [isPublishing, setIsPublishing] = useState(false);
+    const [isUploadingPhoto, setIsUploadingPhoto] = useState(false);
     const [profile, setProfile] = useState<UserProfile | null>(null);
     const [myPosts, setMyPosts] = useState<BlogItem[]>([]);
     const [activities, setActivities] = useState<UserActivity[]>([]);
@@ -205,6 +206,7 @@ export default function UserDashboard() {
                         email: editValues.email,
                         address: editValues.address,
                         phone: editValues.phone,
+                        profilePic: editValues.profilePic,
                     },
                 });
             }
@@ -215,6 +217,48 @@ export default function UserDashboard() {
             toastError(message);
         } finally {
             setIsSavingProfile(false);
+        }
+    };
+
+    const handleProfileImageUpload = async (
+        event: React.ChangeEvent<HTMLInputElement>,
+    ) => {
+        const file = event.target.files?.[0];
+        if (!file) return;
+
+        try {
+            setIsUploadingPhoto(true);
+
+            const formData = new FormData();
+            formData.append("file", file);
+
+            const response = await fetch(`${API_URL}/upload`, {
+                method: "POST",
+                body: formData,
+            });
+
+            if (!response.ok) {
+                const err = await response.json().catch(() => ({}));
+                throw new Error(err.message || "No se pudo subir la foto");
+            }
+
+            const uploadedImage = await response.json();
+            const uploadedUrl =
+                uploadedImage.url || uploadedImage.secure_url || uploadedImage.fileUrl;
+
+            if (!uploadedUrl) {
+                throw new Error("No se recibio URL de la imagen");
+            }
+
+            setEditValues((prev) => ({ ...prev, profilePic: uploadedUrl }));
+            toastSuccess("Foto cargada, recuerda guardar cambios");
+        } catch (error: unknown) {
+            const message =
+                error instanceof Error ? error.message : "Error subiendo imagen";
+            toastError(message);
+        } finally {
+            setIsUploadingPhoto(false);
+            event.target.value = "";
         }
     };
 
@@ -356,6 +400,18 @@ export default function UserDashboard() {
                             </div>
 
                             <div className="space-y-3">
+                                <label className="inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl border border-dashed border-[#1a3d2b] px-4 py-2.5 text-sm font-medium text-[#1a3d2b] transition hover:bg-[#f6f3ec]">
+                                    <Upload size={16} />
+                                    {isUploadingPhoto ? "Subiendo foto..." : "Subir foto desde mi equipo"}
+                                    <input
+                                        type="file"
+                                        accept="image/*"
+                                        onChange={handleProfileImageUpload}
+                                        className="hidden"
+                                        disabled={isUploadingPhoto}
+                                    />
+                                </label>
+
                                 <input
                                     value={editValues.profilePic}
                                     onChange={(event) =>

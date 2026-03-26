@@ -18,7 +18,7 @@ export class Certifications {
   @Column({ type: 'text', nullable: false })
   url!: string;
 
-  @ManyToOne(() => Instructor, (instructor) => instructor.certifications)
-  @JoinColumn({ name: 'instructorId' })
-  instructor!: Instructor;
+  // @ManyToOne(() => Instructor, (instructor) => instructor.certifications)
+  // @JoinColumn({ name: 'instructorId' })
+  // instructor!: Instructor;
 }

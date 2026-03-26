@@ -40,7 +40,7 @@ export class InstructorsService {
     const instructor = this.instructorRepository.create({
       ...data.instructor,
       user,
-      certifications: data.instructor.certifications,
+      //certifications: data.instructor.certifications,
     });
 
     await this.instructorRepository.save(instructor);

@@ -98,14 +98,6 @@ export class CreateExperienceDto {
   ageRange!: string;
 
   /**
-   * picture URL
-   * @example https://example.com/avatar.jpg
-   */
-  @IsNotEmpty()
-  @IsString()
-  imageUrl!: string;
-
-  /**
    * Difficulty level
    * @example Medium
    */
@@ -148,5 +140,5 @@ export class CreateExperienceDto {
   @IsOptional()
   @IsString()
   @IsUrl()
-  imageUrl?: string;
+  imageUrl!: string;
 }

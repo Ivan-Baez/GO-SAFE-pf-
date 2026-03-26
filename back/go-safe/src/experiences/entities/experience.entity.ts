@@ -52,14 +52,11 @@ export class Experience {
   @Column({ type: 'varchar', length: 12, nullable: false })
   category!: string;
 
-  @Column({ type: 'text', nullable: false })
+  @Column({ type: 'text', nullable: true })
   imageUrl!: string;
 
   @Column({ type: 'varchar', nullable: false })
   duration!: string;
-
-  @Column({ type: 'text', nullable: true })
-  imageUrl?: string;
 
   @ManyToOne(() => Instructor, (instructor) => instructor.experiences)
   instructor!: Instructor;

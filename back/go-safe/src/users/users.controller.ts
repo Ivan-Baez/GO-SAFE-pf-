@@ -55,9 +55,8 @@ export class UsersController {
   }
 
   @ApiBearerAuth()
-  @Roles(Role.Admin)
-  @Roles(Role.User)
   @UseGuards(AuthGuard, RolesGuard)
+  @Roles(Role.Admin)
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.usersService.remove(id);

@@ -43,7 +43,6 @@ export default function RootLayout({
             <Footer />
           </div>
 
-          {/* 💬 CHAT */}
           <ChatWrapper />
 
         </AuthProvider>

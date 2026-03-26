@@ -3,7 +3,7 @@
 import { useAuth } from "@/context/AuthContext";
 import Image from "next/image";
 import Link from "next/link";
-import { UserRound, ShoppingCart, LogOutIcon, MessageCircle,Text, LogInIcon,UserPen} from "lucide-react";
+import { UserRound, LogOutIcon, Text, LogInIcon, UserPen } from "lucide-react";
 
 import { jwtDecode } from "jwt-decode";
 
@@ -25,7 +25,9 @@ export default function Navbar() {
     }
   }
 
-  const showCart = userRole !== "instructor" && userRole !== "admin";
+  const avatarSrc = userData?.user?.profilePic?.trim();
+  const displayName = userData?.user?.name?.trim() || "Usuario";
+  const avatarInitial = displayName.charAt(0).toUpperCase();
 
   return (
     <nav className="flex items-center justify-between bg-[#e6dfd5] px-10 py-3 w-full gap-6">
@@ -54,11 +56,22 @@ export default function Navbar() {
           {/* Acciones */}
           <div className="flex items-center gap-4 shrink-0">
             <Link
-              href="/A&Q"
-              className="flex items-center justify-center gap-2 px-4 py-2 border border-black rounded hover:bg-[#b8b1a6] w-37.5 text-center"
+              href="/dashboard"
+              className="group"
+              title="Ir al dashboard"
+              aria-label="Ir al dashboard"
             >
-              <MessageCircle size={18} />
-              <span>Chat</span>
+              {avatarSrc ? (
+                <img
+                  src={avatarSrc}
+                  alt={`Foto de perfil de ${displayName}`}
+                  className="h-11 w-11 rounded-full border-2 border-[#1a3d2b] object-cover transition group-hover:scale-105"
+                />
+              ) : (
+                <div className="flex h-11 w-11 items-center justify-center rounded-full border-2 border-[#1a3d2b] bg-[#dce6de] text-sm font-bold text-[#1a3d2b] transition group-hover:scale-105">
+                  {avatarInitial}
+                </div>
+              )}
             </Link>
             <Link
             href="/blogs"
@@ -67,17 +80,6 @@ export default function Navbar() {
             <Text size={18} />
             <span>Blog</span>
             </Link>
-
-            {showCart && (
-              <Link
-                href="/cart"
-                className="flex items-center justify-center gap-2 px-4 py-2 border border-black rounded hover:bg-[#b8b1a6] w-37.5 text-center"
-              >
-                <ShoppingCart size={18} />
-                <span>Carrito</span>
-              </Link>
-            )}
-
             <Link
               href="/dashboard"
               className="flex items-center justify-center gap-2 px-4 py-2 border border-black rounded hover:bg-[#b8b1a6] w-37.5 text-center"

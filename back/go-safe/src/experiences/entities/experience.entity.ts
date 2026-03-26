@@ -55,6 +55,9 @@ export class Experience {
   @Column({ type: 'varchar', nullable: false })
   duration!: string;
 
+  @Column({ type: 'text', nullable: true })
+  imageUrl?: string;
+
   @ManyToOne(() => Instructor, (instructor) => instructor.experiences)
   instructor!: Instructor;
 

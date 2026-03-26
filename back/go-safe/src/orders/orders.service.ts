@@ -3,6 +3,7 @@ import {
   NotFoundException,
   InternalServerErrorException,
   UnauthorizedException,
+  BadRequestException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -59,8 +60,31 @@ export class OrdersService {
     });
     const savedOrder = await this.ordersRepository.save(order);
 
-    const urlFront =
-      process.env.URL_FRONT || 'http://localhost:3001';
+    const accessToken = (process.env.MP_ACCESS_TOKEN || '').trim();
+    const isTestToken = accessToken.startsWith('TEST-');
+    const baseFrontUrl = (process.env.URL_FRONT || 'http://localhost:3001').trim();
+
+    let parsedFrontUrl: URL;
+    try {
+      parsedFrontUrl = new URL(baseFrontUrl);
+    } catch {
+      throw new BadRequestException('URL_FRONT is invalid');
+    }
+
+    const isLocalHost =
+      parsedFrontUrl.hostname === 'localhost' ||
+      parsedFrontUrl.hostname === '127.0.0.1';
+
+    // Mercado Pago production (APP_USR) does not accept localhost/non-https back URLs.
+    if (!isTestToken && (parsedFrontUrl.protocol !== 'https:' || isLocalHost)) {
+      throw new BadRequestException(
+        'Mercado Pago APP_USR requires URL_FRONT with public HTTPS (not localhost). Use TEST token for local development.',
+      );
+    }
+
+    const successUrl = new URL('/payment/success', parsedFrontUrl).toString();
+    const failureUrl = new URL('/payment/failure', parsedFrontUrl).toString();
+    const pendingUrl = new URL('/payment/pending', parsedFrontUrl).toString();
 
     try {
       const client = new MercadoPagoConfig({
@@ -81,11 +105,10 @@ export class OrdersService {
           ],
           external_reference: savedOrder.id,
           back_urls: {
-            success: `${urlFront}/payment/success`,
-            failure: `${urlFront}/payment/failure`,
-            pending: `${urlFront}/payment/pending`,
+            success: successUrl,
+            failure: failureUrl,
+            pending: pendingUrl,
           },
-          auto_return: 'approved',
         },
       });
 
@@ -93,9 +116,10 @@ export class OrdersService {
         preferenceId: mpResponse.id ?? null,
       });
 
-      // sandbox_init_point for test credentials; init_point for production
-      const initPoint =
-        mpResponse.sandbox_init_point ?? mpResponse.init_point ?? '';
+      // TEST token -> sandbox checkout. APP_USR token -> production checkout.
+      const initPoint = isTestToken
+        ? (mpResponse.sandbox_init_point ?? mpResponse.init_point ?? '')
+        : (mpResponse.init_point ?? mpResponse.sandbox_init_point ?? '');
 
       if (!initPoint) {
         throw new InternalServerErrorException(

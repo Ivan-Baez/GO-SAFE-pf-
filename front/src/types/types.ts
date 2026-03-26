@@ -143,12 +143,14 @@ export interface IOrder {
 export interface IUserSession {
     token: string;
     user: {
-    id: number;
-    name: string;
-    email: string;
-    address: string;
-    phone: string;
-    orders: any[];
+  id: number | string;
+  name: string;
+  email: string;
+  address: string;
+  phone: string;
+  orders: any[];
+  role?: "user" | "instructor" | "admin";
+  profilePic?: string;
 };
 } 
 

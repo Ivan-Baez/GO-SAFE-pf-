@@ -57,6 +57,9 @@ export class UsersService {
       throw new UnauthorizedException('Usuario no encontrado');
     }
 
+    if (!user.status) {
+      throw new UnauthorizedException('Usuario baneado');
+    }
     const isMatch = await bcrypt.compare(credentials.password, user.password);
 
     if (!isMatch) {

@@ -120,29 +120,27 @@ export async function registerInstructor(userData: any) {
  * Sube un certificado al backend y devuelve la URL final.
  * El backend debería encargarse de subir a Cloudinary y devolver la URL.
  */
- export async function uploadCertificate(file: File): Promise<string> {
+export async function uploadToCloudinary(file: File) {
   const formData = new FormData();
   formData.append("file", file);
+  formData.append("upload_preset", "TU_UPLOAD_PRESET");
+  formData.append("cloud_name", "TU_CLOUD_NAME");
 
-  const response = await fetch(`${APIURL}/upload`, {
-    method: "POST",
-    body: formData,
-  });
+  const res = await fetch(
+    "https://api.cloudinary.com/v1_1/TU_CLOUD_NAME/auto/upload",
+    {
+      method: "POST",
+      body: formData,
+    }
+  );
 
-  if (!response.ok) {
-    let message = "No se pudo subir el archivo";
-    try {
-      const errorData = await response.json();
-      message = errorData.message || message;
-    } catch {}
-    throw new Error(message);
+  const data = await res.json();
+
+  if (!res.ok) {
+    throw new Error(data.error?.message || "Error subiendo archivo");
   }
 
-  const data = await response.json();
-
-  // según cómo responda el backend:
-  // puede ser data.url, data.secure_url, data.fileUrl, etc.
-  return data.url || data.secure_url || data.fileUrl;
+  return data.secure_url;
 }
 
 export async function getReviews(): Promise<IReview[]> {

@@ -50,13 +50,17 @@ export class InstructorsService {
     };
   }
 
-  async findAll() {
-    const usersFound = await this.usersRepository.find({
-      relations: {
-        instructor: true,
-      },
-    });
-    return usersFound;
+  async findAllExpInstructor(id: string) {
+    try {
+      const userFound = await this.usersRepository.find({
+        where: { id },
+      });
+      if (!userFound) throw new NotFoundException('User not found');
+
+      //await this.experienceser
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
   }
 
   async findOne(id: string) {

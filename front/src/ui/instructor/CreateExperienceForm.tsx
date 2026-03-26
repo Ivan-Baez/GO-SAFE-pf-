@@ -158,7 +158,7 @@ const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
       category: values.category,
       duration,
       instructorId: realInstructorId,
-     // image: imageUrl,
+      imageUrl: imageUrl,
     };
 
     console.log("HANDLE SUBMIT SE EJECUTA");

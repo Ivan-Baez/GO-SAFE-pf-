@@ -1,7 +1,7 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Field, useFormikContext } from "formik";
-import { uploadCertificate } from "@/service/authService";
+import { uploadToCloudinary } from "@/service/authService";
 
 interface StepProps {
   prev: () => void;
@@ -15,11 +15,21 @@ export default function CertificateStep({ prev }: StepProps) {
   const [fileName1, setFileName1] = useState("");
   const [fileName2, setFileName2] = useState("");
 
+  const [preview1, setPreview1] = useState<string | null>(null);
+  const [preview2, setPreview2] = useState<string | null>(null);
+
   const [uploading1, setUploading1] = useState(false);
   const [uploading2, setUploading2] = useState(false);
 
   const [uploadError1, setUploadError1] = useState("");
   const [uploadError2, setUploadError2] = useState("");
+
+  useEffect(() => {
+    return () => {
+      if (preview1) URL.revokeObjectURL(preview1);
+      if (preview2) URL.revokeObjectURL(preview2);
+    };
+  }, [preview1, preview2]);
 
   const handleCertificateChange = async (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -28,13 +38,51 @@ export default function CertificateStep({ prev }: StepProps) {
     const file = e.target.files?.[0];
     if (!file) return;
 
+    const allowedTypes = ["application/pdf", "image/jpeg", "image/png"];
+    if (!allowedTypes.includes(file.type)) {
+      const errorMessage = "Formato no permitido. Sólo PDF, JPG o PNG.";
+      if (certificateNumber === 1) {
+        setUploadError1(errorMessage);
+        setFieldValue("url", "");
+        setPreview1(null);
+        setFileName1("");
+      } else {
+        setUploadError2(errorMessage);
+        setFieldValue("url2", "");
+        setPreview2(null);
+        setFileName2("");
+      }
+      return;
+    }
+
+    if (file.size > 5 * 1024 * 1024) {
+      const errorMessage = "El archivo pesa más de 5MB";
+      if (certificateNumber === 1) {
+        setUploadError1(errorMessage);
+        setFieldValue("url", "");
+        setPreview1(null);
+        setFileName1("");
+      } else {
+        setUploadError2(errorMessage);
+        setFieldValue("url2", "");
+        setPreview2(null);
+        setFileName2("");
+      }
+      return;
+    }
+
+    const isImage = file.type.startsWith("image/");
+
     if (certificateNumber === 1) {
       setUploadError1("");
       setFileName1(file.name);
 
+      if (preview1) URL.revokeObjectURL(preview1);
+      setPreview1(isImage ? URL.createObjectURL(file) : null);
+
       try {
         setUploading1(true);
-        const uploadedUrl = await uploadCertificate(file);
+        const uploadedUrl = await uploadToCloudinary(file);
         setFieldValue("url", uploadedUrl);
       } catch (error: any) {
         console.error("Error subiendo certificado 1:", error);
@@ -49,9 +97,12 @@ export default function CertificateStep({ prev }: StepProps) {
       setUploadError2("");
       setFileName2(file.name);
 
+      if (preview2) URL.revokeObjectURL(preview2);
+      setPreview2(isImage ? URL.createObjectURL(file) : null);
+
       try {
         setUploading2(true);
-        const uploadedUrl = await uploadCertificate(file);
+        const uploadedUrl = await uploadToCloudinary(file);
         setFieldValue("url2", uploadedUrl);
       } catch (error: any) {
         console.error("Error subiendo certificado 2:", error);
@@ -73,7 +124,6 @@ export default function CertificateStep({ prev }: StepProps) {
           </p>
         </div>
 
-        {/* Checkbox */}
         <div className="flex items-center space-x-3 py-4">
           <Field
             type="checkbox"
@@ -91,7 +141,6 @@ export default function CertificateStep({ prev }: StepProps) {
             values.noCertificado ? "opacity-30 pointer-events-none" : "opacity-100"
           }`}
         >
-          {/* Certificado 1 */}
           <div className="space-y-4">
             <div>
               <label className="block font-bold text-[#1e3c31] mb-2">
@@ -122,11 +171,15 @@ export default function CertificateStep({ prev }: StepProps) {
                 />
               </label>
 
-              {fileName1 && (
-                <p className="text-sm text-gray-700 text-center">
-                  Archivo seleccionado: {fileName1}
-                </p>
-              )}
+              {preview1 ? (
+                <img
+                  src={preview1}
+                  alt="Preview certificado"
+                  className="w-40 h-40 object-cover rounded-xl border"
+                />
+              ) : fileName1 ? (
+                <p className="text-sm text-gray-700 text-center">📄 {fileName1}</p>
+              ) : null}
 
               {uploading1 && (
                 <p className="text-sm text-[#1e3c31]">Subiendo certificado...</p>
@@ -148,7 +201,6 @@ export default function CertificateStep({ prev }: StepProps) {
             </div>
           </div>
 
-          {/* Botón agregar segundo certificado */}
           {!showSecondCertificate && (
             <button
               type="button"
@@ -159,7 +211,6 @@ export default function CertificateStep({ prev }: StepProps) {
             </button>
           )}
 
-          {/* Certificado 2 */}
           {showSecondCertificate && (
             <div className="space-y-4 border-t pt-6">
               <div className="flex items-center justify-between">
@@ -174,6 +225,8 @@ export default function CertificateStep({ prev }: StepProps) {
                     setFieldValue("certificadoFile2", null);
                     setFileName2("");
                     setUploadError2("");
+                    if (preview2) URL.revokeObjectURL(preview2);
+                    setPreview2(null);
                   }}
                   className="text-sm text-gray-500 hover:text-red-500"
                 >
@@ -212,11 +265,15 @@ export default function CertificateStep({ prev }: StepProps) {
                   />
                 </label>
 
-                {fileName2 && (
-                  <p className="text-sm text-gray-700 text-center">
-                    Archivo seleccionado: {fileName2}
-                  </p>
-                )}
+                {preview2 ? (
+                  <img
+                    src={preview2}
+                    alt="Preview segundo certificado"
+                    className="w-40 h-40 object-cover rounded-xl border"
+                  />
+                ) : fileName2 ? (
+                  <p className="text-sm text-gray-700 text-center">📄 {fileName2}</p>
+                ) : null}
 
                 {uploading2 && (
                   <p className="text-sm text-[#1e3c31]">
@@ -242,7 +299,6 @@ export default function CertificateStep({ prev }: StepProps) {
           )}
         </div>
 
-        {/* Botones */}
         <div className="flex items-center justify-between gap-4 pt-6">
           <button
             type="button"

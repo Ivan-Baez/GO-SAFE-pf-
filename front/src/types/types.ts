@@ -1,84 +1,84 @@
 export interface ILoginProps {
-    email: string,
-    password: string
+  email: string;
+  password: string;
 }
 
 export interface ILoginErrors {
-    email?: string,
-    password?: string
+  email?: string;
+  password?: string;
 }
 
-export interface  IRegisterProps {
-    primernombre:string
-    segundonombre:string
-    username:string
-    documentType:string
-    document:string
-    genre:string
-    birthdate: string
-    address:string
-    phone:string
-    country:string
-    city:string
-    mail:string
-    password:string
-    confirmPassword: string
+export interface IRegisterProps {
+  primernombre: string;
+  segundonombre: string;
+  username: string;
+  documentType: string;
+  document: string;
+  genre: string;
+  birthdate: string;
+  address: string;
+  phone: string;
+  country: string;
+  city: string;
+  mail: string;
+  password: string;
+  confirmPassword: string;
 }
 
-export interface IRegisterErrors{ 
-    primernombre?:string
-    segundonombre?:string
-    username?:string
-    documentType?:string
-    document?:string
-    genre?:string
-    birthdate?: string
-    address?:string
-    phone?:string
-    country?:string
-    city?:string
-    mail?:string
-    password?:string
-    confirmPassword?: string
+export interface IRegisterErrors {
+  primernombre?: string;
+  segundonombre?: string;
+  username?: string;
+  documentType?: string;
+  document?: string;
+  genre?: string;
+  birthdate?: string;
+  address?: string;
+  phone?: string;
+  country?: string;
+  city?: string;
+  mail?: string;
+  password?: string;
+  confirmPassword?: string;
 }
 
-export interface IInstructorRegisterErrors{
-    firstName?: string;     
-    lastName?: string;    
-    userName?: string;    
-    documentType?: string;
-    document?: string;    
-    genre?: string;
-    age?: string;
-    birthDay?: string;   
-    birthMonth?: string; 
-    birthYear?: string;
-    address?: string;
-    phone?: string;
-    country?: string;
-    city?: string;
-    email?: string;      
-    password?: string;
-    confirmPassword?: string; 
-    profilePic?: string; 
-    isMajor?: string;
-    // Step Certificación
-    noCertificado?: boolean;
-    category?: string;
-    title?: string;
-    title2?: string;
-    url?: string;
-    url2?: string;
-    certifications?: string;
-    //Step Education
-    career?: string;
-    institution?: string;
-    level?: string;
-    añoInicio?: string;
-    añoFin?: string;
-    onCourse?: boolean;
-    // Step About
-    about?: string;  
+export interface IInstructorRegisterErrors {
+  firstName?: string;
+  lastName?: string;
+  userName?: string;
+  documentType?: string;
+  document?: string;
+  genre?: string;
+  age?: string;
+  birthDay?: string;
+  birthMonth?: string;
+  birthYear?: string;
+  address?: string;
+  phone?: string;
+  country?: string;
+  city?: string;
+  email?: string;
+  password?: string;
+  confirmPassword?: string;
+  profilePic?: string;
+  isMajor?: string;
+  // Step Certificación
+  noCertificado?: boolean;
+  category?: string;
+  title?: string;
+  title2?: string;
+  url?: string;
+  url2?: string;
+  certifications?: string;
+  //Step Education
+  career?: string;
+  institution?: string;
+  level?: string;
+  añoInicio?: string;
+  añoFin?: string;
+  onCourse?: boolean;
+  // Step About
+  about?: string;
 }
 
 export interface IInstructorRegisterProps {
@@ -87,9 +87,9 @@ export interface IInstructorRegisterProps {
   userName?: string;
   email: string;
   password?: string;
-  confirmPassword?: string; 
+  confirmPassword?: string;
   documentType?: string;
-  document?: string; 
+  document?: string;
   age?: number;
   phone?: string;
   country?: string;
@@ -98,7 +98,7 @@ export interface IInstructorRegisterProps {
   genre?: string;
   profilePic?: string;
   // Campos auxiliares del Front
-  isMajor?: boolean; 
+  isMajor?: boolean;
   birthDay?: string;
   birthMonth?: string;
   birthYear?: string;
@@ -114,7 +114,7 @@ export interface IInstructorRegisterProps {
   career?: string;
   institution?: string;
   level?: string;
-  añoInicio?: number | string; 
+  añoInicio?: number | string;
   añoFin?: number | string;
   onCourse?: boolean;
   noEducation?: boolean;
@@ -123,48 +123,49 @@ export interface IInstructorRegisterProps {
 }
 
 export interface IService {
-    id:number
-    name:string
-    place:string
-    image: string
-    sport?: string
-    modality:string
+  id: number;
+  name: string;
+  place: string;
+  image: string;
+  sport?: string;
+  modality: string;
 }
 
 export interface IOrder {
-    id:string
-    date: string
-    name:string
-    price:number
-    place:string
-    image: string
+  id: string;
+  date: string;
+  name: string;
+  price: number;
+  place: string;
+  image: string;
 }
 
 export interface IUserSession {
-    token: string;
-    user: {
+  token: string;
+  user: {
     id: string | number;
     name: string;
     email: string;
     address: string;
     phone: string;
     orders: any[];
-};
-} 
+    profilePic: string;
+  };
+}
 
 export interface IProduct {
-    id: number | string;
-    name: string;
-    place: string;
-    price: number;
-    description: string;
-    image: string;
-    categoryId: number;
-    stock: number;
-    duration?: string;
-    ageRange?: string;
-    capacity?: number;
-    difficulty?: string;
+  id: number | string;
+  name: string;
+  place: string;
+  price: number;
+  description: string;
+  image: string;
+  categoryId: number;
+  stock: number;
+  duration?: string;
+  ageRange?: string;
+  capacity?: number;
+  difficulty?: string;
 }
 
 export interface IUserData {
@@ -217,14 +218,13 @@ export interface IBlogPost {
   content: string;
 }
 
-
 export type User = {
-    id: string;
-    name: string;
+  id: string;
+  name: string;
 };
 
 export type Message = {
-    content: string;
-    admin?: boolean;
-    user?: User;
+  content: string;
+  admin?: boolean;
+  user?: User;
 };

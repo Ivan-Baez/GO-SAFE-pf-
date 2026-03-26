@@ -22,6 +22,7 @@ export default function GoogleSuccessContent() {
         address: "",
         phone: "",
         orders: [],
+        profilePic: ''
       },
     });
 

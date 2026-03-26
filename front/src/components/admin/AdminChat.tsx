@@ -46,7 +46,6 @@ export default function AdminChat() {
     };
   }, []);
 
-  // 🧠 Filtrar mensajes por usuario seleccionado
   useEffect(() => {
     if (!selectedUser) return;
 
@@ -55,7 +54,6 @@ export default function AdminChat() {
     setMessages(filtered);
   }, [selectedUser, allMessages]);
 
-  // 📤 Enviar mensaje
   const send = () => {
     if (!input.trim() || !selectedUser || !socketRef.current) return;
 
@@ -64,7 +62,6 @@ export default function AdminChat() {
       admin: true,
     };
 
-    // Actualización optimista
     setMessages((prev) => [...prev, msg]);
 
     socketRef.current.emit("adminMessage", {
@@ -92,7 +89,6 @@ export default function AdminChat() {
         ))}
       </div>
 
-      {/* CHAT */}
       <div className="admin-chat-box">
         <div className="admin-chat-header">
           {selectedUser

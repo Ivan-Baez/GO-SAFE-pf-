@@ -4,6 +4,7 @@ import { registerInstructor } from "@/service/authService";
 import { IInstructorRegisterProps } from "@/types/types";
 import { Formik, Form } from "formik";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
+import { sendEmail } from "@/lib/sendEmail";
 
 // Importar validaciones
 import { validateRegisterStep1, ValidateRegisterStep2, ValidateCertificationStep, validateEducationStep, validateDescriptionStep} from "@/lib/validate";
@@ -90,6 +91,7 @@ export default function RegisterInstructorView() {
 
     try {
       const res = await registerInstructor(baseData as any);
+      await sendEmail(values.firstName, values.email);
       // Si el backend devuelve un token o un objeto exitoso
       alert("¡Registro exitoso! Por favor, inicia sesión.");
       router.push("/login");

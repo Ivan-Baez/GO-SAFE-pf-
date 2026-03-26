@@ -8,6 +8,7 @@ import { jwtDecode } from "jwt-decode";
 import Link from "next/link";
 import { register } from "@/service/authService";
 import { Eye, EyeOff } from "lucide-react";
+import { sendEmail } from "@/lib/sendEmail";
 
 // ── Design tokens ─────────────────────────────────────────────────────────────
 const GREEN       = "#1a3d2b";
@@ -212,6 +213,7 @@ function RegisterView() {
             onSubmit={async (values, { setSubmitting }) => {
               try {
                 await register(values);
+                await sendEmail(values.primernombre, values.mail);
                 localStorage.removeItem("googleRegisterData");
                 router.push("/login");
               } catch (error: any) {

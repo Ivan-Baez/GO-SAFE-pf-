@@ -48,6 +48,7 @@ export class ExperiencesController {
           category: 'Climbing',
           duration: '4 hours',
           instructorId: 'd68d5c80-819b-41df-b101-5dd165e3e954',
+          imageUrl: 'https://example.com/avatar.jpg',
         },
       },
     },

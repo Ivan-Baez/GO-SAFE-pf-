@@ -52,6 +52,9 @@ export class Experience {
   @Column({ type: 'varchar', length: 12, nullable: false })
   category!: string;
 
+  @Column({ type: 'text', nullable: false })
+  imageUrl!: string;
+
   @Column({ type: 'varchar', nullable: false })
   duration!: string;
 

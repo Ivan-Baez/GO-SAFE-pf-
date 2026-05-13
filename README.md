@@ -2,6 +2,7 @@
 
 
 # 🔐 GoSafe
+https://gosafe-seven.vercel.app/
 
 Aplicación Full Stack orientada a la gestión de usuarios, reservas y actividades, desarrollada utilizando tecnologías modernas del ecosistema JavaScript y TypeScript.
 

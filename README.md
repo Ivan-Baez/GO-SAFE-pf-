@@ -35,6 +35,17 @@ GoSafe permite administrar perfiles, publicaciones y experiencias desde una inte
 
 
 
+# 📌 Estado del Proyecto
 
+Proyecto académico desarrollado en Henry Bootcamp como aplicación Full Stack enfocada en prácticas de desarrollo backend, arquitectura modular y gestión de datos.
+
+---
+
+# 👨‍💻 Autor
+
+Ivan Baez
+
+GitHub:
+https://github.com/Ivan-Baez
 
 
